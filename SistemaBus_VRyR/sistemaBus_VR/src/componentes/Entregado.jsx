@@ -447,11 +447,6 @@ export const Entregado = () => {
               <label className="form-label" for='nombre_entrega' >NOMBRE DEL PROPIETARIO / REPRESENTANTE:</label>
               <input type="text" className="form-control" id="nombre_entrega" name="nombre_entrega" onChange={handleChange} />
             </div>
-           
-            <div class="col-md-5">
-              <label className="form-label" for='paterno_entrega' >APELfghfghhghATERNO DEL PROPIETARIO / REPRESENTANTE:</label>
-              <input type="text" className="form-control" id="paterno_enfghtrega" name="paterno_enfghtrega" onChange={handleChange} />
-            </div>
             <div class="col-md-4">
               <Button variant="primary" type="submit" onClick={handleClick}>Enviar</Button>
               <Link to="/" className="btn btn-info"> Inicio</Link>
