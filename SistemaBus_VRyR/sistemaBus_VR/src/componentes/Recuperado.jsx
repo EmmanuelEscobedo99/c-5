@@ -215,8 +215,8 @@ export const Recuperado = () => {
         let hayErrores = false
         let desc = ''
 
-        if (recuperado.serie.includes('o') || recuperado.serie.includes('i') || recuperado.serie.includes('ñ') || recuperado.serie.includes('q')) {
-            desc = desc + 'la serie no debe contener (o,i,ñ,q) '
+        if (recuperado.serie.includes('o') || recuperado.serie.includes('i') || recuperado.serie.includes('ñ') || recuperado.serie.includes('q') || recuperado.serie.includes('O') || recuperado.serie.includes('I') || recuperado.serie.includes('Ñ') || recuperado.serie.includes('Q')) {
+            desc = desc + ' La serie no debe contener (o,i,ñ,q), '
             //document.querySelector("label[for='serie']").textContent = "SERIE: (INVALIDO)"
 
             hayErrores = true
@@ -225,7 +225,7 @@ export const Recuperado = () => {
         }
 
         if (recuperado.serie.length < 1) {
-            desc = desc + ' hay que llenar el campo serie'
+            desc = desc + ' El campo SERIE es obligatorio'
             //document.querySelector("label[for='serie']").textContent = "SERIE: (INVALIDO)"
 
             hayErrores = true
@@ -234,7 +234,7 @@ export const Recuperado = () => {
         }
 
         if (recuperado.id_entidad_recupera.length < 1) {
-            desc = desc + ' hay que llenar el campo entidad'
+            desc = desc + ' El campo ENTIDAD es obligatorio,'
             //document.querySelector("label[for='id_entidad_recupera']").textContent = "ENTIDAD QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
             hayErrores = true
@@ -243,21 +243,12 @@ export const Recuperado = () => {
         }
 
         if (recuperado.id_municipio_rec.length < 1) {
-            desc = desc + ' hay que llenar el campo municipio'
+            desc = desc + ' El campo MUNICIPIO es obligatorio'
             //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
             hayErrores = true
         } else {
             //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
-        }
-
-        if (recuperado.colonia_rec.length < 1) {
-            desc = desc + ' hay que llenar el campo colonia'
-            //document.querySelector("label[for='colonia_rec']").textContent = "COLONIA: (INVALIDO)"
-
-            hayErrores = true
-        } else {
-            //document.querySelector("label[for='colonia_rec']").textContent = "COLONIA:"
         }
 
         if (recuperado.serie.includes("  ") || recuperado.serie.startsWith(" ") || recuperado.serie.endsWith(" ")) {
@@ -347,7 +338,7 @@ export const Recuperado = () => {
             <Navbar />
             <div className='area-form'>
                 <div className='contenedor'>
-                    <form class="row g-3">
+                    <form class="row g-3 was-validated">
                         <center><h1> REGISTRO DE VEHICULOS RECUPERADOS</h1></center>
                         <br />
                         {results5.map(ultimoId => {
@@ -360,19 +351,20 @@ export const Recuperado = () => {
                         <div class="col-4">
                             <label className="form-label" for='id_entidad_recupera' >ENTIDAD:</label>
                             <br />
-                            <select className="form-control" id="id_entidad_recupera" name="id_entidad_recupera" onChange={handleEntidadChange} onClick={handleChange}>
-                                <option>ENTIDAD QUE RECUPERÓ EL VEHICULO</option>
+                            <select className="form-control" id="id_entidad_recupera" name="id_entidad_recupera" onChange={handleEntidadChange} onClick={handleChange} required>
+                                <option selected disabled value="">ENTIDAD QUE RECUPERÓ EL VEHICULO</option>
                                 {results2.map(entidades => {
                                     return (
                                         <option name={entidades.ID_ENTIDAD} key={entidades.ID_ENTIDAD} value={entidades.ID_ENTIDAD}>{entidades.ENTIDAD}</option>
                                     )
                                 })}
                             </select>
+                            <div class="invalid-feedback">Porfavor seleccione una entidad.</div>
                         </div>
                         <div class="col-4">
                             <label className="form-label" for='id_municipio_rec' >MUNICIPIO:</label>
                             <br />
-                            <select className='form-control' id='id_municipio_rec' name='id_municipio_rec' onChange={handleChange}>
+                            <select className='form-control' id='id_municipio_rec' name='id_municipio_rec' onChange={handleChange} required>
                                 <option value="">MUNICIPIO QUE RECUPERÓ EL VEHICULO</option>
                                 {municipios.map((municipio) => (
                                     <option key={municipio.ID_MUNICIPIO} value={municipio.ID_MUNICIPIO}>
@@ -380,53 +372,63 @@ export const Recuperado = () => {
                                     </option>
                                 ))}
                             </select>
+                            <div class="invalid-feedback">Porfavor seleccione un municipio.</div>
                         </div>
                         <div class="col-md-2">
                             <label className="form-label" for='placa' > PLACA:</label>
-                            <input type="text" className="form-control" id="placa" name="placa" ng-trim="false" onChange={handleChange} />
+                            <input type="text" className="form-control" id="placa" name="placa" ng-trim="false" onChange={handleChange} required/>
+                            <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
                         <div class="col-3">
                             <label className="form-label" class="col-sm-10" for='serie' >SERIE:</label>
-                            <input type="text" className="form-control" id="serie" name="serie" onChange={handleChange} />
+                            <input type="text" className="form-control" id="serie" name="serie" onChange={handleChange} required/>
+                            <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
 
                         <div class="col-md-3">
                             <label className="form-label" for='calle_rec' > CALLE:</label>
-                            <input type="text" className="form-control" id="calle_rec" name="calle_rec" onChange={handleChange} />
+                            <input type="text" className="form-control" id="calle_rec" name="calle_rec" onChange={handleChange} required/>
+                            <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
                         <div class="col-md-2">
                             <label className="form-label" for='numext_rec' > NÚMERO EXTERIOR:</label>
-                            <input type="text" className="form-control" id="numext_rec" name="numext_rec" onChange={handleChange} />
+                            <input type="text" className="form-control" id="numext_rec" name="numext_rec" onChange={handleChange} required/>
+                            <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
                         <div class="col-md-3">
                             <label className="form-label" for='colonia_rec' > COLONIA:</label>
-                            <input type="text" className="form-control" id="colonia_rec" name="colonia_rec" onChange={handleChange} />
+                            <input type="text" className="form-control" id="colonia_rec" name="colonia_rec" onChange={handleChange} required/>
+                            <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
 
                         <div class="col-2">
                             <label className="form-label" for='cp_rec' > CÓDIGO POSTAL:</label>
-                            <input type="text" className="form-control" id="cp_rec" name="cp_rec" onChange={handleChange} />
+                            <input type="text" className="form-control" id="cp_rec" name="cp_rec" onChange={handleChange} required/>
+                            <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
                         <div class="col-md-4">
                             <label className="form-label" >COLOR DEL AUTOMÓVIL: </label>
                             <br />
-                            <select className="form-control" id="id_color" name="id_color" onChange={handleChange}>
-                                <option>SELECCIONE UN COLOR</option>
+                            <select className="form-control" id="id_color" name="id_color" onChange={handleChange} required>
+                                <option selected disabled value="">SELECCIONE UN COLOR</option>
                                 {results.map(llenado => {
                                     return (
                                         <option name={llenado.ID_COLOR} key={llenado.ID_COLOR} value={llenado.ID_COLOR}>{llenado.DESCRIPCION}</option>
                                     )
                                 })}
                             </select>
+                            <div class="invalid-feedback">Porfavor seleccione un color.</div>
                         </div>
                         <div class="col-md-3">
                             <label className="form-label" > FECHA:</label>
                             { }
-                            <input type="date" max={today} min={minDate} className="form-control" id="fecha_rec" name="fecha_rec" onChange={handleChange} />
+                            <input type="date" max={today} min={minDate} className="form-control" id="fecha_rec" name="fecha_rec" onChange={handleChange} required/>
+                            <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
                         <div class="col-md-3">
                             <label className="form-label" > HORA:</label>
-                            <input type="time" className="form-control" id="hora_rec" name="hora_rec" onChange={handleChange} />
+                            <input type="time" className="form-control" id="hora_rec" name="hora_rec" onChange={handleChange} required/>
+                            <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
                         <div class="col-md-4">
                             <Button variant="primary" type="submit" onClick={handleClick}>Enviar</Button>

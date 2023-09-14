@@ -382,7 +382,7 @@ export const Entregado = () => {
                 <label className="form-label" for='id_municipio_entrega' >MUNICIPIO:</label>
                 <br />
                 <select className='form-control' id='id_municipio_entrega' name='id_municipio_entrega' onChange={handleChange} required>
-                  <option selected discabled value="">MUNICIPIO QUE RECUPERÓ EL VEHICULO</option>
+                  <option selected disabled value="">MUNICIPIO QUE RECUPERÓ EL VEHICULO</option>
                   {municipios.map((municipio) => (
                     <option key={municipio.ID_MUNICIPIO} value={municipio.ID_MUNICIPIO}>
                       {municipio.MUNICIPIO}
