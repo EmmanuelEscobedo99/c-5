@@ -187,7 +187,7 @@ export const Entregado = () => {
     let hayErrores = false
     let desc = ''
 
-    if (entregado.serie.includes('o') || entregado.serie.includes('i') || entregado.serie.includes('ñ') || entregado.serie.includes('q')) {
+    if (entregado.serie.includes('o') || entregado.serie.includes('i') || entregado.serie.includes('ñ') || entregado.serie.includes('q') || entregado.serie.includes('O') || entregado.serie.includes('I') || entregado.serie.includes('Ñ') || entregado.serie.includes('Q')) {
       desc = desc + 'la serie no debe contener (o,i,ñ,q) '
       //document.querySelector("label[for='serie']").textContent = "SERIE: (INVALIDO)"
 
@@ -197,7 +197,7 @@ export const Entregado = () => {
     }
 
     if (entregado.serie.length < 1) {
-      desc = desc + ' hay que llenar el campo serie'
+      desc = desc + ' el campo SERIE es obligatorio,'
       //document.querySelector("label[for='serie']").textContent = "SERIE: (INVALIDO)"
 
       hayErrores = true
@@ -206,7 +206,7 @@ export const Entregado = () => {
     }
 
     if (entregado.id_entidad_entrega.length < 1) {
-      desc = desc + ' hay que llenar el campo entidad'
+      desc = desc + ' el campo ENTIDAD es obligatorio,'
       //document.querySelector("label[for='id_entidad_recupera']").textContent = "ENTIDAD QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
       hayErrores = true
@@ -215,21 +215,12 @@ export const Entregado = () => {
     }
 
     if (entregado.id_municipio_entrega.length < 1) {
-      desc = desc + ' hay que llenar el campo municipio'
+      desc = desc + ' el campo MUNICIPIO es obligatorio'
       //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
       hayErrores = true
     } else {
       //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
-    }
-
-    if (entregado.colonia_entrega.length < 1) {
-      desc = desc + ' hay que llenar el campo colonia'
-      //document.querySelector("label[for='colonia_rec']").textContent = "COLONIA: (INVALIDO)"
-
-      hayErrores = true
-    } else {
-      //document.querySelector("label[for='colonia_rec']").textContent = "COLONIA:"
     }
 
     if (entregado.serie.includes("  ") || entregado.serie.startsWith(" ") || entregado.serie.endsWith(" ")) {
@@ -356,7 +347,7 @@ export const Entregado = () => {
       <Navbar />
       <div className='area-form'>
         <div className='contenedor'>
-          <form class='row g-3'>
+          <form class='row g-3 was-validated'>
             <center><h1>REGISTRO DE VEHICULOS ENTREGADOS</h1></center>
             {results5.map(ultimoId => {
               return (
@@ -366,91 +357,110 @@ export const Entregado = () => {
             })}
             <div class="col-md-3">
               <label className="form-label" for='calle_entrega' > CALLE DONDE SE ENTREGO:</label>
-              <input type="text" className="form-control" id="calle_entrega" name="calle_entrega" onChange={handleChange} />
+              <input type="text" className="form-control" id="calle_entrega" name="calle_entrega" onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
             <div class="col-md-3">
               <label className="form-label" for='colonia_entrega' > COLONIA DONDE SE ENTREGO:</label>
-              <input type="text" className="form-control" id="colonia_entrega" name="colonia_entrega" onChange={handleChange} />
+              <input type="text" className="form-control" id="colonia_entrega" name="colonia_entrega" onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
             <div class="col-4">
               <label className="form-label" for='id_entidad_entrega' >ENTIDAD:</label>
               <br />
-              <select className="form-control" id="id_entidad_entrega" name="id_entidad_entrega" onChange={handleEntidadChange} onClick={handleChange}>
-                <option>ENTIDAD QUE RECUPERÓ EL VEHICULO</option>
+              <select className="form-control" id="id_entidad_entrega" name="id_entidad_entrega" onChange={handleEntidadChange} onClick={handleChange} required>
+                <option selected disabled value="">ENTIDAD QUE RECUPERÓ EL VEHICULO</option>
                 {results2.map(entidades => {
                   return (
                     <option name={entidades.ID_ENTIDAD} key={entidades.ID_ENTIDAD} value={entidades.ID_ENTIDAD}>{entidades.ENTIDAD}</option>
                   )
                 })}
               </select>
-            </div>
-            <div class="col-4">
-              <label className="form-label" for='id_municipio_entrega' >MUNICIPIO:</label>
-              <br />
-              <select className='form-control' id='id_municipio_entrega' name='id_municipio_entrega' onChange={handleChange}>
-                <option value="">MUNICIPIO QUE RECUPERÓ EL VEHICULO</option>
-                {municipios.map((municipio) => (
-                  <option key={municipio.ID_MUNICIPIO} value={municipio.ID_MUNICIPIO}>
-                    {municipio.MUNICIPIO}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div class="col-md-2">
-              <label className="form-label" for='cp_entrega' > CÓDIGO POSTAL:</label>
-              <input type="text" className="form-control" id="cp_entrega" name="cp_entrega" onChange={handleChange} />
-            </div>
-            <div class="col-4">
-              <label className="form-label" for='inspeccion' >INSPECCIÓN:</label>
-              <br />
-              <select className='form-control' id='inspeccin' name='inspeccion' onChange={handleChange}>
-                <option value="">SELECCIONE UNA OPCIÓN</option>
-                <option value='1'>INSPECCIÓN REALIZADA AL VEHICULO ENTREGADO</option>
-                <option value='0'>NO REALIZADA</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label className="form-label" > FECHA:</label>
-              { }
-              <input type="date" max={today} min={minDate} className="form-control" id="fecha_entrega" name="fecha_entrega" onChange={handleChange} />
-            </div>
-            <div class="col-md-3">
-              <label className="form-label" > HORA:</label>
-              <input type="time" className="form-control" id="hora_entrega" name="hora_entrega" onChange={handleChange} />
-            </div>
-            <div class="col-md-3">
-              <label className="form-label" for='serie' > SERIE:</label>
-              <input type="text" className="form-control" id="serie" name="serie" onChange={handleChange} />
-            </div>
-            <div class="col-md-3">
-              <label className="form-label" for='calle_entrega' > MOTOR:</label>
-              <input type="text" className="form-control" id="motor" name="motor" onChange={handleChange} />
-            </div>
-            <div class="col-md-3">
-              <label className="form-label" for='factura_vehiculo' > NÚMERO DE FACTURA:</label>
-              <input type="text" className="form-control" id="factura_vehiculo" name="factura_vehiculo" onChange={handleChange} />
-            </div>
-            <div class="col-md-3">
-              <label className="form-label" for='comprob_domic_prop' > COMPROBANTE DE DOMICILIO:</label>
-              <input type="text" className="form-control" id="comprob_domic_prop" name="comprob_domic_prop" onChange={handleChange} />
-            </div>
-            <div class="col-4">
-              <label className="form-label" for='persona_entrega' >PERSONA QUE ENTREGA EL VEHICULO:</label>
-              <br />
-              <select className='form-control' id='persona_entrega' name='persona_entrega' onChange={handleChange}>
-                <option value="">SELECCIONE UNA OPCIÓN</option>
-                <option value='1'>PROPIETARIO</option>
-                <option value='2'>REPRESENTANTE</option>
-              </select>
-            </div>
-            <div class="col-md-5">
-              <label className="form-label" for='nombre_entrega' >NOMBRE DEL PROPIETARIO / REPRESENTANTE:</label>
-              <input type="text" className="form-control" id="nombre_entrega" name="nombre_entrega" onChange={handleChange} />
-            </div>
-            <div class="col-md-4">
-              <Button variant="primary" type="submit" onClick={handleClick}>Enviar</Button>
-              <Link to="/" className="btn btn-info"> Inicio</Link>
-            </div>
+                <div class="invalid-feedback">Porfavor selecciona una entidad.</div>
+              </div>
+              <div class="col-4">
+                <label className="form-label" for='id_municipio_entrega' >MUNICIPIO:</label>
+                <br />
+                <select className='form-control' id='id_municipio_entrega' name='id_municipio_entrega' onChange={handleChange} required>
+                  <option selected discabled value="">MUNICIPIO QUE RECUPERÓ EL VEHICULO</option>
+                  {municipios.map((municipio) => (
+                    <option key={municipio.ID_MUNICIPIO} value={municipio.ID_MUNICIPIO}>
+                      {municipio.MUNICIPIO}
+                    </option>
+                  ))}
+                </select>
+                <div class="invalid-feedback">Porfavor selecciona un municipio.</div>
+              </div>
+              <div class="col-md-2">
+                <label className="form-label" for='cp_entrega' > CÓDIGO POSTAL:</label>
+                <input type="text" className="form-control" id="cp_entrega" name="cp_entrega" onChange={handleChange} required />
+                <div class="invalid-feedback">Porfavor rellene el campo.</div>
+              </div>
+              <div class="col-4">
+                <label className="form-label" for='inspeccion' >INSPECCIÓN:</label>
+                <br />
+                <select className='form-control' id='inspeccin' name='inspeccion' onChange={handleChange} required>
+                  <option selected disabled value="">SELECCIONE UNA OPCIÓN</option>
+                  <option value='1'>INSPECCIÓN REALIZADA AL VEHICULO ENTREGADO</option>
+                  <option value='0'>NO REALIZADA</option>
+                </select>
+                <div class="invalid-feedback">Porfavor selecciona una opción.</div>
+              </div>
+              <div class="col-md-3">
+                <label className="form-label" > FECHA:</label>
+                { }
+                <input type="date" max={today} min={minDate} className="form-control" id="fecha_entrega" name="fecha_entrega" onChange={handleChange} required />
+                <div class="invalid-feedback">Porfavor rellene el campo.</div>
+              </div>
+              <div class="col-md-3">
+                <label className="form-label" > HORA:</label>
+                <input type="time" className="form-control" id="hora_entrega" name="hora_entrega" onChange={handleChange} required />
+                <div class="invalid-feedback">Porfavor rellene el campo.</div>
+              </div>
+              <div class="col-md-3">
+                <label className="form-label" for='serie' > SERIE:</label>
+                <input type="text" className="form-control" id="serie" name="serie" onChange={handleChange} required />
+                <div class="invalid-feedback">Porfavor rellene el campo.</div>
+              </div>
+              <div class="col-md-3">
+                <label className="form-label" for='calle_entrega' > MOTOR:</label>
+                <input type="text" className="form-control" id="motor" name="motor" onChange={handleChange} required />
+                <div class="invalid-feedback">Porfavor rellene el campo.</div>
+              </div>
+              <div class="col-md-3">
+                <label className="form-label" for='factura_vehiculo' > NÚMERO DE FACTURA:</label>
+                <input type="text" className="form-control" id="factura_vehiculo" name="factura_vehiculo" onChange={handleChange} required />
+                <div class="invalid-feedback">Porfavor rellene el campo.</div>
+              </div>
+              <div class="col-md-3">
+                <label className="form-label" for='comprob_domic_prop' > COMPROBANTE DE DOMICILIO:</label>
+                <input type="text" className="form-control" id="comprob_domic_prop" name="comprob_domic_prop" onChange={handleChange} required />
+                <div class="invalid-feedback">Porfavor rellene el campo.</div>
+              </div>
+              <div class="col-4">
+                <label className="form-label" for='persona_entrega' >PERSONA QUE ENTREGA EL VEHICULO:</label>
+                <br />
+                <select className='form-control' id='persona_entrega' name='persona_entrega' onChange={handleChange} required>
+                  <option selected disabled value="">SELECCIONE UNA OPCIÓN</option>
+                  <option value='1'>PROPIETARIO</option>
+                  <option value='2'>REPRESENTANTE</option>
+                </select>
+                <div class="invalid-feedback">Porfavor selecciona una opción.</div>
+              </div>
+              <div class="col-md-5">
+                <label className="form-label" for='nombre_entrega' >NOMBRE DEL PROPIETARIO / REPRESENTANTE:</label>
+                <input type="text" className="form-control" id="nombre_entrega" name="nombre_entrega" onChange={handleChange} required />
+                <div class="invalid-feedback">Porfavor rellene el campo.</div>
+              </div>
+              <div class="col-md-5">
+                <label className="form-label" for='nombre_entrega' >APELLIDO DEL PROPIETARIO / REPRESENTANTE:</label>
+                <input type="text" className="form-control" id="paterno_entrega" name="paterno_entrega" onChange={handleChange} required />
+                <div class="invalid-feedback">Porfavor rellene el campo.</div>
+              </div>
+              <div class="col-md-4">
+                <Button variant="primary" type="submit" onClick={handleClick}>Enviar</Button>
+                <Link to="/" className="btn btn-info"> Inicio</Link>
+              </div>
           </form>
         </div>
 
