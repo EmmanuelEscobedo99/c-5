@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import "../archivosCss/formulario.css"
 import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
+import ListaArchivos from './ListaArchivos';
 
 export const Recuperado = () => {
 

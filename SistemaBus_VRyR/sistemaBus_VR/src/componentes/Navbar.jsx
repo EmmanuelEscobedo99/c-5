@@ -30,7 +30,7 @@ const Navbar = () => {
                   {/*<a className="logo" href="#">Registro </a>*/}
                   <div className="logo">
                     <span></span>
-                    <h3>Regristro</h3>
+                    <h3>Registro</h3>
                   </div>
                   <li>
                     <NavLink to="/alta" className={({isActive}) => isActive ? "active" : ""}>Registrar vehiculo</NavLink>
