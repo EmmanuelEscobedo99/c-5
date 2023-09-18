@@ -170,6 +170,12 @@ export const Recuperado = () => {
     }
 
     const handleChange = (e) => {
+        /*const value = e.target.value
+        if(patterns.test(value)){
+            
+        } else {
+            alert("DEBE CONTENER SOLO LETRAS")
+        }*/
         formatoDia()
         formatoHora()
         id_alterna = document.getElementById('id_alterna').value
@@ -190,7 +196,7 @@ export const Recuperado = () => {
         }
     }
 
-    const loading = () =>{
+    const loading = () => {
         return new Promise((resolve) => setTimeout(resolve, 3000))
     }
 
@@ -203,7 +209,6 @@ export const Recuperado = () => {
     const handleClick = async (e) => {
         e.preventDefault();
         console.log(recuperado)
-
 
         try {
             console.log("Entre al try")
@@ -221,6 +226,28 @@ export const Recuperado = () => {
             console.log(err)
         }
     }
+
+    //VALIDA QUE LOS CAMPOS TEXTO NO ACEPTEN NUMEROS
+    const Solo_Texto = (e) => {
+        var code
+        if (!e) var e = window.event
+        if (e.keyCode) code = e.keyCode
+        else if (e.which) code = e.which
+        var character = String.fromCharCode(code)
+        var AllowRegex = /^[\ba-zA-Z\s-]$/
+        if (AllowRegex.test(character)) return true
+        event.preventDefault()
+    }
+
+    //VALIDA QUE LOS CAMPOS NUMERICOS NO ACEPTEN LETRAS
+    function filterInteger(event) {
+        var regex = new RegExp("^[0-9]+$")
+        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode)
+        if (!regex.test(key)) {
+          event.preventDefault()
+          return false
+        }
+      }
 
     const validarCampos = () => {
         let hayErrores = false
@@ -476,7 +503,7 @@ export const Recuperado = () => {
                             <div class="invalid-feedback">Porfavor seleccione un municipio.</div>
                         </div>
                         <div class="col-md-2">
-                            <label className="form-label" pattern="[A-Za-z0-9_-]{1,15}" for='placa' > PLACA:</label>
+                            <label className="form-label" for='placa' > PLACA:</label>
                             <input type="text" className="form-control" id="placa" name="placa" ng-trim="false" onChange={handleChange} required />
                             <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
@@ -487,24 +514,24 @@ export const Recuperado = () => {
                         </div>
 
                         <div class="col-md-3">
-                            <label className="form-label" for='calle_rec' > CALLE:</label>
-                            <input type="text" className="form-control" id="calle_rec" name="calle_rec" onChange={handleChange} required />
+                            <label className="form-label" for='calle_rec'> CALLE:</label>
+                            <input type="text" className="form-control" id="calle_rec" name="calle_rec" onKeyDown={Solo_Texto} onChange={handleChange} required />
                             <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
                         <div class="col-md-2">
                             <label className="form-label" for='numext_rec' > NÚMERO EXTERIOR:</label>
-                            <input type="text" className="form-control" id="numext_rec" name="numext_rec" onChange={handleChange} required />
+                            <input type="text" className="form-control" id="numext_rec" name="numext_rec" onKeyDown={filterInteger} onChange={handleChange} required />
                             <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
                         <div class="col-md-3">
                             <label className="form-label" for='colonia_rec' > COLONIA:</label>
-                            <input type="text" className="form-control" id="colonia_rec" name="colonia_rec" onChange={handleChange} required />
+                            <input type="text" className="form-control" id="colonia_rec" name="colonia_rec" onKeyDown={Solo_Texto} onChange={handleChange} required />
                             <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
 
                         <div class="col-2">
                             <label className="form-label" for='cp_rec' > CÓDIGO POSTAL:</label>
-                            <input type="text" className="form-control" id="cp_rec" name="cp_rec" onChange={handleChange} required />
+                            <input type="text" className="form-control" id="cp_rec" name="cp_rec" onKeyDown={filterInteger} onChange={handleChange} required />
                             <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
                         <div class="col-md-4">
@@ -542,7 +569,7 @@ export const Recuperado = () => {
                         dir='auto'
                         richColors
 
-                        //toastOptions={{style: {  }}}
+                    //toastOptions={{style: {  }}}
                     />
                 </div>
 

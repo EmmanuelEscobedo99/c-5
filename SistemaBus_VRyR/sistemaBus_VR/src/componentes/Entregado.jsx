@@ -190,6 +190,28 @@ export const Entregado = () => {
     }
   }
 
+  //VALIDA QUE LOS CAMPOS TEXTO NO ACEPTEN NUMEROS
+  const Solo_Texto = (e) => {
+    var code
+    if (!e) var e = window.event
+    if (e.keyCode) code = e.keyCode
+    else if (e.which) code = e.which
+    var character = String.fromCharCode(code)
+    var AllowRegex = /^[\ba-zA-Z\s-]$/
+    if (AllowRegex.test(character)) return true
+    event.preventDefault()
+  }
+
+  //VALIDA QUE LOS CAMPOS NUMERICOS NO ACEPTEN LETRAS
+  function filterInteger(event) {
+    var regex = new RegExp("^[0-9]+$")
+    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode)
+    if (!regex.test(key)) {
+      event.preventDefault()
+      return false
+    }
+  }
+
 
   const validarCampos = () => {
     let hayErrores = false
@@ -490,12 +512,12 @@ export const Entregado = () => {
             })}
             <div class="col-md-3">
               <label className="form-label" for='calle_entrega' > CALLE DONDE SE ENTREGO:</label>
-              <input type="text" className="form-control" id="calle_entrega" name="calle_entrega" onChange={handleChange} required />
+              <input type="text" className="form-control" id="calle_entrega" name="calle_entrega" onKeyDown={Solo_Texto} onChange={handleChange} required />
               <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
             <div class="col-md-3">
               <label className="form-label" for='colonia_entrega' > COLONIA DONDE SE ENTREGO:</label>
-              <input type="text" className="form-control" id="colonia_entrega" name="colonia_entrega" onChange={handleChange} required />
+              <input type="text" className="form-control" id="colonia_entrega" name="colonia_entrega" onKeyDown={Solo_Texto} onChange={handleChange} required />
               <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
             <div class="col-4">
@@ -526,7 +548,7 @@ export const Entregado = () => {
             </div>
             <div class="col-md-2">
               <label className="form-label" for='cp_entrega' > CÓDIGO POSTAL:</label>
-              <input type="text" className="form-control" id="cp_entrega" name="cp_entrega" onChange={handleChange} required />
+              <input type="text" className="form-control" id="cp_entrega" name="cp_entrega" onKeyDown={filterInteger} onChange={handleChange} required />
               <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
             <div class="col-4">
@@ -562,7 +584,7 @@ export const Entregado = () => {
             </div>
             <div class="col-md-3">
               <label className="form-label" for='factura_vehiculo' > NÚMERO DE FACTURA:</label>
-              <input type="text" className="form-control" id="factura_vehiculo" name="factura_vehiculo" onChange={handleChange} required />
+              <input type="text" className="form-control" id="factura_vehiculo" name="factura_vehiculo" onKeyDown={filterInteger} onChange={handleChange} required />
               <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
             <div class="col-md-3">
@@ -582,12 +604,12 @@ export const Entregado = () => {
             </div>
             <div class="col-md-5">
               <label className="form-label" for='nombre_entrega' >NOMBRE DEL PROPIETARIO / REPRESENTANTE:</label>
-              <input type="text" className="form-control" id="nombre_entrega" name="nombre_entrega" onChange={handleChange} required />
+              <input type="text" className="form-control" id="nombre_entrega" name="nombre_entrega" onKeyDown={Solo_Texto} onChange={handleChange} required />
               <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
             <div class="col-md-5">
               <label className="form-label" for='nombre_entrega' >APELLIDO DEL PROPIETARIO / REPRESENTANTE:</label>
-              <input type="text" className="form-control" id="paterno_entrega" name="paterno_entrega" onChange={handleChange} required />
+              <input type="text" className="form-control" id="paterno_entrega" name="paterno_entrega" onKeyDown={Solo_Texto} onChange={handleChange} required />
               <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
             <div class="col-md-4">
