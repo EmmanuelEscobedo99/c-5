@@ -5,6 +5,8 @@ import axios from 'axios'
 import Button from 'react-bootstrap/Button'
 import { Link, useParams } from 'react-router-dom'
 import Modal from 'react-bootstrap/Modal'
+import { Toaster, toast } from 'sonner'
+import { BiCheck } from 'react-icons/bi'
 
 export const Entregado = () => {
 
@@ -48,9 +50,11 @@ export const Entregado = () => {
   const [entidadSeleccionada, setEntidadSeleccionada] = useState('')
 
   const [descValidacion, setDescValidacion] = useState('')
+  const [desc2Validacion, setDesc2Validacion] = useState('')
 
   const handleCloseModalValidacion = () => {
     setDescValidacion('')
+    setDesc2Validacion('')
     setShowModalValidacion(false)
   }
 
@@ -158,6 +162,10 @@ export const Entregado = () => {
     }
   }
 
+  const loading = () => {
+    return new Promise((resolve) => setTimeout(resolve, 3000))
+  }
+
   //OBTENER LA FECHA ACTUAL PARA VALIDAD INPUT TYPE DATE
   let today = new Date().toISOString().split('T')[0];
   let minDate = "1900-01-01"
@@ -186,9 +194,10 @@ export const Entregado = () => {
   const validarCampos = () => {
     let hayErrores = false
     let desc = ''
+    let desc2 = ''
 
     if (entregado.serie.includes('o') || entregado.serie.includes('i') || entregado.serie.includes('ñ') || entregado.serie.includes('q') || entregado.serie.includes('O') || entregado.serie.includes('I') || entregado.serie.includes('Ñ') || entregado.serie.includes('Q')) {
-      desc = desc + 'la serie no debe contener (o,i,ñ,q) '
+      desc2 = desc2 + ', La serie no debe contener (o,i,ñ,q) '
       //document.querySelector("label[for='serie']").textContent = "SERIE: (INVALIDO)"
 
       hayErrores = true
@@ -197,7 +206,7 @@ export const Entregado = () => {
     }
 
     if (entregado.serie.length < 1) {
-      desc = desc + ' el campo SERIE es obligatorio,'
+      desc = desc + ', SERIE '
       //document.querySelector("label[for='serie']").textContent = "SERIE: (INVALIDO)"
 
       hayErrores = true
@@ -206,7 +215,7 @@ export const Entregado = () => {
     }
 
     if (entregado.id_entidad_entrega.length < 1) {
-      desc = desc + ' el campo ENTIDAD es obligatorio,'
+      desc = desc + ', ENTIDAD '
       //document.querySelector("label[for='id_entidad_recupera']").textContent = "ENTIDAD QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
       hayErrores = true
@@ -215,7 +224,115 @@ export const Entregado = () => {
     }
 
     if (entregado.id_municipio_entrega.length < 1) {
-      desc = desc + ' el campo MUNICIPIO es obligatorio'
+      desc = desc + ', MUNICIPIO '
+      //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+      hayErrores = true
+    } else {
+      //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+    }
+
+    if (entregado.calle_entrega.length < 1) {
+      desc = desc + ', CALLE '
+      //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+      hayErrores = true
+    } else {
+      //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+    }
+
+    if (entregado.colonia_entrega.length < 1) {
+      desc = desc + ', COLONIA '
+      //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+      hayErrores = true
+    } else {
+      //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+    }
+
+    if (entregado.cp_entrega.length < 1) {
+      desc = desc + ', CÓDIGO POSTAL '
+      //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+      hayErrores = true
+    } else {
+      //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+    }
+
+    if (entregado.inspeccion.length < 1) {
+      desc = desc + ', INSPECCIÓN '
+      //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+      hayErrores = true
+    } else {
+      //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+    }
+
+    if (entregado.fecha_entrega.length < 1) {
+      desc = desc + ', FECHA '
+      //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+      hayErrores = true
+    } else {
+      //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+    }
+
+    if (entregado.hora_entrega.length < 1) {
+      desc = desc + ', HORA '
+      //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+      hayErrores = true
+    } else {
+      //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+    }
+
+    if (entregado.motor.length < 1) {
+      desc = desc + ', MOTOR '
+      //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+      hayErrores = true
+    } else {
+      //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+    }
+
+    if (entregado.factura_vehiculo.length < 1) {
+      desc = desc + ', NÚMERO DE FACTURA '
+      //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+      hayErrores = true
+    } else {
+      //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+    }
+
+    if (entregado.comprob_domic_prop.length < 1) {
+      desc = desc + ', COMPROBANTE DE DOMICILIO '
+      //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+      hayErrores = true
+    } else {
+      //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+    }
+
+    if (entregado.persona_entrega.length < 1) {
+      desc = desc + ', PERSONA QUE ENTREGA EL VEHICULO '
+      //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+      hayErrores = true
+    } else {
+      //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+    }
+
+    if (entregado.nombre_entrega.length < 1) {
+      desc = desc + ', NOMBRE DEL PROPIETARIO / REPRESENTANTE '
+      //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+      hayErrores = true
+    } else {
+      //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+    }
+
+    if (entregado.paterno_entrega.length < 1) {
+      desc = desc + ', APELLIDO DEL PROPIETARIO / REPRESENTANTE '
       //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
       hayErrores = true
@@ -224,7 +341,7 @@ export const Entregado = () => {
     }
 
     if (entregado.serie.includes("  ") || entregado.serie.startsWith(" ") || entregado.serie.endsWith(" ")) {
-      desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+      desc = desc + ', el campo SERIE no debe contener doble espacio ni empezar/terminar con espacio '
       //document.querySelector("label[for='serie']").textContent = "SERIE: (INVALIDO)"
 
       hayErrores = true
@@ -233,7 +350,7 @@ export const Entregado = () => {
     }
 
     if (entregado.id_entidad_entrega.includes("  ") || entregado.id_entidad_entrega.startsWith(" ") || entregado.id_entidad_entrega.endsWith(" ")) {
-      desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+      desc = desc + ', el campo ENTIDAD no debe contener doble espacio ni empezar/terminar con espacio '
       //document.querySelector("label[for='id_entidad_recupera']").textContent = "ENTIDAD QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
       hayErrores = true
@@ -242,7 +359,7 @@ export const Entregado = () => {
     }
 
     if (entregado.id_municipio_entrega.includes("  ") || entregado.id_municipio_entrega.startsWith(" ") || entregado.id_municipio_entrega.endsWith(" ")) {
-      desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+      desc = desc + ', el campo MUNICIPIO no debe contener doble espacio ni empezar/terminar con espacio '
       //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
       hayErrores = true
@@ -251,7 +368,7 @@ export const Entregado = () => {
     }
 
     if (entregado.colonia_entrega.includes("  ") || entregado.colonia_entrega.startsWith(" ") || entregado.colonia_entrega.endsWith(" ")) {
-      desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+      desc = desc + ', el campo COLONIA no debe contener doble espacio ni empezar/terminar con espacio '
       //document.querySelector("label[for='colonia_rec']").textContent = "COLONIA: (INVALIDO)"
 
       hayErrores = true
@@ -259,7 +376,7 @@ export const Entregado = () => {
       //document.querySelector("label[for='colonia_rec']").textContent = "COLONIA:"
     }
     if (entregado.calle_entrega.includes("  ") || entregado.calle_entrega.startsWith(" ") || entregado.calle_entrega.endsWith(" ")) {
-      desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+      desc = desc + ', el campo CALLE no debe contener doble espacio ni empezar/terminar con espacio '
       //document.querySelector("label[for='placa']").textContent = "PLACA: (INVALIDO)"
 
       hayErrores = true
@@ -268,7 +385,7 @@ export const Entregado = () => {
     }
 
     if (entregado.motor.includes("  ") || entregado.motor.startsWith(" ") || entregado.motor.endsWith(" ")) {
-      desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+      desc = desc + ', el campo MOTOR no debe contener doble espacio ni empezar/terminar con espacio '
       //document.querySelector("label[for='numext_rec']").textContent = "NUMERO EXTERIOR: (INVALIDO)"
 
       hayErrores = true
@@ -277,7 +394,7 @@ export const Entregado = () => {
     }
 
     if (entregado.cp_entrega.includes("  ") || entregado.cp_entrega.startsWith(" ") || entregado.cp_entrega.endsWith(" ")) {
-      desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+      desc = desc + ', el campo CÓDIGO POSTAL no debe contener doble espacio ni empezar/terminar con espacio '
       //document.querySelector("label[for='cp_rec']").textContent = "CODIGO POSTAL: (INVALIDO)"
 
       hayErrores = true
@@ -286,7 +403,7 @@ export const Entregado = () => {
     }
 
     if (entregado.factura_vehiculo.includes("  ") || entregado.factura_vehiculo.startsWith(" ") || entregado.factura_vehiculo.endsWith(" ")) {
-      desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+      desc = desc + ', el campo NÚMERO DE FACTURA no debe contener doble espacio ni empezar/terminar con espacio '
       //document.querySelector("label[for='cp_rec']").textContent = "CODIGO POSTAL: (INVALIDO)"
 
       hayErrores = true
@@ -295,7 +412,7 @@ export const Entregado = () => {
     }
 
     if (entregado.comprob_domic_prop.includes("  ") || entregado.comprob_domic_prop.startsWith(" ") || entregado.comprob_domic_prop.endsWith(" ")) {
-      desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+      desc = desc + ', el campo COMPROBANTE DE DOMICILIO no debe contener doble espacio ni empezar/terminar con espacio '
       //document.querySelector("label[for='cp_rec']").textContent = "CODIGO POSTAL: (INVALIDO)"
 
       hayErrores = true
@@ -304,7 +421,7 @@ export const Entregado = () => {
     }
 
     if (entregado.nombre_entrega.includes("  ") || entregado.nombre_entrega.startsWith(" ") || entregado.nombre_entrega.endsWith(" ")) {
-      desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+      desc = desc + ', el campo NOMBRE DEL PROPIETARIO / REPRESENTANTE no debe contener doble espacio ni empezar/terminar con espacio '
       //document.querySelector("label[for='cp_rec']").textContent = "CODIGO POSTAL: (INVALIDO)"
 
       hayErrores = true
@@ -313,7 +430,7 @@ export const Entregado = () => {
     }
 
     if (entregado.paterno_entrega.includes("  ") || entregado.paterno_entrega.startsWith(" ") || entregado.paterno_entrega.endsWith(" ")) {
-      desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+      desc = desc + ', el campo APELLIDO DEL PROPIETARIO / REPRESENTANTE no debe contener doble espacio ni empezar/terminar con espacio '
       //document.querySelector("label[for='cp_rec']").textContent = "CODIGO POSTAL: (INVALIDO)"
 
       hayErrores = true
@@ -322,7 +439,7 @@ export const Entregado = () => {
     }
 
     if (entregado.persona_entrega.includes("  ") || entregado.persona_entrega.startsWith(" ") || entregado.persona_entrega.endsWith(" ")) {
-      desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+      desc = desc + ', el campo PERSONA QUE ENTREGA EL VEHICULO no debe contener doble espacio ni empezar/terminar con espacio '
       //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
       hayErrores = true
@@ -332,10 +449,26 @@ export const Entregado = () => {
 
     if (hayErrores) {
       setDescValidacion(desc)
-      handleShowModalValidacion()
+      setDesc2Validacion(desc2)
+      toast.error(<div>
+        <h3 style={{ fontSize: "1rem" }}>Los campos:</h3>
+        <ul>
+          <li style={{ fontSize: "1rem" }}>{desc}</li>
+        </ul>
+        <h3 style={{ fontSize: "1rem" }}>Son obligatorios</h3>
+        <ul>
+          <li style={{ fontSize: "1rem" }}>{desc2}</li>
+        </ul>
+      </div>)
+      //handleShowModalValidacion()
       return false
     } else {
-      handleShowModalSuccess()
+      toast.promise(loading, {
+        error: "Se ha producido un error",
+        success: "Se ha registrado exitosamente!",
+        loading: "Cargando información..."
+      })
+      //handleShowModalSuccess()
       return true
     }
 
@@ -376,92 +509,100 @@ export const Entregado = () => {
                   )
                 })}
               </select>
-                <div class="invalid-feedback">Porfavor selecciona una entidad.</div>
-              </div>
-              <div class="col-4">
-                <label className="form-label" for='id_municipio_entrega' >MUNICIPIO:</label>
-                <br />
-                <select className='form-control' id='id_municipio_entrega' name='id_municipio_entrega' onChange={handleChange} required>
-                  <option selected disabled value="">MUNICIPIO QUE RECUPERÓ EL VEHICULO</option>
-                  {municipios.map((municipio) => (
-                    <option key={municipio.ID_MUNICIPIO} value={municipio.ID_MUNICIPIO}>
-                      {municipio.MUNICIPIO}
-                    </option>
-                  ))}
-                </select>
-                <div class="invalid-feedback">Porfavor selecciona un municipio.</div>
-              </div>
-              <div class="col-md-2">
-                <label className="form-label" for='cp_entrega' > CÓDIGO POSTAL:</label>
-                <input type="text" className="form-control" id="cp_entrega" name="cp_entrega" onChange={handleChange} required />
-                <div class="invalid-feedback">Porfavor rellene el campo.</div>
-              </div>
-              <div class="col-4">
-                <label className="form-label" for='inspeccion' >INSPECCIÓN:</label>
-                <br />
-                <select className='form-control' id='inspeccin' name='inspeccion' onChange={handleChange} required>
-                  <option selected disabled value="">SELECCIONE UNA OPCIÓN</option>
-                  <option value='1'>INSPECCIÓN REALIZADA AL VEHICULO ENTREGADO</option>
-                  <option value='0'>NO REALIZADA</option>
-                </select>
-                <div class="invalid-feedback">Porfavor selecciona una opción.</div>
-              </div>
-              <div class="col-md-3">
-                <label className="form-label" > FECHA:</label>
-                { }
-                <input type="date" max={today} min={minDate} className="form-control" id="fecha_entrega" name="fecha_entrega" onChange={handleChange} required />
-                <div class="invalid-feedback">Porfavor rellene el campo.</div>
-              </div>
-              <div class="col-md-3">
-                <label className="form-label" > HORA:</label>
-                <input type="time" className="form-control" id="hora_entrega" name="hora_entrega" onChange={handleChange} required />
-                <div class="invalid-feedback">Porfavor rellene el campo.</div>
-              </div>
-              <div class="col-md-3">
-                <label className="form-label" for='serie' > SERIE:</label>
-                <input type="text" className="form-control" id="serie" name="serie" onChange={handleChange} required />
-                <div class="invalid-feedback">Porfavor rellene el campo.</div>
-              </div>
-              <div class="col-md-3">
-                <label className="form-label" for='calle_entrega' > MOTOR:</label>
-                <input type="text" className="form-control" id="motor" name="motor" onChange={handleChange} required />
-                <div class="invalid-feedback">Porfavor rellene el campo.</div>
-              </div>
-              <div class="col-md-3">
-                <label className="form-label" for='factura_vehiculo' > NÚMERO DE FACTURA:</label>
-                <input type="text" className="form-control" id="factura_vehiculo" name="factura_vehiculo" onChange={handleChange} required />
-                <div class="invalid-feedback">Porfavor rellene el campo.</div>
-              </div>
-              <div class="col-md-3">
-                <label className="form-label" for='comprob_domic_prop' > COMPROBANTE DE DOMICILIO:</label>
-                <input type="text" className="form-control" id="comprob_domic_prop" name="comprob_domic_prop" onChange={handleChange} required />
-                <div class="invalid-feedback">Porfavor rellene el campo.</div>
-              </div>
-              <div class="col-4">
-                <label className="form-label" for='persona_entrega' >PERSONA QUE ENTREGA EL VEHICULO:</label>
-                <br />
-                <select className='form-control' id='persona_entrega' name='persona_entrega' onChange={handleChange} required>
-                  <option selected disabled value="">SELECCIONE UNA OPCIÓN</option>
-                  <option value='1'>PROPIETARIO</option>
-                  <option value='2'>REPRESENTANTE</option>
-                </select>
-                <div class="invalid-feedback">Porfavor selecciona una opción.</div>
-              </div>
-              <div class="col-md-5">
-                <label className="form-label" for='nombre_entrega' >NOMBRE DEL PROPIETARIO / REPRESENTANTE:</label>
-                <input type="text" className="form-control" id="nombre_entrega" name="nombre_entrega" onChange={handleChange} required />
-                <div class="invalid-feedback">Porfavor rellene el campo.</div>
-              </div>
-              <div class="col-md-5">
-                <label className="form-label" for='nombre_entrega' >APELLIDO DEL PROPIETARIO / REPRESENTANTE:</label>
-                <input type="text" className="form-control" id="paterno_entrega" name="paterno_entrega" onChange={handleChange} required />
-                <div class="invalid-feedback">Porfavor rellene el campo.</div>
-              </div>
-              <div class="col-md-4">
-                <Button variant="primary" type="submit" onClick={handleClick}>Enviar</Button>
-                <Link to="/" className="btn btn-info"> Inicio</Link>
-              </div>
+              <div class="invalid-feedback">Porfavor selecciona una entidad.</div>
+            </div>
+            <div class="col-4">
+              <label className="form-label" for='id_municipio_entrega' >MUNICIPIO:</label>
+              <br />
+              <select className='form-control' id='id_municipio_entrega' name='id_municipio_entrega' onChange={handleChange} required>
+                <option selected disabled value="">MUNICIPIO QUE RECUPERÓ EL VEHICULO</option>
+                {municipios.map((municipio) => (
+                  <option key={municipio.ID_MUNICIPIO} value={municipio.ID_MUNICIPIO}>
+                    {municipio.MUNICIPIO}
+                  </option>
+                ))}
+              </select>
+              <div class="invalid-feedback">Porfavor selecciona un municipio.</div>
+            </div>
+            <div class="col-md-2">
+              <label className="form-label" for='cp_entrega' > CÓDIGO POSTAL:</label>
+              <input type="text" className="form-control" id="cp_entrega" name="cp_entrega" onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
+            </div>
+            <div class="col-4">
+              <label className="form-label" for='inspeccion' >INSPECCIÓN:</label>
+              <br />
+              <select className='form-control' id='inspeccin' name='inspeccion' onChange={handleChange} required>
+                <option selected disabled value="">SELECCIONE UNA OPCIÓN</option>
+                <option value='1'>INSPECCIÓN REALIZADA AL VEHICULO ENTREGADO</option>
+                <option value='0'>NO REALIZADA</option>
+              </select>
+              <div class="invalid-feedback">Porfavor selecciona una opción.</div>
+            </div>
+            <div class="col-md-3">
+              <label className="form-label" > FECHA:</label>
+              { }
+              <input type="date" max={today} min={minDate} className="form-control" id="fecha_entrega" name="fecha_entrega" onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
+            </div>
+            <div class="col-md-3">
+              <label className="form-label" > HORA:</label>
+              <input type="time" className="form-control" id="hora_entrega" name="hora_entrega" onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
+            </div>
+            <div class="col-md-3">
+              <label className="form-label" for='serie' > SERIE:</label>
+              <input type="text" className="form-control" id="serie" name="serie" onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
+            </div>
+            <div class="col-md-3">
+              <label className="form-label" for='calle_entrega' > MOTOR:</label>
+              <input type="text" className="form-control" id="motor" name="motor" onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
+            </div>
+            <div class="col-md-3">
+              <label className="form-label" for='factura_vehiculo' > NÚMERO DE FACTURA:</label>
+              <input type="text" className="form-control" id="factura_vehiculo" name="factura_vehiculo" onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
+            </div>
+            <div class="col-md-3">
+              <label className="form-label" for='comprob_domic_prop' > COMPROBANTE DE DOMICILIO:</label>
+              <input type="text" className="form-control" id="comprob_domic_prop" name="comprob_domic_prop" onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
+            </div>
+            <div class="col-4">
+              <label className="form-label" for='persona_entrega' >PERSONA QUE ENTREGA EL VEHICULO:</label>
+              <br />
+              <select className='form-control' id='persona_entrega' name='persona_entrega' onChange={handleChange} required>
+                <option selected disabled value="">SELECCIONE UNA OPCIÓN</option>
+                <option value='1'>PROPIETARIO</option>
+                <option value='2'>REPRESENTANTE</option>
+              </select>
+              <div class="invalid-feedback">Porfavor selecciona una opción.</div>
+            </div>
+            <div class="col-md-5">
+              <label className="form-label" for='nombre_entrega' >NOMBRE DEL PROPIETARIO / REPRESENTANTE:</label>
+              <input type="text" className="form-control" id="nombre_entrega" name="nombre_entrega" onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
+            </div>
+            <div class="col-md-5">
+              <label className="form-label" for='nombre_entrega' >APELLIDO DEL PROPIETARIO / REPRESENTANTE:</label>
+              <input type="text" className="form-control" id="paterno_entrega" name="paterno_entrega" onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
+            </div>
+            <div class="col-md-4">
+              <Button variant="primary" type="submit" onClick={handleClick}>Enviar</Button>
+              <Link to="/" className="btn btn-info"> Inicio</Link>
+            </div>
           </form>
+          <Toaster
+            position='top-center'
+            theme='dark'
+            dir='auto'
+            richColors
+
+          //toastOptions={{style: {  }}}
+          />
         </div>
 
 

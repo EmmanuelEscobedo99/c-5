@@ -25,7 +25,7 @@ const Navbar = () => {
 
 
               <nav>
-
+            
                 <ul>
                   {/*<a className="logo" href="#">Registro </a>*/}
                   <div className="logo">

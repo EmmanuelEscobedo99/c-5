@@ -8,8 +8,9 @@ import Formulario from "./componentes/MasD"
 import { Recuperado } from "./componentes/Recuperado"
 import { Entregado } from "./componentes/Entregado"
 
+
 function App() {
- 
+  
 
   return (
     <>

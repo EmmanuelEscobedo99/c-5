@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import { Link, useParams } from 'react-router-dom'
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 import "../archivosCss/formulario.css"
-import axios from 'axios';
-import Modal from 'react-bootstrap/Modal';
-import ListaArchivos from './ListaArchivos';
+import axios from 'axios'
+import Modal from 'react-bootstrap/Modal'
+import ListaArchivos from './ListaArchivos'
+import { Toaster, toast } from 'sonner'
+import { BiCheck } from 'react-icons/bi'
 
 export const Recuperado = () => {
 
@@ -53,8 +55,11 @@ export const Recuperado = () => {
 
     const [descValidacion, setDescValidacion] = useState('')
 
+    const [desc2Validacion, setDesc2Validacion] = useState('')
+
     const handleCloseModalValidacion = () => {
         setDescValidacion('')
+        setDesc2Validacion('')
         setShowModalValidacion(false)
     }
 
@@ -185,6 +190,10 @@ export const Recuperado = () => {
         }
     }
 
+    const loading = () =>{
+        return new Promise((resolve) => setTimeout(resolve, 3000))
+    }
+
     //OBTENER LA FECHA ACTUAL PARA VALIDAD INPUT TYPE DATE
     let today = new Date().toISOString().split('T')[0];
     let minDate = "1900-01-01"
@@ -204,6 +213,7 @@ export const Recuperado = () => {
 
             await axios.post("http://localhost:8081/crearRecuperado", recuperado);
             console.log(setRecuperado + "SetRecuperado")
+
             alert("El nuevo registro ha sido guardado correctamente ")
             navigate("/")
 
@@ -215,9 +225,10 @@ export const Recuperado = () => {
     const validarCampos = () => {
         let hayErrores = false
         let desc = ''
+        let desc2 = ''
 
         if (recuperado.serie.includes('o') || recuperado.serie.includes('i') || recuperado.serie.includes('ñ') || recuperado.serie.includes('q') || recuperado.serie.includes('O') || recuperado.serie.includes('I') || recuperado.serie.includes('Ñ') || recuperado.serie.includes('Q')) {
-            desc = desc + ' La serie no debe contener (o,i,ñ,q), '
+            desc2 = desc2 + ', La serie no debe contener (o,i,ñ,q) '
             //document.querySelector("label[for='serie']").textContent = "SERIE: (INVALIDO)"
 
             hayErrores = true
@@ -226,7 +237,7 @@ export const Recuperado = () => {
         }
 
         if (recuperado.serie.length < 1) {
-            desc = desc + ' El campo SERIE es obligatorio'
+            desc = desc + ', SERIE '
             //document.querySelector("label[for='serie']").textContent = "SERIE: (INVALIDO)"
 
             hayErrores = true
@@ -235,7 +246,7 @@ export const Recuperado = () => {
         }
 
         if (recuperado.id_entidad_recupera.length < 1) {
-            desc = desc + ' El campo ENTIDAD es obligatorio,'
+            desc = desc + ', ENTIDAD '
             //document.querySelector("label[for='id_entidad_recupera']").textContent = "ENTIDAD QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
             hayErrores = true
@@ -244,7 +255,79 @@ export const Recuperado = () => {
         }
 
         if (recuperado.id_municipio_rec.length < 1) {
-            desc = desc + ' El campo MUNICIPIO es obligatorio'
+            desc = desc + ', MUNICIPIO '
+            //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+            hayErrores = true
+        } else {
+            //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+        }
+
+        if (recuperado.placa.length < 1) {
+            desc = desc + ', PLACA '
+            //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+            hayErrores = true
+        } else {
+            //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+        }
+
+        if (recuperado.calle_rec.length < 1) {
+            desc = desc + ', CALLE '
+            //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+            hayErrores = true
+        } else {
+            //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+        }
+
+        if (recuperado.numext_rec.length < 1) {
+            desc = desc + ', NÚMERO EXTERIOR '
+            //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+            hayErrores = true
+        } else {
+            //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+        }
+
+        if (recuperado.colonia_rec.length < 1) {
+            desc = desc + ', COLONIA '
+            //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+            hayErrores = true
+        } else {
+            //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+        }
+
+        if (recuperado.cp_rec.length < 1) {
+            desc = desc + ', CÓDIGO POSTAL '
+            //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+            hayErrores = true
+        } else {
+            //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+        }
+
+        if (recuperado.id_color.length < 1) {
+            desc = desc + ', COLOR DEL AUTOMÓVIL '
+            //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+            hayErrores = true
+        } else {
+            //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+        }
+
+        if (recuperado.fecha_rec.length < 1) {
+            desc = desc + ', FECHA '
+            //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
+
+            hayErrores = true
+        } else {
+            //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
+        }
+
+        if (recuperado.hora_rec.length < 1) {
+            desc = desc + ', HORA '
             //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
             hayErrores = true
@@ -253,7 +336,7 @@ export const Recuperado = () => {
         }
 
         if (recuperado.serie.includes("  ") || recuperado.serie.startsWith(" ") || recuperado.serie.endsWith(" ")) {
-            desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+            desc2 = desc2 + ', el campo SERIE no debe contener doble espacio ni empezar/terminar con espacio '
             //document.querySelector("label[for='serie']").textContent = "SERIE: (INVALIDO)"
 
             hayErrores = true
@@ -262,7 +345,7 @@ export const Recuperado = () => {
         }
 
         if (recuperado.id_entidad_recupera.includes("  ") || recuperado.id_entidad_recupera.startsWith(" ") || recuperado.id_entidad_recupera.endsWith(" ")) {
-            desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+            desc2 = desc2 + ', el campo ENTIDAD no debe contener doble espacio ni empezar/terminar con espacio '
             //document.querySelector("label[for='id_entidad_recupera']").textContent = "ENTIDAD QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
             hayErrores = true
@@ -271,7 +354,7 @@ export const Recuperado = () => {
         }
 
         if (recuperado.id_municipio_rec.includes("  ") || recuperado.id_municipio_rec.startsWith(" ") || recuperado.id_municipio_rec.endsWith(" ")) {
-            desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+            desc2 = desc2 + ', el campo MUNICIPIO no debe contener doble espacio ni empezar/terminar con espacio, '
             //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
             hayErrores = true
@@ -280,7 +363,7 @@ export const Recuperado = () => {
         }
 
         if (recuperado.colonia_rec.includes("  ") || recuperado.colonia_rec.startsWith(" ") || recuperado.colonia_rec.endsWith(" ")) {
-            desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+            desc2 = desc2 + ', el campo COLONIA no debe contener doble espacio ni empezar/terminar con espacio '
             //document.querySelector("label[for='colonia_rec']").textContent = "COLONIA: (INVALIDO)"
 
             hayErrores = true
@@ -288,7 +371,7 @@ export const Recuperado = () => {
             //document.querySelector("label[for='colonia_rec']").textContent = "COLONIA:"
         }
         if (recuperado.placa.includes("  ") || recuperado.placa.startsWith(" ") || recuperado.placa.endsWith(" ")) {
-            desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+            desc2 = desc2 + ', el campo PLACA no debe contener doble espacio ni empezar/terminar con espacio '
             //document.querySelector("label[for='placa']").textContent = "PLACA: (INVALIDO)"
 
             hayErrores = true
@@ -297,7 +380,7 @@ export const Recuperado = () => {
         }
 
         if (recuperado.calle_rec.includes("  ") || recuperado.calle_rec.startsWith(" ") || recuperado.calle_rec.endsWith(" ")) {
-            desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+            desc2 = desc2 + ', el campo CALLE no debe contener doble espacio ni empezar/terminar con espacio '
             //document.querySelector("label[for='calle_rec']").textContent = "CALLE: (INVALIDO)"
 
             hayErrores = true
@@ -306,7 +389,7 @@ export const Recuperado = () => {
         }
 
         if (recuperado.numext_rec.includes("  ") || recuperado.numext_rec.startsWith(" ") || recuperado.numext_rec.endsWith(" ")) {
-            desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+            desc2 = desc2 + ', el campo NUMERO EXTERIOR no debe contener doble espacio ni empezar/terminar con espacio '
             //document.querySelector("label[for='numext_rec']").textContent = "NUMERO EXTERIOR: (INVALIDO)"
 
             hayErrores = true
@@ -315,7 +398,7 @@ export const Recuperado = () => {
         }
 
         if (recuperado.cp_rec.includes("  ") || recuperado.cp_rec.startsWith(" ") || recuperado.cp_rec.endsWith(" ")) {
-            desc = desc + ' el campo no debe contener doble espacio ni empezar/terminar con espacio'
+            desc2 = desc2 + ', el campo CÓDIGO POSTAL no debe contener doble espacio ni empezar/terminar con espacio '
             //document.querySelector("label[for='cp_rec']").textContent = "CODIGO POSTAL: (INVALIDO)"
 
             hayErrores = true
@@ -325,10 +408,27 @@ export const Recuperado = () => {
 
         if (hayErrores) {
             setDescValidacion(desc)
-            handleShowModalValidacion()
+            setDesc2Validacion(desc2)
+            toast.error(<div>
+                <h3 style={{ fontSize: "1rem" }}>Los campos:</h3>
+                <ul>
+                    <li style={{ fontSize: "1rem" }}>{desc}</li>
+                </ul>
+                <h3 style={{ fontSize: "1rem" }}>Son obligatorios</h3>
+                <ul>
+                    <li style={{ fontSize: "1rem" }}>{desc2}</li>
+                </ul>
+            </div>)
+            //handleShowModalValidacion()
             return false
         } else {
-            handleShowModalSuccess()
+            toast.promise(loading, {
+                error: "Se ha producido un error",
+                success: "Se ha registrado exitosamente!",
+                loading: "Cargando información..."
+            })
+            //toast.success("Se ha registrado exitosamente!")
+            //handleShowModalSuccess()
             return true
         }
 
@@ -376,35 +476,35 @@ export const Recuperado = () => {
                             <div class="invalid-feedback">Porfavor seleccione un municipio.</div>
                         </div>
                         <div class="col-md-2">
-                            <label className="form-label" for='placa' > PLACA:</label>
-                            <input type="text" className="form-control" id="placa" name="placa" ng-trim="false" onChange={handleChange} required/>
+                            <label className="form-label" pattern="[A-Za-z0-9_-]{1,15}" for='placa' > PLACA:</label>
+                            <input type="text" className="form-control" id="placa" name="placa" ng-trim="false" onChange={handleChange} required />
                             <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
                         <div class="col-3">
                             <label className="form-label" class="col-sm-10" for='serie' >SERIE:</label>
-                            <input type="text" className="form-control" id="serie" name="serie" onChange={handleChange} required/>
+                            <input type="text" className="form-control" id="serie" name="serie" onChange={handleChange} required />
                             <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
 
                         <div class="col-md-3">
                             <label className="form-label" for='calle_rec' > CALLE:</label>
-                            <input type="text" className="form-control" id="calle_rec" name="calle_rec" onChange={handleChange} required/>
+                            <input type="text" className="form-control" id="calle_rec" name="calle_rec" onChange={handleChange} required />
                             <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
                         <div class="col-md-2">
                             <label className="form-label" for='numext_rec' > NÚMERO EXTERIOR:</label>
-                            <input type="text" className="form-control" id="numext_rec" name="numext_rec" onChange={handleChange} required/>
+                            <input type="text" className="form-control" id="numext_rec" name="numext_rec" onChange={handleChange} required />
                             <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
                         <div class="col-md-3">
                             <label className="form-label" for='colonia_rec' > COLONIA:</label>
-                            <input type="text" className="form-control" id="colonia_rec" name="colonia_rec" onChange={handleChange} required/>
+                            <input type="text" className="form-control" id="colonia_rec" name="colonia_rec" onChange={handleChange} required />
                             <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
 
                         <div class="col-2">
                             <label className="form-label" for='cp_rec' > CÓDIGO POSTAL:</label>
-                            <input type="text" className="form-control" id="cp_rec" name="cp_rec" onChange={handleChange} required/>
+                            <input type="text" className="form-control" id="cp_rec" name="cp_rec" onChange={handleChange} required />
                             <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
                         <div class="col-md-4">
@@ -423,12 +523,12 @@ export const Recuperado = () => {
                         <div class="col-md-3">
                             <label className="form-label" > FECHA:</label>
                             { }
-                            <input type="date" max={today} min={minDate} className="form-control" id="fecha_rec" name="fecha_rec" onChange={handleChange} required/>
+                            <input type="date" max={today} min={minDate} className="form-control" id="fecha_rec" name="fecha_rec" onChange={handleChange} required />
                             <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
                         <div class="col-md-3">
                             <label className="form-label" > HORA:</label>
-                            <input type="time" className="form-control" id="hora_rec" name="hora_rec" onChange={handleChange} required/>
+                            <input type="time" className="form-control" id="hora_rec" name="hora_rec" onChange={handleChange} required />
                             <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
                         <div class="col-md-4">
@@ -436,7 +536,14 @@ export const Recuperado = () => {
                             <Link to="/" className="btn btn-info"> Inicio</Link>
                         </div>
                     </form>
+                    <Toaster
+                        position='top-center'
+                        theme='dark'
+                        dir='auto'
+                        richColors
 
+                        //toastOptions={{style: {  }}}
+                    />
                 </div>
 
 
