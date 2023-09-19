@@ -254,6 +254,7 @@ export const Recuperado = () => {
         let desc = ''
         let desc2 = ''
         let desc3 = ''
+        let flag = true
 
         if (recuperado.serie.includes('o') || recuperado.serie.includes('i') || recuperado.serie.includes('ñ') || recuperado.serie.includes('q') || recuperado.serie.includes('O') || recuperado.serie.includes('I') || recuperado.serie.includes('Ñ') || recuperado.serie.includes('Q')) {
             desc3 = 'La serie no debe contener (o,i,ñ,q)'
@@ -271,6 +272,7 @@ export const Recuperado = () => {
             document.getElementById('grupo_serie').classList.add('formulario_grupo-incorrecto')
             hayErrores = true
         } else {
+            document.getElementById('grupo_serie').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='serie']").textContent = "SERIE:"
         }
 
@@ -281,6 +283,7 @@ export const Recuperado = () => {
 
             hayErrores = true
         } else {
+            document.getElementById('grupo_entidad').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='id_entidad_recupera']").textContent = "ENTIDAD QUE RECUPERA EL VEHICULO:"
         }
 
@@ -291,6 +294,7 @@ export const Recuperado = () => {
 
             hayErrores = true
         } else {
+            document.getElementById('grupo_municipio').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
         }
 
@@ -301,6 +305,7 @@ export const Recuperado = () => {
 
             hayErrores = true
         } else {
+            document.getElementById('grupo_placa').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
         }
 
@@ -310,6 +315,7 @@ export const Recuperado = () => {
 
             hayErrores = true
         } else {
+            document.getElementById('grupo_calle').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
         }
 
@@ -320,6 +326,7 @@ export const Recuperado = () => {
 
             hayErrores = true
         } else {
+            document.getElementById('grupo_numext').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
         }
 
@@ -330,6 +337,7 @@ export const Recuperado = () => {
 
             hayErrores = true
         } else {
+            document.getElementById('grupo_colonia').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
         }
 
@@ -340,6 +348,7 @@ export const Recuperado = () => {
 
             hayErrores = true
         } else {
+            document.getElementById('grupo_cp').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
         }
 
@@ -350,6 +359,7 @@ export const Recuperado = () => {
 
             hayErrores = true
         } else {
+            document.getElementById('grupo_color').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
         }
 
@@ -360,6 +370,7 @@ export const Recuperado = () => {
 
             hayErrores = true
         } else {
+            document.getElementById('grupo_fecha').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
         }
 
@@ -370,85 +381,102 @@ export const Recuperado = () => {
 
             hayErrores = true
         } else {
+            document.getElementById('grupo_hora').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='id_entidad_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
         }
 
         if (recuperado.serie.includes("  ") || recuperado.serie.startsWith(" ") || recuperado.serie.endsWith(" ")) {
             desc2 = desc2 + ', El campo SERIE no debe contener doble espacio ni empezar/terminar con espacio '
             document.getElementById('grupo_serie').classList.add('formulario_grupo-incorrecto')
+            flag = false
             //document.querySelector("label[for='serie']").textContent = "SERIE: (INVALIDO)"
 
             hayErrores = true
-        } else {
+        } else if(flag = false) {
+            document.getElementById('grupo_serie').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='serie']").textContent = "SERIE:"
         }
 
         if (recuperado.id_entidad_recupera.includes("  ") || recuperado.id_entidad_recupera.startsWith(" ") || recuperado.id_entidad_recupera.endsWith(" ")) {
             desc2 = desc2 + ', El campo ENTIDAD no debe contener doble espacio ni empezar/terminar con espacio '
             document.getElementById('grupo_entidad').classList.add('formulario_grupo-incorrecto')
+            flag = false
             //document.querySelector("label[for='id_entidad_recupera']").textContent = "ENTIDAD QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
             hayErrores = true
-        } else {
+        } else if(flag = false){
+            document.getElementById('grupo_entidad').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='id_entidad_recupera']").textContent = "ENTIDAD QUE RECUPERA EL VEHICULO:"
         }
 
         if (recuperado.id_municipio_rec.includes("  ") || recuperado.id_municipio_rec.startsWith(" ") || recuperado.id_municipio_rec.endsWith(" ")) {
             desc2 = desc2 + ', El campo MUINICIPIO no debe contener doble espacio ni empezar/terminar con espacio '
             document.getElementById('grupo_municipio').classList.add('formulario_grupo-incorrecto')
+            flag = false
             //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
             hayErrores = true
-        } else {
+        } else if(flag = false) {
+            document.getElementById('grupo_municipio').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
         }
 
         if (recuperado.colonia_rec.includes("  ") || recuperado.colonia_rec.startsWith(" ") || recuperado.colonia_rec.endsWith(" ")) {
             desc2 = desc2 + ', El campo COLONIA no debe contener doble espacio ni empezar/terminar con espacio '
             document.getElementById('grupo_colonia').classList.add('formulario_grupo-incorrecto')
+            flag = false
             //document.querySelector("label[for='colonia_rec']").textContent = "COLONIA: (INVALIDO)"
 
             hayErrores = true
-        } else {
+        } else if(flag = false) {
+            document.getElementById('grupo_colonia').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='colonia_rec']").textContent = "COLONIA:"
         }
         if (recuperado.placa.includes("  ") || recuperado.placa.startsWith(" ") || recuperado.placa.endsWith(" ")) {
             desc2 = desc2 + ', El campo PLACA no debe contener doble espacio ni empezar/terminar con espacio '
             document.getElementById('grupo_placa').classList.add('formulario_grupo-incorrecto')
+            flag = false
             //document.querySelector("label[for='placa']").textContent = "PLACA: (INVALIDO)"
 
             hayErrores = true
-        } else {
+        } else if(flag = false) {
+            document.getElementById('grupo_placa').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='placa']").textContent = "PLACA:"
         }
 
         if (recuperado.calle_rec.includes("  ") || recuperado.calle_rec.startsWith(" ") || recuperado.calle_rec.endsWith(" ")) {
             desc2 = desc2 + ', El campo CALLE no debe contener doble espacio ni empezar/terminar con espacio '
             document.getElementById('grupo_calle').classList.add('formulario_grupo-incorrecto')
+            flag = false
             //document.querySelector("label[for='calle_rec']").textContent = "CALLE: (INVALIDO)"
 
             hayErrores = true
-        } else {
+        } else if(flag = false) {
+            document.getElementById('grupo_calle').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='calle_rec']").textContent = "CALLE:"
         }
 
         if (recuperado.numext_rec.includes("  ") || recuperado.numext_rec.startsWith(" ") || recuperado.numext_rec.endsWith(" ")) {
             desc2 = desc2 + ', El campo NUMERO EXTERIOR no debe contener doble espacio ni empezar/terminar con espacio '
             document.getElementById('grupo_numext').classList.add('formulario_grupo-incorrecto')
+            flag = false
             //document.querySelector("label[for='numext_rec']").textContent = "NUMERO EXTERIOR: (INVALIDO)"
 
             hayErrores = true
-        } else {
+        } else if(flag = false){
+            document.getElementById('grupo_numext').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='numext_rec']").textContent = "NUMERO EXTERIOR:"
         }
 
         if (recuperado.cp_rec.includes("  ") || recuperado.cp_rec.startsWith(" ") || recuperado.cp_rec.endsWith(" ")) {
             desc2 = desc2 + ', El campo CODIGO POSTAL no debe contener doble espacio ni empezar/terminar con espacio '
             document.getElementById('grupo_cp').classList.add('formulario_grupo-incorrecto')
+            flag = false
             //document.querySelector("label[for='cp_rec']").textContent = "CODIGO POSTAL: (INVALIDO)"
 
             hayErrores = true
-        } else {
+        } else if(flag = false) {
+            document.getElementById('grupo_cp').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='cp_rec']").textContent = "CODIGO POSTAL:"
         }
 
