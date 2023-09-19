@@ -82,3 +82,21 @@ nav ul .logo .h3 {
     flex-direction: column;
     align-items: center;
 }
+
+.formulario_grupo-correcto {
+    color: rgb(14, 249, 14);
+    opacity: 1;
+}
+.formulario_grupo-correcto .formulario_grupo-input{
+    color: rgb(14, 249, 14);
+    opacity: 1;
+}
+
+.formulario_grupo-incorrecto {
+    color: #bb2929;
+    opacity: 1;
+}
+.formulario_grupo-incorrecto .formulario_grupo-input {
+    border: 2px solid #bb2929;
+}
+

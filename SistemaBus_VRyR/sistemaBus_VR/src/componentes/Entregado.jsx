@@ -510,21 +510,12 @@ export const Entregado = () => {
 
               )
             })}
-            <div class="col-md-3">
-              <label className="form-label" for='calle_entrega' > CALLE DONDE SE ENTREGO:</label>
-              <input type="text" className="form-control" id="calle_entrega" name="calle_entrega" onKeyDown={Solo_Texto} onChange={handleChange} required />
-              <div class="invalid-feedback">Porfavor rellene el campo.</div>
-            </div>
-            <div class="col-md-3">
-              <label className="form-label" for='colonia_entrega' > COLONIA DONDE SE ENTREGO:</label>
-              <input type="text" className="form-control" id="colonia_entrega" name="colonia_entrega" onKeyDown={Solo_Texto} onChange={handleChange} required />
-              <div class="invalid-feedback">Porfavor rellene el campo.</div>
-            </div>
-            <div class="col-4">
+            <span><h5>1.-Datos de ubicación del vehiculo</h5></span>
+            <div class="col-3">
               <label className="form-label" for='id_entidad_entrega' >ENTIDAD:</label>
               <br />
               <select className="form-control" id="id_entidad_entrega" name="id_entidad_entrega" onChange={handleEntidadChange} onClick={handleChange} required>
-                <option selected disabled value="">ENTIDAD QUE RECUPERÓ EL VEHICULO</option>
+                <option selected disabled value="">SELECCIONE ENTIDAD</option>
                 {results2.map(entidades => {
                   return (
                     <option name={entidades.ID_ENTIDAD} key={entidades.ID_ENTIDAD} value={entidades.ID_ENTIDAD}>{entidades.ENTIDAD}</option>
@@ -533,11 +524,11 @@ export const Entregado = () => {
               </select>
               <div class="invalid-feedback">Porfavor selecciona una entidad.</div>
             </div>
-            <div class="col-4">
+            <div class="col-3">
               <label className="form-label" for='id_municipio_entrega' >MUNICIPIO:</label>
               <br />
               <select className='form-control' id='id_municipio_entrega' name='id_municipio_entrega' onChange={handleChange} required>
-                <option selected disabled value="">MUNICIPIO QUE RECUPERÓ EL VEHICULO</option>
+                <option selected disabled value="">SELECCIONE MUNICIPIO</option>
                 {municipios.map((municipio) => (
                   <option key={municipio.ID_MUNICIPIO} value={municipio.ID_MUNICIPIO}>
                     {municipio.MUNICIPIO}
@@ -547,8 +538,29 @@ export const Entregado = () => {
               <div class="invalid-feedback">Porfavor selecciona un municipio.</div>
             </div>
             <div class="col-md-2">
+              <label className="form-label" for='calle_entrega' > CALLE:</label>
+              <input type="text" className="form-control" id="calle_entrega" name="calle_entrega" onKeyDown={Solo_Texto} onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
+            </div>
+            <div class="col-md-2">
+              <label className="form-label" for='colonia_entrega' > COLONIA:</label>
+              <input type="text" className="form-control" id="colonia_entrega" name="colonia_entrega" onKeyDown={Solo_Texto} onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
+            </div>
+            <div class="col-md-2">
               <label className="form-label" for='cp_entrega' > CÓDIGO POSTAL:</label>
               <input type="text" className="form-control" id="cp_entrega" name="cp_entrega" onKeyDown={filterInteger} onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
+            </div>
+            <span><h5>2.-Datos del vehiculo</h5></span>
+            <div class="col-md-3">
+              <label className="form-label" for='serie' > SERIE:</label>
+              <input type="text" className="form-control" id="serie" name="serie" onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
+            </div>
+            <div class="col-md-2">
+              <label className="form-label" for='calle_entrega' > MOTOR:</label>
+              <input type="text" className="form-control" id="motor" name="motor" onChange={handleChange} required />
               <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
             <div class="col-4">
@@ -562,37 +574,29 @@ export const Entregado = () => {
               <div class="invalid-feedback">Porfavor selecciona una opción.</div>
             </div>
             <div class="col-md-3">
+              <label className="form-label" for='factura_vehiculo' > NÚMERO DE FACTURA:</label>
+              <input type="text" className="form-control" id="factura_vehiculo" name="factura_vehiculo" onKeyDown={filterInteger} onChange={handleChange} required />
+              <div class="invalid-feedback">Porfavor rellene el campo.</div>
+            </div>
+            <span><h5>3.-Datos de fecha de entrega del vehiculo</h5></span>
+            <div class="col-md-6">
               <label className="form-label" > FECHA:</label>
               { }
               <input type="date" max={today} min={minDate} className="form-control" id="fecha_entrega" name="fecha_entrega" onChange={handleChange} required />
               <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-6">
               <label className="form-label" > HORA:</label>
               <input type="time" className="form-control" id="hora_entrega" name="hora_entrega" onChange={handleChange} required />
               <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
-            <div class="col-md-3">
-              <label className="form-label" for='serie' > SERIE:</label>
-              <input type="text" className="form-control" id="serie" name="serie" onChange={handleChange} required />
-              <div class="invalid-feedback">Porfavor rellene el campo.</div>
-            </div>
-            <div class="col-md-3">
-              <label className="form-label" for='calle_entrega' > MOTOR:</label>
-              <input type="text" className="form-control" id="motor" name="motor" onChange={handleChange} required />
-              <div class="invalid-feedback">Porfavor rellene el campo.</div>
-            </div>
-            <div class="col-md-3">
-              <label className="form-label" for='factura_vehiculo' > NÚMERO DE FACTURA:</label>
-              <input type="text" className="form-control" id="factura_vehiculo" name="factura_vehiculo" onKeyDown={filterInteger} onChange={handleChange} required />
-              <div class="invalid-feedback">Porfavor rellene el campo.</div>
-            </div>
+            <span><h5>4.-Datos del propietario del vehiculo</h5></span>
             <div class="col-md-3">
               <label className="form-label" for='comprob_domic_prop' > COMPROBANTE DE DOMICILIO:</label>
               <input type="text" className="form-control" id="comprob_domic_prop" name="comprob_domic_prop" onChange={handleChange} required />
               <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
-            <div class="col-4">
+            <div class="col-3">
               <label className="form-label" for='persona_entrega' >PERSONA QUE ENTREGA EL VEHICULO:</label>
               <br />
               <select className='form-control' id='persona_entrega' name='persona_entrega' onChange={handleChange} required>
@@ -602,17 +606,17 @@ export const Entregado = () => {
               </select>
               <div class="invalid-feedback">Porfavor selecciona una opción.</div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4">
               <label className="form-label" for='nombre_entrega' >NOMBRE DEL PROPIETARIO / REPRESENTANTE:</label>
               <input type="text" className="form-control" id="nombre_entrega" name="nombre_entrega" onKeyDown={Solo_Texto} onChange={handleChange} required />
               <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4">
               <label className="form-label" for='nombre_entrega' >APELLIDO DEL PROPIETARIO / REPRESENTANTE:</label>
               <input type="text" className="form-control" id="paterno_entrega" name="paterno_entrega" onKeyDown={Solo_Texto} onChange={handleChange} required />
               <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-12">
               <Button variant="primary" type="submit" onClick={handleClick}>Enviar</Button>
               <Link to="/" className="btn btn-info"> Inicio</Link>
             </div>
