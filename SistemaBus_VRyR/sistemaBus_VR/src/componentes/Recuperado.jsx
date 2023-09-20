@@ -260,9 +260,9 @@ export const Recuperado = () => {
             desc3 = 'La serie no debe contener (o,i,ñ,q)'
             //document.querySelector("label[for='serie']").textContent = "SERIE: (INVALIDO)"
             document.getElementById('grupo_serie').classList.add('formulario_grupo-incorrecto')
-            document.getElementById('grupo_serie').classList.remove('formulario_grupo-correcto')
             hayErrores = true
         } else {
+            document.getElementById('grupo_serie').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='serie']").textContent = "SERIE:"
         }
 
@@ -453,6 +453,7 @@ export const Recuperado = () => {
             hayErrores = true
         } else if(flag = false) {
             document.getElementById('grupo_calle').classList.remove('formulario_grupo-incorrecto')
+            
             //document.querySelector("label[for='calle_rec']").textContent = "CALLE:"
         }
 
