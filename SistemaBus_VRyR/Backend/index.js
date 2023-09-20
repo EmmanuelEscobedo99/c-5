@@ -262,6 +262,17 @@ app.get("/maxId", (req, res) => {
     console.log(result)
 })
 
+app.get("/recuperado/:id?", (req, res) => {
+    const id = req.params.id
+    db.query("SELECT * FROM vehiculo_recuperado WHERE ID_ALTERNA = ?", id,(err, result) => {
+        if(err){
+            console.log("error trayendo data")
+        } else {
+            res.send(result)
+        }
+    })
+})
+
 
 
 //seleccion por id
@@ -279,23 +290,21 @@ app.get('/buscarId/:id', (req, res) => {
 
 // para modificar
 //video /users/:id
-app.put("/modificar/:id", (req, res) => {
+app.post("/modificarRecuperado/:id", (req, res) => {
     const id = req.params.id;
-    const query_u = "UPDATE registro SET `nombre`=?, `apellido`=?, `edad`=? WHERE id=? ";
+    const query_u = "UPDATE vehiculo_recuperado SET `CALLE_REC`=?, `NUMEXT_REC`=?, `COLONIA_REC`=?, `CP_REC`=?, `SERIE`=?, `PLACA`=? WHERE ID_ALTERNA=? ";
     const values = [
-        req.body.nombre,
-        req.body.apellido,
-        req.body.edad,
+        req.body.calle_rec,
+        req.body.numext_rec,
+        req.body.colonia_rec,
+        req.body.cp_rec,
+        req.body.serie,
+        req.body.placa
     ];
     db.query(query_u, [...values, id], (err, result) => {
         if (err) return res.send(err);
         return res.json(result)
     })
-
-
-
-
-
 })
 
 

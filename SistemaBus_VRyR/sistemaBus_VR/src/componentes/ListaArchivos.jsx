@@ -72,7 +72,7 @@ const ListaArchivos = () => {
               {results.map((registros,i)=>{ 
                  return(              
                    <div key={i} className="card">
-                     <h5>Denunciante </h5>
+                     <h4>DENUNCIANTE </h4>
                      <p>{registros.NOMBRE_DEN}{" "}{registros.PATERNO_DEN}</p>
                     
                       <h4>AVERIGUACION</h4>  <p> {registros.AVERIGUACION}</p>

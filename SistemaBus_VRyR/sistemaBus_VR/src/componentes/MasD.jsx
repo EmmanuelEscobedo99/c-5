@@ -37,33 +37,125 @@ const MasD = () => {
       <Navbar></Navbar>
       <div className="area_form">
         <div className="contenedor">
-          <Form>
 
-            <h3>Vehiculo Robado Datos Registrados</h3>
+          <h3>Vehiculo Robado Datos Registrados</h3>
+          <form className="row g-6">
 
-            <div className="mb-3 row">
-              <p htmlFor="staticEmail" className="col-sm-2 col-form-label font-weight-bold">AVERIGUACION :</p>
-              <div className="col-sm-10">
-                <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.AVERIGUACION} />
-              </div>
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">AVERIGUACION:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.AVERIGUACION} />
             </div>
 
-            <div className="mb-3 row">
-              <label htmlFor="staticEmail" className="col-sm-2 col-form-label">FECHA DE AVERIGUACION:</label>
-              <div className="col-sm-10">
-                <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.FECHA_AVERIGUA} />
-              </div>
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">FECHA DE AVERIGUACION:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.FECHA_AVERIGUA} />
+            </div>
+
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">AGENCIA:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.AGENCIA_MP} />
+            </div>
+
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">FECHA DEL ROBO:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.FECHA_ROBO} />
             </div>
 
 
-            <div className="mb-3 row">
-              <label htmlFor="staticEmail" className="col-sm-2 col-form-label">AGENCIA :</label>
-              <div className="col-sm-10">
-                <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.AGENCIA_MP} />
-              </div>
+
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">CALLE DEL ROBO:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.CALLE_ROBO} />
             </div>
 
 
+
+
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">NÚMERO EXTERIOR:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.NUM_EXT_ROBO} />
+            </div>
+
+
+
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">COLONIA DEL ROBO:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.COLONIA_ROBO} />
+            </div>
+
+
+
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">MUNICIPIO DEL ROBO:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.ID_MUNICIPIO_ROBO} />
+            </div>
+
+
+
+
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">ENTIDAD DEL ROBO:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.ID_ENTIDAD_ROBO} />
+            </div>
+
+
+
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">NOMBRE DEL DENUNCIANTE:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.NOMBRE_DEN} />
+            </div>
+
+
+
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">APELLIDO DEL DENUNCIANTE:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.PATERNO_DEN} />
+            </div>
+
+
+
+
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">PLACA:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.PLACA} />
+            </div>
+
+
+
+            <div className="col-sm-2">
+             <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">MARCA DEL VEHICULO:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.ID_MARCA} />
+            </div>
+
+
+
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">SUBMARCA DEL VEHICULO:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.ID_SUBMARCA} />
+            </div>
+
+
+
+
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">MODELO DEL VEHICULO:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.MODELO} />
+            </div>
+
+
+
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">COLOR DEL VEHICULO:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.ID_COLOR} />
+            </div>
+
+
+
+            <div className="col-sm-2">
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">SERIE DEL VEHICULO:</label></strong>
+              <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.SERIE} />
+
+            </div>
 
 
             { /* 
@@ -291,7 +383,7 @@ const MasD = () => {
             <Link to="/" className="btn  btn-info "> Inicio</Link>
             <Link className="btn  btn-info" to={`/recuperado/${id}`}>Recuperado</Link>
             <Link to={`/entregado/${id}`} className="btn  btn-info"> Entregado</Link>
-          </Form>
+          </form>
         </div>
       </div>
     </>

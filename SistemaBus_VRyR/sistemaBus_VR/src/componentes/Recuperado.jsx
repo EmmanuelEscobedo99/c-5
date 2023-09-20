@@ -9,11 +9,35 @@ import Modal from 'react-bootstrap/Modal'
 import ListaArchivos from './ListaArchivos'
 import { Toaster, toast } from 'sonner'
 import { BiCheck } from 'react-icons/bi'
+import { Editar } from './Editar'
 
 export const Recuperado = () => {
     const { id } = useParams()
+    const [editar, setEditar] = useState(0)
+    const guardarEdicion = (e, ide) => {
+        e.preventDefault()
+        let target = e.target
+        const recuperados_almacenados = recuperadoBD
+    }
+
+    const handleClickModificarRecuperado = async (e, id) => {
+        e.preventDefault();
+        setEditar(0)
+        try {
+            await axios.post(`http://localhost:8081/modificarRecuperado/${id}`, modificarRecuperado)
+            console.log(setModificarRecuperado + "SetModificarRecuperado")
+
+            alert("El nuevo registro ha sido guardado correctamente ")
+            navigate("/")
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     let id_alterna = id
     let id_entidad = 0
+
 
     const [recuperado, setRecuperado] = useState({
         placa: '',
@@ -30,6 +54,25 @@ export const Recuperado = () => {
         id_municipio_rec: '',
         fecha: ''
     })
+
+    const [modificarRecuperado, setModificarRecuperado] = useState({
+        placa: '',
+        serie: '',
+        calle_rec: '',
+        numext_rec: '',
+        colonia_rec: '',
+        cp_rec: '',
+        fecha_rec: '',
+        hora_rec: '',
+        id_color: '',
+        id_fuente: '',
+        id_entidad_recupera: '',
+        id_municipio_rec: '',
+        fecha: ''
+    })
+
+    const [recuperadoBD, setRecuperadoBD] = useState([])
+    let results6 = []
 
     const [showModalValidacion, setShowModalValidacion] = useState(false)
     const [showModalSuccess, setShowModalSuccess] = useState(false)
@@ -69,6 +112,16 @@ export const Recuperado = () => {
 
     const handleShowModalValidacion = () => setShowModalValidacion(true)
     const handleShowModalSuccess = () => setShowModalSuccess(true)
+
+    const RecuperadoBD = async () => {
+        try {
+            const { data } = await axios.get(`http://localhost:8081/recuperado/${id}`)
+            setRecuperadoBD(data)
+        }
+        catch (err) {
+
+        }
+    }
 
     const LlenarSelect = async () => {
         try {
@@ -140,11 +193,16 @@ export const Recuperado = () => {
         ultimoIdSelect()
     }, [])
 
+    useEffect(() => {
+        RecuperadoBD()
+    }, setEditar)
+
     results = llenado
     results2 = entidades
     results3 = municipios
     results4 = fuente
     results5 = ultimoId
+    results6 = recuperadoBD
 
     const formatoDia = () => {
 
@@ -183,6 +241,13 @@ export const Recuperado = () => {
         id_entidad = document.getElementById('id_entidad_recupera')
     }
 
+    const handleChangeModificacionRecuperado = (e) => {
+        formatoDia()
+        formatoHora()
+        setModificarRecuperado((prev) => ({ ...prev, id_alterna, [e.target.name]: e.target.value }))
+        id_entidad = document.getElementById('id_entidad_recupera')
+    }
+
     const handleEntidadChange = (event) => {
         const selectedEntidad = event.target.value;
         setEntidadSeleccionada(selectedEntidad);
@@ -205,6 +270,7 @@ export const Recuperado = () => {
     let minDate = "1900-01-01"
 
     console.log(recuperado)
+    console.log(modificarRecuperado)
 
     const handleClick = async (e) => {
         e.preventDefault();
@@ -392,7 +458,7 @@ export const Recuperado = () => {
             //document.querySelector("label[for='serie']").textContent = "SERIE: (INVALIDO)"
 
             hayErrores = true
-        } else if(flag = false) {
+        } else if (flag = false) {
             document.getElementById('grupo_serie').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='serie']").textContent = "SERIE:"
         }
@@ -404,7 +470,7 @@ export const Recuperado = () => {
             //document.querySelector("label[for='id_entidad_recupera']").textContent = "ENTIDAD QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
             hayErrores = true
-        } else if(flag = false){
+        } else if (flag = false) {
             document.getElementById('grupo_entidad').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='id_entidad_recupera']").textContent = "ENTIDAD QUE RECUPERA EL VEHICULO:"
         }
@@ -416,7 +482,7 @@ export const Recuperado = () => {
             //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO: (INVALIDO)"
 
             hayErrores = true
-        } else if(flag = false) {
+        } else if (flag = false) {
             document.getElementById('grupo_municipio').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='id_municipio_rec']").textContent = "MUNICIPIO QUE RECUPERA EL VEHICULO:"
         }
@@ -428,7 +494,7 @@ export const Recuperado = () => {
             //document.querySelector("label[for='colonia_rec']").textContent = "COLONIA: (INVALIDO)"
 
             hayErrores = true
-        } else if(flag = false) {
+        } else if (flag = false) {
             document.getElementById('grupo_colonia').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='colonia_rec']").textContent = "COLONIA:"
         }
@@ -439,7 +505,7 @@ export const Recuperado = () => {
             //document.querySelector("label[for='placa']").textContent = "PLACA: (INVALIDO)"
 
             hayErrores = true
-        } else if(flag = false) {
+        } else if (flag = false) {
             document.getElementById('grupo_placa').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='placa']").textContent = "PLACA:"
         }
@@ -451,9 +517,9 @@ export const Recuperado = () => {
             //document.querySelector("label[for='calle_rec']").textContent = "CALLE: (INVALIDO)"
 
             hayErrores = true
-        } else if(flag = false) {
+        } else if (flag = false) {
             document.getElementById('grupo_calle').classList.remove('formulario_grupo-incorrecto')
-            
+
             //document.querySelector("label[for='calle_rec']").textContent = "CALLE:"
         }
 
@@ -464,7 +530,7 @@ export const Recuperado = () => {
             //document.querySelector("label[for='numext_rec']").textContent = "NUMERO EXTERIOR: (INVALIDO)"
 
             hayErrores = true
-        } else if(flag = false){
+        } else if (flag = false) {
             document.getElementById('grupo_numext').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='numext_rec']").textContent = "NUMERO EXTERIOR:"
         }
@@ -476,7 +542,7 @@ export const Recuperado = () => {
             //document.querySelector("label[for='cp_rec']").textContent = "CODIGO POSTAL: (INVALIDO)"
 
             hayErrores = true
-        } else if(flag = false) {
+        } else if (flag = false) {
             document.getElementById('grupo_cp').classList.remove('formulario_grupo-incorrecto')
             //document.querySelector("label[for='cp_rec']").textContent = "CODIGO POSTAL:"
         }
@@ -644,6 +710,36 @@ export const Recuperado = () => {
                         <div class="col-md-12">
                             <Button variant="primary" type="submit" onClick={handleClick}>Enviar</Button>
                             <Link to="/" className="btn btn-info"> Inicio</Link>
+                            <Button variant="primary" onClick={() => {
+                                setEditar(id)
+                            }}>Editar</Button>
+
+                            {editar == id && (
+                                <div className='edit_form'>
+                                    <h3 className='title'>Modificar</h3>
+                                    <form>
+                                        {results6.map(recuperadoBD => {
+                                            return (
+                                                <>
+                                                    <label>CALLE:</label>
+                                                    <input type='text' name='calle_rec' className="form-control" defaultValue={recuperadoBD.CALLE_REC} onChange={handleChangeModificacionRecuperado}></input>
+                                                    <label>NÚMERO EXTERIOR:</label>
+                                                    <input type='text' name='numext_rec' className="form-control" defaultValue={recuperadoBD.NUMEXT_REC} onChange={handleChangeModificacionRecuperado}></input>
+                                                    <label>COLONIA:</label>
+                                                    <input type='text' name='colonia_rec' className="form-control" defaultValue={recuperadoBD.COLONIA_REC} onChange={handleChangeModificacionRecuperado}></input>
+                                                    <label>CÓDIGO POSTAL:</label>
+                                                    <input type='text' name='cp_rec' className="form-control" defaultValue={recuperadoBD.CP_REC} onChange={handleChangeModificacionRecuperado}></input>
+                                                    <label>SERIE:</label>
+                                                    <input type='text' name='serie' className="form-control" defaultValue={recuperadoBD.SERIE} onChange={handleChangeModificacionRecuperado}></input>
+                                                    <label>PLACA:</label>
+                                                    <input type='text' name='placa' className="form-control" defaultValue={recuperadoBD.PLACA} onChange={handleChangeModificacionRecuperado}></input>
+                                                </>
+                                            )
+                                        })}
+                                        <Button variant="primary" type="submit" onClick={e => handleClickModificarRecuperado(e, id)} className='editar'>Actualizar</Button>
+                                    </form>
+                                </div>
+                            )}
                         </div>
                     </form>
                     <Toaster
