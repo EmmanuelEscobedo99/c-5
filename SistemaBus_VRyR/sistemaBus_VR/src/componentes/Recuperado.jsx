@@ -11,8 +11,8 @@ import { Toaster, toast } from 'sonner'
 import { BiCheck } from 'react-icons/bi'
 
 export const Recuperado = () => {
-
-    let id_alterna = 0
+    const { id } = useParams()
+    let id_alterna = id
     let id_entidad = 0
 
     const [recuperado, setRecuperado] = useState({
@@ -178,7 +178,7 @@ export const Recuperado = () => {
         }*/
         formatoDia()
         formatoHora()
-        id_alterna = document.getElementById('id_alterna').value
+        //id_alterna = document.getElementById('id_alterna').value
         setRecuperado((prev) => ({ ...prev, id_alterna, [e.target.name]: e.target.value }))
         id_entidad = document.getElementById('id_entidad_recupera')
     }
@@ -648,7 +648,6 @@ export const Recuperado = () => {
                     </form>
                     <Toaster
                         position='top-center'
-                        theme='dark'
                         dir='auto'
                         richColors
 

@@ -9,8 +9,8 @@ import { Toaster, toast } from 'sonner'
 import { BiCheck } from 'react-icons/bi'
 
 export const Entregado = () => {
-
-  let id_alterna = 0
+  const { id } = useParams()
+  let id_alterna = id
   let id_entidad = 0
 
   const [entregado, setEntregado] = useState({
@@ -144,7 +144,7 @@ export const Entregado = () => {
   const handleChange = (e) => {
     formatoDia()
     formatoHora()
-    id_alterna = document.getElementById('id_alterna').value
+    //id_alterna = document.getElementById('id_alterna').value
     setEntregado((prev) => ({ ...prev, id_alterna, [e.target.name]: e.target.value }))
     id_entidad = document.getElementById('id_entidad_entrega')
   }
@@ -724,7 +724,6 @@ export const Entregado = () => {
           </form>
           <Toaster
             position='top-center'
-            theme='dark'
             dir='auto'
             richColors
 

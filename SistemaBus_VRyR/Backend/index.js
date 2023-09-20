@@ -99,6 +99,28 @@ app.get('/ultimoId', (req, res) => {
     })
 })
 
+//traer registros  GET
+
+app.get('/registro', (req, res)=>{
+    const sql = "SELECT * FROM vehiculo_robado ORDER BY ID_ALTERNA DESC LIMIT 6";
+    db.query(sql, (err, data)=>{
+        if(err) return res.json(err);
+        return res.json(data);
+    })
+})
+
+//seleccion por id
+
+app.get('/buscarId/:id', (req, res)=>{
+    const id = req.params.id;
+    db.query("SELECT * FROM vehiculo_robado WHERE ID_ALTERNA= ?", id,(err,result)=>{
+        if(err){
+            console.log("sindatos");
+        }else{
+            res.send(result);
+        }
+    })
+})
 
 
 

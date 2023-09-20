@@ -2,63 +2,33 @@ import Navbar from "./Navbar";
 
 import Form from 'react-bootstrap/Form';
 
-import Button from 'react-bootstrap/Button';
 import "../archivosCss/formulario.css"
-
+import { useParams } from "react-router-dom"
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
+import { useEffect } from "react"
 import axios from "axios"
 
+
+
+
 const MasD = () => {
+  const { id } = useParams();
+  const [datos, setDatos] = useState([]);
+  datos
+
+  useEffect(() => {
+    axios.get("http://localhost:8081/buscarId/" + id)
+      .then(res => {
+        console.log("Datos encontrados")
+        console.log(res.data)
+        setDatos(res.data[0])
+      })
+      .catch(err => console.log(err))
+
+  }, [id]);
 
 
-  /* 
-  const [val_bd, setVal_bd] = useState([])
-  const [select, setSelect]=useState([])
-  
-  
-  
-   useEffect (()=>{
-   fetch("http://localhost:8081/traerPais")
-   .then((data)=>data.json())
-   .then((val)=>setVal_bd(val))
-   
-
-  },[])
-  console.log (val_bd,"values", select)
-   */
-
-  const [create, setUser] = useState({
-    averiguacion: "",
-    fecha_averigua: "",
-    agencia_mp: "",
-
-
-  });
-
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-
-    //setUser.id_pais = setSelect((prev)=>({ ...prev, [e.target.name]: e.target.value}));
-
-  };
-
-  console.log(create)
-
-  const handleClick = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post("http://localhost:8081/crear", create);
-      console.log(setUser)
-      alert("El nuevo registro ha sido guardado correctamente ")
-      navigate("/")
-
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
 
   return (
@@ -69,26 +39,50 @@ const MasD = () => {
         <div className="contenedor">
           <Form>
 
-            <h3>Registro de Vehiculo Robado</h3>
+            <h3>Vehiculo Robado Datos Registrados</h3>
 
-
-
-            <div className="mb-3 mt-3">
-              <label className="form-label" > Averiguacion:</label>
-              <input type="text" className="form-control" id="averiguacion" name="averiguacion" onChange={handleChange} />
+            <div className="mb-3 row">
+              <p htmlFor="staticEmail" className="col-sm-2 col-form-label font-weight-bold">AVERIGUACION :</p>
+              <div className="col-sm-10">
+                <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.AVERIGUACION} />
+              </div>
             </div>
 
-            <div className="mb-3 mt-3">
-              <label className="form-label" > fecha averiguacion:</label>
-              <input type="text" className="form-control" id="fecha_averigua" name="fecha_averigua" onChange={handleChange} />
+            <div className="mb-3 row">
+              <label htmlFor="staticEmail" className="col-sm-2 col-form-label">FECHA DE AVERIGUACION:</label>
+              <div className="col-sm-10">
+                <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.FECHA_AVERIGUA} />
+              </div>
             </div>
 
-            <div className="mb-3 mt-3">
-              <label className="form-label" >agencia</label>
-              <input type="text" className="form-control" id="agencia_mp" name="agencia_mp" onChange={handleChange} />
+
+            <div className="mb-3 row">
+              <label htmlFor="staticEmail" className="col-sm-2 col-form-label">AGENCIA :</label>
+              <div className="col-sm-10">
+                <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.AGENCIA_MP} />
+              </div>
             </div>
 
-            { /*  
+
+
+
+            { /* 
+            <div className="mb-3 mt-3">
+                     <label className="form-label" > Averiguacion:</label>
+                     <input type="text"  className="form-control" id="averiguacion" name="averiguacion" onChange={handleChange}/>
+                  </div>
+                  
+                  <div className="mb-3 mt-3">
+                     <label className="form-label" > fecha averiguacion:</label>
+                     <input type="text" className="form-control" id="fecha_averigua" name="fecha_averigua" onChange={handleChange}/>
+                  </div>
+
+                  <div className="mb-3 mt-3">
+                     <label className="form-label" >agencia</label>
+                     <input type="text" className="form-control" id="agencia_mp" name="agencia_mp" onChange={handleChange}/>
+                  </div>
+                   
+                   
                   <div className="mb-3 mt-3" >
                      <select name="id_pais"  className="form-control form-select" onChange={handleChange}>
                             <option>Seleciona un pais</option>
@@ -293,10 +287,10 @@ const MasD = () => {
       </Form.Group>
       */ }
 
-            <Button variant="primary" type="submit" onClick={handleClick}>
-              Submit
-            </Button>
-            <Link to="/" className="btn btn-info"> Inicio</Link>
+            { /* <Button variant="primary" type="submit" onClick={handleClick}></Button>  */}
+            <Link to="/" className="btn  btn-info "> Inicio</Link>
+            <Link className="btn  btn-info" to={`/recuperado/${id}`}>Recuperado</Link>
+            <Link to={`/entregado/${id}`} className="btn  btn-info"> Entregado</Link>
           </Form>
         </div>
       </div>

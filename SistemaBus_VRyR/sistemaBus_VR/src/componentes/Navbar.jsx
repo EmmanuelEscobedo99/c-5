@@ -38,12 +38,12 @@ const Navbar = () => {
                   <li>
                     <NavLink to="/" className={({isActive}) => isActive ? "active" : ""}>Buscar vehiculo</NavLink>
                   </li>
-                  <li>
+                  {/*<li>
                     <NavLink to="/recuperado" className={({isActive}) => isActive ? "active" : ""}>Recuperar vehiculo</NavLink>
                   </li>
                   <li>
                     <NavLink to="/entregado" className={({isActive}) => isActive ? "active" : ""}>Entregar vehiculo</NavLink>
-                  </li>
+                  </li>*/}
                   <li>
                     <NavLink to="/Login" className={({isActive}) => isActive ? "active" : ""}>Cerrar sesion</NavLink>
                   </li>

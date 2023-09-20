@@ -20,10 +20,10 @@ function App() {
             <Route path="/Login" element={<Login/>}></Route>
             <Route path="/Navbar" element={<Baja/>}></Route>
             <Route path="/Modificar" element={<Modificar/>}></Route>
-            <Route path="/detalles" element={<MasD/>}></Route>
+            <Route path="/detalles/:id" element={<MasD/>}></Route>
             <Route path="/formulario" element={<Formulario/>}></Route>
-            <Route path="/recuperado" element={<Recuperado />}></Route>
-            <Route path="/entregado" element={<Entregado />}></Route>
+            <Route path="/recuperado/:id?" element={<Recuperado />}></Route>
+            <Route path="/entregado/:id?" element={<Entregado />}></Route>
           </Routes>
        </BrowserRouter>
 
