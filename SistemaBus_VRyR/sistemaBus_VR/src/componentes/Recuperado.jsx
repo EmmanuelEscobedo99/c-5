@@ -14,14 +14,11 @@ import { Editar } from './Editar'
 export const Recuperado = () => {
     const { id } = useParams()
     const [editar, setEditar] = useState(0)
-    const guardarEdicion = (e, ide) => {
-        e.preventDefault()
-        let target = e.target
-        const recuperados_almacenados = recuperadoBD
-    }
 
     const handleClickModificarRecuperado = async (e, id) => {
         e.preventDefault();
+        formatoDia()
+        formatoHora()
         setEditar(0)
         try {
             await axios.post(`http://localhost:8081/modificarRecuperado/${id}`, modificarRecuperado)
@@ -37,6 +34,10 @@ export const Recuperado = () => {
 
     let id_alterna = id
     let id_entidad = 0
+
+    let dateFormat
+
+    let dateRobo, newDateRobo
 
 
     const [recuperado, setRecuperado] = useState({
@@ -94,6 +95,9 @@ export const Recuperado = () => {
     const [fuente, setFuente] = useState([])
     let results4 = []
 
+    const [fechaRobado, setFechaRobado] = useState([])
+    let results7 = []
+
     const [entidadSeleccionada, setEntidadSeleccionada] = useState('')
 
     const [descValidacion, setDescValidacion] = useState('')
@@ -117,6 +121,16 @@ export const Recuperado = () => {
         try {
             const { data } = await axios.get(`http://localhost:8081/recuperado/${id}`)
             setRecuperadoBD(data)
+        }
+        catch (err) {
+
+        }
+    }
+
+    const fechaDeRobado = async () => {
+        try {
+            const { data } = await axios.get(`http://localhost:8081/fechaRobado/${id}`)
+            setFechaRobado(data)
         }
         catch (err) {
 
@@ -191,6 +205,7 @@ export const Recuperado = () => {
         entidadesSelect()
         fuenteSelect()
         ultimoIdSelect()
+        fechaDeRobado()
     }, [])
 
     useEffect(() => {
@@ -203,6 +218,7 @@ export const Recuperado = () => {
     results4 = fuente
     results5 = ultimoId
     results6 = recuperadoBD
+    results7 = fechaRobado
 
     const formatoDia = () => {
 
@@ -696,7 +712,28 @@ export const Recuperado = () => {
                             <label className="form-label" class="formulario_label" > FECHA:</label>
                             { }
                             <div class="formulario_grupo-input">
-                                <input type="date" max={today} min={minDate} className="form-control" id="fecha_rec" name="fecha_rec" onChange={handleChange} required />
+                                {/* VALIDACIÓN La fecha de recuperación no podrá ser menor a la fecha de robo del vehículo. */}
+                                {results7.map(fechaRobado => {
+                                    dateRobo = new Date(fechaRobado.FECHA_ROBO)
+                                    console.log(dateRobo)
+                                    let monthRobo = dateRobo.getMonth() + 1
+                                    if (monthRobo > 0 && monthRobo < 10 ){
+                                        monthRobo = "0" + monthRobo
+                                    }
+                                    let dayRobo = dateRobo.getDate()
+                                    if(dayRobo > 0 && dayRobo < 10){
+                                        console.log("day ", dayRobo)
+                                        dayRobo = "0" + dayRobo
+                                    }
+                                    newDateRobo = dateRobo.getFullYear() + "-" + monthRobo + "-" + dayRobo
+                                    console.log("FECHA ROBO ", newDateRobo)
+                                    return(
+                                        <>
+                                            <input type="date" max={today} min={newDateRobo} className="form-control" id="fecha_rec" name="fecha_rec" onChange={handleChange} required />
+                                        </>
+                                    )
+                                })}
+                                
                             </div>
                             <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>
@@ -710,7 +747,7 @@ export const Recuperado = () => {
                         <div class="col-md-12">
                             <Button variant="primary" type="submit" onClick={handleClick}>Enviar</Button>
                             <Link to="/" className="btn btn-info"> Inicio</Link>
-                            <Button variant="primary" onClick={() => {
+                            <Button disabled variant="primary" onClick={() => {
                                 setEditar(id)
                             }}>Editar</Button>
 
@@ -719,6 +756,13 @@ export const Recuperado = () => {
                                     <h3 className='title'>Modificar</h3>
                                     <form>
                                         {results6.map(recuperadoBD => {
+
+
+
+                                            let date2 = new Date(recuperadoBD.FECHA_REC)
+                                            let newDate2 = date2.getFullYear() + "/" + date2.getMonth() + "/" + date2.getDay()
+
+                                            console.log(newDate2)
                                             return (
                                                 <>
                                                     <label>CALLE:</label>
@@ -733,10 +777,43 @@ export const Recuperado = () => {
                                                     <input type='text' name='serie' className="form-control" defaultValue={recuperadoBD.SERIE} onChange={handleChangeModificacionRecuperado}></input>
                                                     <label>PLACA:</label>
                                                     <input type='text' name='placa' className="form-control" defaultValue={recuperadoBD.PLACA} onChange={handleChangeModificacionRecuperado}></input>
+                                                    <label>ENTIDAD:</label>
+                                                    <select className="form-control" id="id_entidad_recupera" name="id_entidad_recupera" onChange={handleEntidadChange} onClick={handleChangeModificacionRecuperado} required>
+                                                        <option selected disabled value="">{recuperadoBD.ID_ENTIDAD_RECUPERA}</option>
+                                                        {results2.map(entidades => {
+                                                            return (
+                                                                <option name={entidades.ID_ENTIDAD} key={entidades.ID_ENTIDAD} value={entidades.ID_ENTIDAD}>{entidades.ENTIDAD}</option>
+                                                            )
+                                                        })}
+                                                    </select>
+                                                    <label>MUNICIPIO:</label>
+                                                    <select className='form-control' id='id_municipio_rec' name='id_municipio_rec' onChange={handleChangeModificacionRecuperado} required>
+                                                        <option value="">{recuperadoBD.ID_ENTIDAD_RECUPERA}</option>
+                                                        {municipios.map((municipio) => (
+                                                            <option key={municipio.ID_MUNICIPIO} value={municipio.ID_MUNICIPIO}>
+                                                                {municipio.MUNICIPIO}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                    <label>COLOR DEL VEHICULO:</label>
+                                                    <select className="form-control" id="id_color" name="id_color" onChange={handleChangeModificacionRecuperado} required>
+                                                        <option selected disabled value="">{recuperadoBD.ID_COLOR}</option>
+                                                        {results.map(llenado => {
+                                                            return (
+                                                                <option name={llenado.ID_COLOR} key={llenado.ID_COLOR} value={llenado.ID_COLOR}>{llenado.DESCRIPCION}</option>
+                                                            )
+                                                        })}
+                                                    </select>
+                                                    <label className="form-label" class="formulario_label" > FECHA:</label>
+                                                    {newDate2}
+                                                    <input type="date" max={today} min="2023-09-12" className="form-control" id="fecha_rec" name="fecha_rec" onChange={handleChangeModificacionRecuperado} required />
+
+                                                    <label>HORA:</label>
+                                                    <input type="time" defaultValue={recuperadoBD.HORA_REC} className="form-control" id="hora_rec" name="hora_rec" onChange={handleChangeModificacionRecuperado} required />
                                                 </>
                                             )
                                         })}
-                                        <Button variant="primary" type="submit" onClick={e => handleClickModificarRecuperado(e, id)} className='editar'>Actualizar</Button>
+                                        <button variant="primary" type="submit" onClick={e => handleClickModificarRecuperado(e, id)} className='editar'>Actualizar</button>
                                     </form>
                                 </div>
                             )}

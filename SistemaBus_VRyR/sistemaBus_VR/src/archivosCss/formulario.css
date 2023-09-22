@@ -103,4 +103,6 @@ nav ul .logo .h3 {
 h5{
     text-align: left;
 }
-
+.btn-primary{
+    float: right;
+}

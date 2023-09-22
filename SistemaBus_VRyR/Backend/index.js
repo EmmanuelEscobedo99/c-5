@@ -4,6 +4,7 @@ const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
 const app = express();
+const bcrypt = require('bcrypt');
 app.use(cors());
 app.use(express.json())
 
@@ -65,7 +66,7 @@ app.get('/entidades', (req, res) => {
 app.get('/municipios/:id_entidad', async (req, res) => {
     //const id_entidad_recupera = req.body.id_entidad;
     const id_entidad = req.params.id_entidad;
-    const sql = ("SELECT ENTIDAD, MUNICIPIO, ID_MUNICIPIO FROM entidades INNER JOIN municipios ON municipios.ID_ENTIDAD="+  req.params.id_entidad+" AND entidades.ID_ENTIDAD ="+ req.params.id_entidad);
+    const sql = ("SELECT ENTIDAD, MUNICIPIO, ID_MUNICIPIO FROM entidades INNER JOIN municipios ON municipios.ID_ENTIDAD=" + req.params.id_entidad + " AND entidades.ID_ENTIDAD =" + req.params.id_entidad);
     db.query(sql, (err, data) => {
         if (err) {
             return res.json(err);
@@ -101,25 +102,25 @@ app.get('/ultimoId', (req, res) => {
 
 //traer registros  GET
 
-app.get('/registro', (req, res)=>{
+app.get('/registro', (req, res) => {
     const sql = "SELECT * FROM vehiculo_robado ORDER BY ID_ALTERNA DESC LIMIT 6";
-    db.query(sql, (err, data)=>{
-        if(err) return res.json(err);
+    db.query(sql, (err, data) => {
+        if (err) return res.json(err);
         return res.json(data);
-    })
+    })
 })
 
 //seleccion por id
 
-app.get('/buscarId/:id', (req, res)=>{
+app.get('/buscarId/:id', (req, res) => {
     const id = req.params.id;
-    db.query("SELECT * FROM vehiculo_robado WHERE ID_ALTERNA= ?", id,(err,result)=>{
-        if(err){
+    db.query("SELECT * FROM vehiculo_robado WHERE ID_ALTERNA= ?", id, (err, result) => {
+        if (err) {
             console.log("sindatos");
-        }else{
+        } else {
             res.send(result);
-        }
-    })
+        }
+    })
 })
 
 
@@ -163,7 +164,7 @@ app.post("/crearRecuperado", (req, res) => {
     const id_alterna = req.body.id_alterna;
     const lastId = id_alterna + 1;
     const id_municipio_rec = req.body.id_municipio_rec;
-    const fechaToday =  req.body.fecha;
+    const fechaToday = req.body.fecha;
     const horaToday = req.body.hora;
 
     //TIPO DE MOVIMIENTO = CAMBIO
@@ -182,15 +183,15 @@ app.post("/crearRecuperado", (req, res) => {
                     "INSERT INTO control_alterna (ID_ALTERNA, ID_FUENTE, TIPO_MOVIMIENTO, ESTATUS, FECHA, HORA) VALUES (?,?,?,?,?,?)",
                     [id_alterna, 10, 'CAMBIO', 'RECUPERADO', fechaToday, horaToday],
                     (err, res) => {
-                        if(err) {
+                        if (err) {
                             console.log(err)
                         } else {
-                           // alert('Registrado!!')
+                            // alert('Registrado!!')
                         }
                     }
                 )
-               // res.send("registrado exitosamente !!")
-               //alert('Registrado!!')
+                // res.send("registrado exitosamente !!")
+                //alert('Registrado!!')
             }
         }
     )
@@ -216,7 +217,7 @@ app.post("/crearEntregado", (req, res) => {
     const persona_entrega = req.body.persona_entrega
     const nombre_entrega = req.body.nombre_entrega
     const paterno_entrega = req.body.paterno_entrega
-    const fechaToday =  req.body.fecha;
+    const fechaToday = req.body.fecha;
     const horaToday = req.body.hora;
 
     //TIPO DE MOVIMIENTO = CAMBIO
@@ -235,15 +236,15 @@ app.post("/crearEntregado", (req, res) => {
                     "INSERT INTO control_alterna (ID_ALTERNA, ID_FUENTE, TIPO_MOVIMIENTO, ESTATUS, FECHA, HORA) VALUES (?,?,?,?,?,?)",
                     [id_alterna, 10, 'CAMBIO', 'ENTREGADO', fechaToday, horaToday],
                     (err, res) => {
-                        if(err) {
+                        if (err) {
                             console.log(err)
                         } else {
-                           // alert('Registrado!!')
+                            // alert('Registrado!!')
                         }
                     }
                 )
-               // res.send("registrado exitosamente !!")
-               //alert('Registrado!!')
+                // res.send("registrado exitosamente !!")
+                //alert('Registrado!!')
             }
         }
     )
@@ -264,8 +265,19 @@ app.get("/maxId", (req, res) => {
 
 app.get("/recuperado/:id?", (req, res) => {
     const id = req.params.id
-    db.query("SELECT * FROM vehiculo_recuperado WHERE ID_ALTERNA = ?", id,(err, result) => {
-        if(err){
+    db.query("SELECT * FROM vehiculo_recuperado WHERE ID_ALTERNA = ?", id, (err, result) => {
+        if (err) {
+            console.log("error trayendo data")
+        } else {
+            res.send(result)
+        }
+    })
+})
+
+app.get("/entregado/:id?", (req, res) => {
+    const id = req.params.id
+    db.query("SELECT * FROM vehiculo_entregado WHERE ID_ALTERNA = ?", id, (err, result) => {
+        if (err) {
             console.log("error trayendo data")
         } else {
             res.send(result)
@@ -288,18 +300,74 @@ app.get('/buscarId/:id', (req, res) => {
     })
 })
 
+app.get('/fechaRobado/:id', (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT FECHA_ROBO FROM vehiculo_robado WHERE ID_ALTERNA= ?", id, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.get('/fechaRecuperado/:id', (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT FECHA_REC FROM vehiculo_recuperado WHERE ID_ALTERNA= ?", id, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+  
+    // Realiza una consulta a la base de datos para verificar las credenciales
+    const query = 'SELECT * FROM usuarios WHERE username = ?';
+  
+    db.query(query, [username], (err, results) => {
+      if (err) {
+        res.status(500).json({ error: 'Error al buscar usuario en la base de datos' });
+        return;
+      }
+  
+      if (results.length === 0) {
+        res.status(401).json({ error: 'Usuario no encontrado' });
+        return;
+      }
+  
+      const user = results[0];
+
+      if(password != user.password){
+        console.log("contraseña incorrecta")
+      } else {
+        res.status(200).json({ message: 'Inicio de sesión exitoso' });
+      }
+  
+     
+    });
+  });
+
 // para modificar
 //video /users/:id
 app.post("/modificarRecuperado/:id", (req, res) => {
     const id = req.params.id;
-    const query_u = "UPDATE vehiculo_recuperado SET `CALLE_REC`=?, `NUMEXT_REC`=?, `COLONIA_REC`=?, `CP_REC`=?, `SERIE`=?, `PLACA`=? WHERE ID_ALTERNA=? ";
+    const query_u = "UPDATE vehiculo_recuperado SET `CALLE_REC`=?, `NUMEXT_REC`=?, `COLONIA_REC`=?, `CP_REC`=?, `SERIE`=?, `PLACA`=?, `ID_ENTIDAD_RECUPERA`=?, `ID_MUNICIPIO_REC`=?, `ID_COLOR`=?, `FECHA_REC`=?, `HORA_REC`=? WHERE ID_ALTERNA=? ";
     const values = [
         req.body.calle_rec,
         req.body.numext_rec,
         req.body.colonia_rec,
         req.body.cp_rec,
         req.body.serie,
-        req.body.placa
+        req.body.placa,
+        req.body.id_entidad_recupera,
+        req.body.id_municipio_rec,
+        req.body.id_color,
+        req.body.fecha_rec,
+        req.body.hora_rec
     ];
     db.query(query_u, [...values, id], (err, result) => {
         if (err) return res.send(err);
@@ -307,6 +375,32 @@ app.post("/modificarRecuperado/:id", (req, res) => {
     })
 })
 
+app.post("/modificarEntregado/:id", (req, res) => {
+    const id = req.params.id;
+    const query_u = "UPDATE vehiculo_entregado SET `CALLE_ENTREGA`, `COLONIA_ENTREGA`, `CP_ENTREGA`, `SERIE`, `MOTOR`, `FACTURA_VEHICULO`, `NOMBRE_ENTREGA`, `PATERNO, ENTREGA`, `COMPROB_DOMIC_PROP`, `ID_ENTIDAD_ENTREGA`, `ID_MUNICIPIO_ENTREGA`, `INSPECCION`, `FECHA_ENTREGA`, `HORA_ENTREGA`, `PERSONA_ENTREGA` =?  WHERE ID_ALTERNA=? ";
+    const values = [
+        req.body.calle_entrega,
+        req.body.colonia_entrega,
+        req.body.cp_entrega,
+        req.body.serie,
+        req.body.motor,
+        req.body.factura_vehiculo,
+        req.body.nombre_entrega,
+        req.body.paterno_entrega,
+        req.body.comprob_domic_prop,
+        req.body.id_entidad_entrega,
+        req.body.id_municipio_entrega,
+        req.body.inspeccion,
+        req.body.fecha_entrega,
+        req.body.hora_entrega,
+        req.body.persona_entrega
+
+    ];
+    db.query(query_u, [...values, id], (err, result) => {
+        if (err) return res.send(err);
+        return res.json(result)
+    })
+})
 
 
 

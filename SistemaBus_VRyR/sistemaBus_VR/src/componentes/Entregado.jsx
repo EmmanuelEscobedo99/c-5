@@ -10,8 +10,31 @@ import { BiCheck } from 'react-icons/bi'
 
 export const Entregado = () => {
   const { id } = useParams()
+  const [editar, setEditar] = useState(0)
+
+  const handleClickModificarEntregado = async (e, id) => {
+    e.preventDefault();
+    formatoDia()
+    formatoHora()
+    setEditar(0)
+    try {
+      await axios.post(`http://localhost:8081/modificarEntregado/${id}`, modificarEntregado)
+      console.log(setModificarEntregado + "SetModificarEntregado")
+
+      alert("El nuevo registro ha sido guardado correctamente ")
+      navigate("/")
+
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+
   let id_alterna = id
   let id_entidad = 0
+
+  let dateRobo, newDateRobo
+  let dateRecuperado, newDateRecuperado
 
   const [entregado, setEntregado] = useState({
     id_fuente: '',
@@ -33,6 +56,29 @@ export const Entregado = () => {
     paterno_entrega: ''
   })
 
+  const [modificarEntregado, setModificarEntregado] = useState({
+    id_fuente: '',
+    calle_entrega: '',
+    colonia_entrega: '',
+    id_municipio_entrega: '',
+    id_entidad_entrega: '',
+    cp_entrega: '',
+    inspeccion: '',
+    id_fuente_entrega: '',
+    fecha_entrega: '',
+    hora_entrega: '',
+    serie: '',
+    motor: '',
+    factura_vehiculo: '',
+    comprob_domic_prop: '',
+    persona_entrega: '',
+    nombre_entrega: '',
+    paterno_entrega: ''
+  })
+
+  const [entregadoBD, setEntregadoBD] = useState([])
+  let results6 = []
+
   const [showModalValidacion, setShowModalValidacion] = useState(false)
   const [showModalSuccess, setShowModalSuccess] = useState(false)
 
@@ -46,6 +92,12 @@ export const Entregado = () => {
 
   const [municipios, setMunicipios] = useState([])
   let results3 = []
+
+  const [fechaRobado, setFechaRobado] = useState([])
+  let results7 = []
+
+  const [fechaRecuperado, setFechaRecuperado] = useState([])
+  let results8 = []
 
   const [entidadSeleccionada, setEntidadSeleccionada] = useState('')
 
@@ -65,6 +117,15 @@ export const Entregado = () => {
   const handleShowModalValidacion = () => setShowModalValidacion(true)
   const handleShowModalSuccess = () => setShowModalSuccess(true)
 
+  const EntregadoBD = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:8081/entregado/${id}`)
+      setEntregadoBD(data)
+    }
+    catch (err) {
+
+    }
+  }
 
   const entidadesSelect = async () => {
     try {
@@ -108,15 +169,45 @@ export const Entregado = () => {
     }
   }
 
+  const fechaDeRobado = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:8081/fechaRobado/${id}`)
+      setFechaRobado(data)
+    }
+    catch (err) {
+
+    }
+  }
+
+  const fechaDeRecuperado = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:8081/fechaRecuperado/${id}`)
+      setFechaRecuperado(data)
+    }
+    catch (err) {
+
+    }
+  }
+
 
   useEffect(() => {
     entidadesSelect()
     ultimoIdSelect()
+    fechaDeRobado()
+    fechaDeRecuperado()
   }, [])
+
+  useEffect(() => {
+    EntregadoBD()
+  }, setEditar)
+
 
   results2 = entidades
   results3 = municipios
   results5 = ultimoId
+  results6 = entregadoBD
+  results7 = fechaRobado
+  results8 = fechaRecuperado
 
   const formatoDia = () => {
 
@@ -149,6 +240,13 @@ export const Entregado = () => {
     id_entidad = document.getElementById('id_entidad_entrega')
   }
 
+  const handleChangeModificacionEntregado = (e) => {
+    formatoDia()
+    formatoHora()
+    setModificarEntregado((prev) => ({ ...prev, id_alterna, [e.target.name]: e.target.value }))
+    id_entidad = document.getElementById('id_entidad_recupera')
+  }
+
   const handleEntidadChange = (event) => {
     const selectedEntidad = event.target.value;
     setEntidadSeleccionada(selectedEntidad);
@@ -169,6 +267,8 @@ export const Entregado = () => {
   //OBTENER LA FECHA ACTUAL PARA VALIDAD INPUT TYPE DATE
   let today = new Date().toISOString().split('T')[0];
   let minDate = "1900-01-01"
+
+  console.log(modificarEntregado)
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -672,7 +772,48 @@ export const Entregado = () => {
               <label className="form-label" class="formulario_label"> FECHA:</label>
               { }
               <div class="formulario_grupo-input">
-                <input type="date" max={today} min={minDate} className="form-control" id="fecha_entrega" name="fecha_entrega" onChange={handleChange} required />
+                {/* VALIDACIÓN La fecha de entrega no puede ser menor a la fecha de robo.*/}
+                {results7.map(fechaRobado => {
+                  dateRobo = new Date(fechaRobado.FECHA_ROBO)
+                  console.log(dateRobo)
+                  let monthRobo = dateRobo.getMonth() + 1
+                  if (monthRobo > 0 && monthRobo < 10) {
+                    monthRobo = "0" + monthRobo
+                  }
+                  let dayRobo = dateRobo.getDate()
+                  if (dayRobo > 0 && dayRobo < 10) {
+                    console.log("day ", dayRobo)
+                    dayRobo = "0" + dayRobo
+                  }
+                  newDateRobo = dateRobo.getFullYear() + "-" + monthRobo + "-" + dayRobo
+                  console.log("FECHA ROBO ", newDateRobo)
+                  return (
+                    <>
+                      {/* VALIDACIÓN La fecha de factura no puede ser menor a la fecha de recuperación.*/}
+                      {results8.map(fechaRecuperado => {
+                        dateRecuperado = new Date(fechaRecuperado.FECHA_REC)
+                        let monthRecuperacion = dateRecuperado.getMonth() + 1
+                        if (monthRecuperacion > 0 && monthRecuperacion < 10) {
+                          monthRecuperacion = "0" + monthRecuperacion
+                        }
+                        let dayRecuperacion = dateRecuperado.getDate()
+                        if (dayRecuperacion > 0 && dayRecuperacion < 10) {
+                          dayRecuperacion = "0" + dayRecuperacion
+                        }
+                        newDateRecuperado = dateRecuperado.getFullYear() + "-" + monthRecuperacion + "-" + dayRecuperacion
+                        console.log("FECHA RECUPERADO ", newDateRecuperado)
+
+                        if (newDateRobo < newDateRecuperado) {
+                          return <input type="date" max={today} min={newDateRobo} className="form-control" id="fecha_entrega" name="fecha_entrega" onChange={handleChange} required />
+                        } else if(newDateRobo > newDateRecuperado) {
+                          return <input type="date" max={today} min={newDateRecuperado} className="form-control" id="fecha_entrega" name="fecha_entrega" onChange={handleChange} required />
+                        } else if(newDateRecuperado === newDateRobo){
+                          return <input type="date" max={today} min={newDateRobo} className="form-control" id="fecha_entrega" name="fecha_entrega" onChange={handleChange} required />
+                        }
+                      })}
+                    </>
+                  )
+                })}
               </div>
               <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
@@ -706,7 +847,7 @@ export const Entregado = () => {
               <div class="invalid-feedback">Porfavor rellene el campo.</div>
             </div>
             <div class="formulario_grupo col-6" id='grupo_persona'>
-              <label className="form-label" class="formulario_label" for='persona_entrega' >PERSONA QUE ENTREGA EL VEHICULO:</label>
+              <label className="form-label" class="formulario_label" for='persona_entrega' >PERSONA QUE RECIBE EL VEHICULO:</label>
               <br />
               <div class="formulario_grupo-input">
                 <select className='form-control' id='persona_entrega' name='persona_entrega' onChange={handleChange} required>
@@ -720,8 +861,84 @@ export const Entregado = () => {
             <div class="col-md-12">
               <Button variant="primary" type="submit" onClick={handleClick}>Enviar</Button>
               <Link to="/" className="btn btn-info"> Inicio</Link>
+              <Button disabled variant='primary' onClick={() => {
+                setEditar(id)
+              }}> Editar </Button>
+              {editar == id && (
+                <div className='edit_form'>
+                  <h3 className='title'>Modificar</h3>
+                  <form>
+                    {results6.map(entregadoBD => {
+                      let date2 = new Date(entregadoBD.FECHA_ENTREGA)
+                      let newDate2 = date2.getFullYear() + "/" + date2.getMonth() + "/" + date2.getDay()
+                      return (
+                        <>
+                          <label>CALLE:</label>
+                          <input type='text' name='calle_entrega' className="form-control" defaultValue={entregadoBD.CALLE_ENTREGA} onChange={handleChangeModificacionEntregado}></input>
+                          <label>COLONIA:</label>
+                          <input type='text' name='calle_entrega' className="form-control" defaultValue={entregadoBD.COLONIA_ENTREGA} onChange={handleChangeModificacionEntregado}></input>
+                          <label>CÓDIGO POSTAL:</label>
+                          <input type='text' name='calle_entrega' className="form-control" defaultValue={entregadoBD.CP_ENTREGA} onChange={handleChangeModificacionEntregado}></input>
+                          <label>SERIE:</label>
+                          <input type='text' name='calle_entrega' className="form-control" defaultValue={entregadoBD.SERIE} onChange={handleChangeModificacionEntregado}></input>
+                          <label>MOTOR:</label>
+                          <input type='text' name='calle_entrega' className="form-control" defaultValue={entregadoBD.MOTOR} onChange={handleChangeModificacionEntregado}></input>
+                          <label>NÚMERO DE FACTURA:</label>
+                          <input type='text' name='calle_entrega' className="form-control" defaultValue={entregadoBD.FACTURA_VEHICULO} onChange={handleChangeModificacionEntregado}></input>
+                          <label>NOMBRE DEL PROPIETARIO / REPRESENTANTE:</label>
+                          <input type='text' name='calle_entrega' className="form-control" defaultValue={entregadoBD.NOMBRE_ENTREGA} onChange={handleChangeModificacionEntregado}></input>
+                          <label>APELLIDO DEL PROPIETARIO / REPRESENTANTE:</label>
+                          <input type='text' name='calle_entrega' className="form-control" defaultValue={entregadoBD.PATERNO_ENTREGA} onChange={handleChangeModificacionEntregado}></input>
+                          <label>COMPROBANTE DE DOMICILIO:</label>
+                          <input type='text' name='calle_entrega' className="form-control" defaultValue={entregadoBD.COMPROB_DOMIC_PROP} onChange={handleChangeModificacionEntregado}></input>
+                          <label>ENTIDAD:</label>
+                          <select className="form-control" id="id_entidad_entrega" name="id_entidad_entrega" onChange={handleEntidadChange} onClick={handleChange} required>
+                            <option selected disabled value="">{entregadoBD.ID_ENTIDAD_ENTREGA}</option>
+                            {results2.map(entidades => {
+                              return (
+                                <option name={entidades.ID_ENTIDAD} key={entidades.ID_ENTIDAD} value={entidades.ID_ENTIDAD}>{entidades.ENTIDAD}</option>
+                              )
+                            })}
+                          </select>
+                          <label>MUNICIPIO:</label>
+                          <select className='form-control' id='id_municipio_entrega' name='id_municipio_entrega' onChange={handleChange} required>
+                            <option selected disabled value="">{entregadoBD.ID_MUNICIPIO_ENTREGA}</option>
+                            {municipios.map((municipio) => (
+                              <option key={municipio.ID_MUNICIPIO} value={municipio.ID_MUNICIPIO}>
+                                {municipio.MUNICIPIO}
+                              </option>
+                            ))}
+                          </select>
+                          <label>INSPECCIÓN:</label>
+                          <select className='form-control' id='inspeccion' name='inspeccion' onChange={handleChange} required>
+                            <option selected disabled value="">{entregadoBD.INSPECCION}</option>
+                            <option value='1'>INSPECCIÓN REALIZADA AL VEHICULO ENTREGADO</option>
+                            <option value='0'>NO REALIZADA</option>
+                          </select>
+                          <label>FECHA:</label>
+                          {newDate2}
+                          <input type="date" max={today} min={minDate} className="form-control" id="fecha_entrega" name="fecha_entrega" onChange={handleChange} required />
+                          <label>HORA:</label>
+                          <input type="time" className="form-control" defaultValue={entregadoBD.HORA_ENTREGA} id="hora_entrega" name="hora_entrega" onChange={handleChange} required />
+                          <label>PERSONA QUE RECIBE EL VEHICULO</label>
+                          <select className='form-control' id='persona_entrega' name='persona_entrega' onChange={handleChange} required>
+                            <option selected disabled value="">{entregadoBD.PERSONA_ENTREGA}</option>
+                            <option value='1'>PROPIETARIO</option>
+                            <option value='2'>REPRESENTANTE</option>
+                          </select>
+                        </>
+                      )
+                    })}
+                    <Button variant="primary" type="submit" onClick={e => handleClickModificarEntregado(e, id)} className='editar'>Actualizar</Button>
+                  </form>
+                </div>
+              )}
+
             </div>
+
           </form>
+
+
           <Toaster
             position='top-center'
             dir='auto'
