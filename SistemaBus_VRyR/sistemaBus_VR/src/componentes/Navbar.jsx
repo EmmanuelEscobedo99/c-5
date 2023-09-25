@@ -30,13 +30,15 @@ const Navbar = () => {
                   {/*<a className="logo" href="#">Registro </a>*/}
                   <div className="logo">
                     <span></span>
-                    <h3>Registro</h3>
+                    {/*<img src="../src/assets/c5.png" height="80px"></img>
+                    <img src="../src/assets/ssp.png" height="80px"></img>*/}
+                    <h2>Registro</h2>
                   </div>
                   <li>
-                    <NavLink to="/alta" className={({isActive}) => isActive ? "active" : ""}>Registrar vehiculo</NavLink>
+                    <NavLink to="/Registrar" className={({isActive}) => isActive ? "active" : ""}>Registrar vehiculo</NavLink>
                   </li>
                   <li>
-                    <NavLink to="/" className={({isActive}) => isActive ? "active" : ""}>Buscar vehiculo</NavLink>
+                    <NavLink to="/ListaArchivos" className={({isActive}) => isActive ? "active" : ""}>Buscar vehiculo</NavLink>
                   </li>
                   {/*<li>
                     <NavLink to="/recuperado" className={({isActive}) => isActive ? "active" : ""}>Recuperar vehiculo</NavLink>

@@ -681,7 +681,7 @@ export const Entregado = () => {
 
               )
             })}
-            <span><h5>1.-Datos de ubicación del vehiculo</h5></span>
+            <span><h5>1.-Datos de ubicación de entrega del vehiculo</h5></span>
             <div class="formulario_grupo col-3" id='grupo_entidad'>
               <label className="form-label" class="formulario_label" for='id_entidad_entrega' >ENTIDAD:</label>
               <br />
@@ -860,7 +860,7 @@ export const Entregado = () => {
             </div>
             <div class="col-md-12">
               <Button variant="primary" type="submit" onClick={handleClick}>Enviar</Button>
-              <Link to="/" className="btn btn-info"> Inicio</Link>
+              <Link to="/ListaArchivos" className="btn btn-info"> Inicio</Link>
               <Button disabled variant='primary' onClick={() => {
                 setEditar(id)
               }}> Editar </Button>

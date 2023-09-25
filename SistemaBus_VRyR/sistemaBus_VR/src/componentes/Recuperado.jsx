@@ -746,7 +746,7 @@ export const Recuperado = () => {
                         </div>
                         <div class="col-md-12">
                             <Button variant="primary" type="submit" onClick={handleClick}>Enviar</Button>
-                            <Link to="/" className="btn btn-info"> Inicio</Link>
+                            <Link to="/ListaArchivos" className="btn btn-info"> Inicio</Link>
                             <Button disabled variant="primary" onClick={() => {
                                 setEditar(id)
                             }}>Editar</Button>

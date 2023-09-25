@@ -1,5 +1,5 @@
 //import {results5} from '../sistemaBus_VR/src/componentes/Recuperado'
-
+//const jwt = require('jsonwebtoken');
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
@@ -7,6 +7,7 @@ const app = express();
 const bcrypt = require('bcrypt');
 app.use(cors());
 app.use(express.json())
+//const secretKey = 'IJOKJHLKj?=/(%&/kjlkjkJLKJL24545%$&#$%#$"_##$%#$w%#$#$rwseseFD'; // Debes cambiar esto a una clave segura
 
 
 
@@ -322,34 +323,39 @@ app.get('/fechaRecuperado/:id', (req, res) => {
     })
 })
 
-app.post('/login', (req, res) => {
+app.post('/login/:privilegios', (req, res) => {
+    const privilegios = req.body.privilegios
     const { username, password } = req.body;
-  
+
     // Realiza una consulta a la base de datos para verificar las credenciales
     const query = 'SELECT * FROM usuarios WHERE username = ?';
-  
-    db.query(query, [username], (err, results) => {
-      if (err) {
-        res.status(500).json({ error: 'Error al buscar usuario en la base de datos' });
-        return;
-      }
-  
-      if (results.length === 0) {
-        res.status(401).json({ error: 'Usuario no encontrado' });
-        return;
-      }
-  
-      const user = results[0];
 
-      if(password != user.password){
-        console.log("contraseña incorrecta")
-      } else {
-        res.status(200).json({ message: 'Inicio de sesión exitoso' });
-      }
-  
-     
+    db.query(query, [username], (err, results) => {
+        if (err) {
+            res.status(500).json({ error: 'Error al buscar usuario en la base de datos' });
+            return;
+        }
+
+        if (results.length === 0) {
+            res.status(401).json({ error: 'Usuario no encontrado' });
+            return;
+        }
+
+        const user = results[0];
+
+        if (password != user.password) {
+            console.log("contraseña incorrecta")
+        } else {
+            res.status(200).json({ message: 'Inicio de sesión exitoso' });
+            // Si el usuario se autentica correctamente, emitimos un token JWT
+            //const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '1h' });
+
+            res.json();
+        }
+
+
     });
-  });
+});
 
 // para modificar
 //video /users/:id
@@ -400,6 +406,70 @@ app.post("/modificarEntregado/:id", (req, res) => {
         if (err) return res.send(err);
         return res.json(result)
     })
+})
+
+// Crear un registro POST
+
+app.post("/crear", (req, res) => {
+    procesado = 0;
+    id_fuente = 10;
+    const fe = req.body.fe;
+    const hora = req.body.hora;
+    const id_alterna = req.body.id_alterna;
+    const averiguacion = req.body.averiguacion;
+    const fecha_averigua = req.body.fecha_averigua;
+    const agencia_mp = req.body.agencia_mp;
+
+    const agente_mp = req.body.agente_mp;
+    const id_modalidad = req.body.id_modalidad;
+    const fecha_robo = req.body.fecha_robo;
+
+    const hora_robo = req.body.hora_robo;
+    const calle_robo = req.body.calle_robo;
+    const num_ext_robo = req.body.num_ext_robo;
+    const colonia_robo = req.body.colonia_robo;
+
+    const id_municipio_robo = req.body.id_municipio_robo;
+    const id_entidad_robo = req.body.id_entidad_robo;
+    const id_tipo_lugar = req.body.id_tipo_lugar;
+    const nombre_den = req.body.nombre_den;
+    const paterno_den = req.body.paterno_den;
+
+    const calle_den = req.body.calle_den;
+    const numext_dom_den = req.body.numext_dom_den;
+    const colonia_den = req.body.colonia_den;
+    const id_municipio_den = req.body.id_municipio_den;
+    const id_entidad_den = req.body.id_entidad_den;
+    const cp_den = req.body.cp_den;
+    const placa = req.body.placa;
+
+    const id_marca = req.body.id_marca;
+    const id_submarca = req.body.id_submarca;
+    const modelo = req.body.modelo;
+    const id_color = req.body.id_color;
+    const serie = req.body.serie;
+    const id_tipo_uso = req.body.id_tipo_uso;
+    const id_procedencia = req.body.id_procedencia;
+
+
+
+    db.query("INSERT INTO vehiculo_robado (id_alterna,id_fuente,averiguacion,fecha_averigua,agencia_mp, agente_mp, id_modalidad, fecha_robo, hora_robo, calle_robo, num_ext_robo, colonia_robo,id_municipio_robo , id_entidad_robo,id_tipo_lugar,nombre_den,paterno_den, calle_den, numext_dom_den, colonia_den, id_municipio_den, id_entidad_den, cp_den, placa,id_marca, id_submarca, modelo, id_color, serie, id_tipo_uso, id_procedencia   ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        [id_alterna, id_fuente, averiguacion, fecha_averigua, agencia_mp, agente_mp, id_modalidad, fecha_robo, hora_robo, calle_robo, num_ext_robo, colonia_robo, id_municipio_robo,
+            id_entidad_robo, id_tipo_lugar, nombre_den, paterno_den, calle_den, numext_dom_den, colonia_den, id_municipio_den, id_entidad_den, cp_den, placa,
+            id_marca, id_submarca, modelo, id_color, serie, id_tipo_uso, id_procedencia],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+
+
+                db.query("INSERT INTO control_alterna (id_alterna, id_fuente, fecha, hora, procesado ) VALUES (?,?,?,?,?)", [id_alterna, id_fuente, fe, hora, procesado])
+                res.send("registrado")
+
+            }
+        }
+    )
+
 })
 
 

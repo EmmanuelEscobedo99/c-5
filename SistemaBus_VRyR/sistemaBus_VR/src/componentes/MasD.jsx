@@ -380,7 +380,7 @@ const MasD = () => {
       */ }
 
             { /* <Button variant="primary" type="submit" onClick={handleClick}></Button>  */}
-            <Link to="/" className="btn  btn-info "> Inicio</Link>
+            <Link to="/ListaArchivos" className="btn  btn-info "> Inicio</Link>
             <Link className="btn  btn-info" to={`/recuperado/${id}`}>Recuperado</Link>
             <Link to={`/entregado/${id}`} className="btn  btn-info"> Entregado</Link>
           </form>
