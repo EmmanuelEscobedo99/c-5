@@ -47,7 +47,7 @@ const Navbar = () => {
                     <NavLink to="/entregado" className={({isActive}) => isActive ? "active" : ""}>Entregar vehiculo</NavLink>
                   </li>*/}
                   <li>
-                    <NavLink to="/Login" className={({isActive}) => isActive ? "active" : ""}>Cerrar sesion</NavLink>
+                    <NavLink to="/Login" className={({isActive}) => isActive ? "active" : ""}>Cerrar sesión</NavLink>
                   </li>
                 </ul>
               </nav>
