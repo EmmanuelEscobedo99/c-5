@@ -754,7 +754,7 @@ export const Recuperado = () => {
                                     </div>
                                     <div class="invalid-feedback">Porfavor seleccione un color.</div>
                                 </div>
-                                <span><h5>4.-Datos de fecha de recuperación del vehiculo</h5></span>
+                                <span><h5>3.-Datos de fecha de recuperación del vehiculo</h5></span>
                                 <div class="formulario_grupo col-md-6" id='grupo_fecha'>
                                     <label className="form-label" class="formulario_label" > FECHA:</label>
                                     { }

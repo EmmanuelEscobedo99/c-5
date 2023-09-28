@@ -187,8 +187,8 @@ app.post("/crearRecuperado", (req, res) => {
                 console.log(err);
             } else {
                 db.query(
-                    "INSERT INTO control_alterna (ID_ALTERNA, ID_FUENTE, TIPO_MOVIMIENTO, ESTATUS, FECHA, HORA) VALUES (?,?,?,?,?,?)",
-                    [id_alterna, 10, 'CAMBIO', 'RECUPERADO', fechaToday, horaToday],
+                    "INSERT INTO control_alterna (ID_ALTERNA, ID_FUENTE, TIPO_MOVIMIENTO, ESTATUS, FECHA, HORA, USUARIO) VALUES (?,?,?,?,?,?,?)",
+                    [id_alterna, 10, 'CAMBIO', 'RECUPERADO', fechaToday, horaToday, username],
                     (err, res) => {
                         if (err) {
                             console.log(err)
@@ -254,8 +254,8 @@ app.post("/crearEntregado", (req, res) => {
                 console.log(err);
             } else {
                 db.query(
-                    "INSERT INTO control_alterna (ID_ALTERNA, ID_FUENTE, TIPO_MOVIMIENTO, ESTATUS, FECHA, HORA) VALUES (?,?,?,?,?,?)",
-                    [id_alterna, 10, 'CAMBIO', 'ENTREGADO', fechaToday, horaToday],
+                    "INSERT INTO control_alterna (ID_ALTERNA, ID_FUENTE, TIPO_MOVIMIENTO, ESTATUS, FECHA, HORA, USUARIO) VALUES (?,?,?,?,?,?,?)",
+                    [id_alterna, 10, 'CAMBIO', 'ENTREGADO', fechaToday, horaToday, username],
                     (err, res) => {
                         if (err) {
                             console.log(err)
