@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Validation from "./../Elementos/Validacion"
-
+import Login from "./Login";
 
 
 const Registrar = () => {
@@ -408,589 +408,596 @@ const Registrar = () => {
   })
   return (
     <>
-      <Navbar></Navbar>
-      <div className="area_form">
-        <div className="contenedor">
-          <Form>
-            {result.map(userData => {
-              return (
-                <>
-                  
-                  <input id='nombre_bitacora' type="hidden" name="nombre_bitacora" value={nombre_bitacora} onChange={handleChange} ></input>
-                  <input id='apellidos_bitacora' type="hidden" name="apellidos_bitacora" value={apellidos_bitacora} onChange={handleChange} ></input>
-                  <input id='correoIns_bitacora' type="hidden" name="correoIns_bitacora" value={correoIns_bitacora} onChange={handleChange} ></input>
-                  <input id='username_bitacora' type="hidden" name="username_bitacora" value={username_bitacora} onChange={handleChange} ></input>
-                  <input id='municipio_bitacora' type="hidden" name="municipio_bitacora" value={municipio_bitacora} onChange={handleChange} ></input>
-                  <input id='idUser_bitacora' type="hidden" name="idUser_bitacora" value={idUser_bitacora} onChange={handleChange} ></input>
-                </>
-              )
-            })}
-            <h3>Registro de Vehiculo Robado</h3>
+      {isLoggedIn ? (
+        <>
+          <Navbar></Navbar>
+          <div className="area_form">
+            <div className="contenedor">
+              <Form>
+                {result.map(userData => {
+                  return (
+                    <>
 
-            <div className="row">
-              <div className="col-sm-6">
-                <label className="form-label">
-                  NÚMERO DE AVERIGUANCION PREVIA ASIGNADA:
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="averiguacion_"
-                  name="averiguacion"
-                  onChange={handleChange}
-                />
-                {errors.averiguacion && <p style={{ color: "red", fontSize: "13px" }}> {errors.averiguacion}</p>}
-              </div>
+                      <input id='nombre_bitacora' type="hidden" name="nombre_bitacora" value={nombre_bitacora} onChange={handleChange} ></input>
+                      <input id='apellidos_bitacora' type="hidden" name="apellidos_bitacora" value={apellidos_bitacora} onChange={handleChange} ></input>
+                      <input id='correoIns_bitacora' type="hidden" name="correoIns_bitacora" value={correoIns_bitacora} onChange={handleChange} ></input>
+                      <input id='username_bitacora' type="hidden" name="username_bitacora" value={username_bitacora} onChange={handleChange} ></input>
+                      <input id='municipio_bitacora' type="hidden" name="municipio_bitacora" value={municipio_bitacora} onChange={handleChange} ></input>
+                      <input id='idUser_bitacora' type="hidden" name="idUser_bitacora" value={idUser_bitacora} onChange={handleChange} ></input>
+                    </>
+                  )
+                })}
+                <h3>Registro de Vehiculo Robado</h3>
 
-              {/*  */}
+                <div className="row">
+                  <div className="col-sm-6">
+                    <label className="form-label">
+                      NÚMERO DE AVERIGUANCION PREVIA ASIGNADA:
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="averiguacion_"
+                      name="averiguacion"
+                      onChange={handleChange}
+                    />
+                    {errors.averiguacion && <p style={{ color: "red", fontSize: "13px" }}> {errors.averiguacion}</p>}
+                  </div>
 
-              <div className="col-6">
-                <label className="form-label">FECHA EN LA QUE SE DIO DE ALTA LA DENUNCIA</label>
-                <input
-                  type="date"
-                  className="form-control"
-                  id="fecha_averigua"
-                  name="fecha_averigua"
-                  onChange={handleChange}
-                  min="2000-00-01"
-                  max={create.fe}
-                />
-                {errors.fecha_averigua && <p style={{ color: "red", fontSize: "13px" }}> {errors.fecha_averigua}</p>}
-              </div>
+                  {/*  */}
 
-            </div>
-            <br />
+                  <div className="col-6">
+                    <label className="form-label">FECHA EN LA QUE SE DIO DE ALTA LA DENUNCIA</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      id="fecha_averigua"
+                      name="fecha_averigua"
+                      onChange={handleChange}
+                      min="2000-00-01"
+                      max={create.fe}
+                    />
+                    {errors.fecha_averigua && <p style={{ color: "red", fontSize: "13px" }}> {errors.fecha_averigua}</p>}
+                  </div>
+
+                </div>
+                <br />
 
 
-            <div className="row">
-              <div className="col-6 ">
-                <label className="form-label">
-                  AGENCIA DEL MINISTERIO PÚBLICO DONDE SE HIZO LA DENUNCIA
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="agencia_mp"
-                  name="agencia_mp"
-                  onChange={handleChange}
-                />
-                {errors.agencia_mp && <p style={{ color: "red", fontSize: "13px" }}> {errors.agencia_mp}</p>}
-              </div>
+                <div className="row">
+                  <div className="col-6 ">
+                    <label className="form-label">
+                      AGENCIA DEL MINISTERIO PÚBLICO DONDE SE HIZO LA DENUNCIA
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="agencia_mp"
+                      name="agencia_mp"
+                      onChange={handleChange}
+                    />
+                    {errors.agencia_mp && <p style={{ color: "red", fontSize: "13px" }}> {errors.agencia_mp}</p>}
+                  </div>
 
-              <div className="col-6 ">
-                <label className="form-label">
+                  <div className="col-6 ">
+                    <label className="form-label">
+                      {" "}
+                      NOMBRE COMPLETO DEL AGENTE DEL MINISTERIO PÚBLICO QUE LEVANTO LA
+                      DENUNCIA:
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="agente_mp"
+                      name="agente_mp"
+                      onChange={handleChange}
+                    />
+                    {errors.agente_mp && <p style={{ color: "red", fontSize: "13px" }}> {errors.agente_mp}</p>}
+                  </div>
+                </div>
+                <br />
+
+                <div className="row">
+                  <div className="col-4">
+                    <label className="form-label">MODALIDAD DEL ROBO</label>
+                    <select
+                      name="id_modalidad"
+                      className="form-control"
+                      onChange={handleChange}
+                    >
+                      <option selected disabled value=" ">Seleccione una modalidad</option>
+                      {modalidad.map((elemento) => (
+                        <option key={elemento.id} value={elemento.id}>
+                          {elemento.tipo}{" "}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.id_modalidad && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_modalidad}</p>}
+                  </div>
+
+                  <div className="col-4">
+                    <label className="form-label">FECHA DEL ROBO</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      id="fecha_robo"
+                      name="fecha_robo"
+                      onChange={handleChange}
+                      min="2000-00-01"
+                      max={create.fe}
+
+                    />
+                    {errors.fecha_robo && <p style={{ color: "red", fontSize: "13px" }}> {errors.fecha_robo}</p>}
+                  </div>
+
+                  <div className="col-4">
+                    <label className="form-label">HORA DEL ROBO</label>
+                    <input
+                      type="time"
+                      className="form-control"
+                      id="hora_robo"
+                      name="hora_robo"
+                      defaultValue="00:00"
+                      onChange={handleChange}
+                    />
+                    {errors.hora_robo && <p style={{ color: "red", fontSize: "13px" }}> {errors.hora_robo}</p>}
+                  </div>
+
+                </div>
+                <br />
+                <div className="row">
+                  <div className="col-4">
+                    <label className="form-label">CALLE DONDE OCURRIO EL ROBO</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="calle_robo"
+                      name="calle_robo"
+                      onChange={handleChange}
+                    />
+                    {errors.calle_robo && <p style={{ color: "red", fontSize: "13px" }}> {errors.calle_robo}</p>}
+                  </div>
+                  <br />
+                  <div className="col-4">
+                    <label className="form-label">
+                      NUMERO EXTERIOR DONDE OCURRIO EL ROBO
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="num_ext_robo"
+                      name="num_ext_robo"
+                      onChange={handleChange}
+                    />
+                    {errors.num_ext_robo && <p style={{ color: "red", fontSize: "13px" }}> {errors.num_ext_robo}</p>}
+                  </div>
+                  <br />
+                  <div className="col-4">
+                    <label className="form-label">
+                      COLONIA DONDE OCURRIO EL ROBO
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="colonia_robo"
+                      name="colonia_robo"
+                      onChange={handleChange}
+                    />
+                    {errors.colonia_robo && <p style={{ color: "red", fontSize: "13px" }}> {errors.colonia_robo}</p>}
+                  </div>
+                </div>
+                <br />
+                <br />
+                <div className="row">
+
+                  <div className="col-6">
+                    <label className="form-label ">
+                      {" "}
+                      ENTIDAD DONDE OCURRIO EL ROBO:
+                    </label>
+                    <br />
+                    <select
+                      className="select col-10"
+                      id="id_entidad_robo"
+                      name="id_entidad_robo"
+                      onChange={handleEntidadChange}
+                      onClick={handleChange}
+                    >
+                      <option selected disabled value=" ">SELECCIONE UNA ENTIDAD</option>
+                      {results2.map((entidades) => {
+                        return (
+                          <option
+                            name={entidades.id_entidad}
+                            key={entidades.id_entidad}
+                            value={entidades.id_entidad}>
+                            {entidades.entidad}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    {errors.id_entidad_robo && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_entidad_robo}</p>}
+                  </div>
+
+                  <div className="col-6">
+                    <label className="form-label">
+                      MUNICIPIO DONDE OCURRIO EL ROBO:
+                    </label>
+                    <br />
+                    <select
+                      className="select col-10"
+                      id="id_municipio_robo"
+                      name="id_municipio_robo"
+                      onChange={handleChange}
+                    >
+                      <option selected disabled value=" ">SELECCIONE UN MUNICIPIO</option>
+                      {municipios.map((municipio) => (
+                        <option
+                          key={municipio.id_municipio}
+                          value={municipio.id_municipio}
+                        >
+                          {municipio.municipio}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.id_municipio_robo && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_municipio_robo}</p>}
+                  </div>
+                </div>
+                <br />
+
+                <div className="row">
+                  <div className="col-4">
+                    <label className="form-label">
+                      TIPO DEL LUGAR DONDE OCURRIO EL ROBO
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="id_tipo_lugar"
+                      name="id_tipo_lugar"
+                      placeholder="CENTRO COMERCIAL, CASA, ETC"
+                      onChange={handleChange}
+                    />
+                    {errors.id_tipo_lugar && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_tipo_lugar}</p>}
+                  </div>
+                  <br />
+                  <div className="col-4">
+                    <label className="form-label">
+                      NOMBRE DE LA PERSONA QUE REALIZA LA DENUNCIA
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="nombre_den"
+                      name="nombre_den"
+                      onChange={handleChange}
+                    />
+                    {errors.nombre_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.nombre_den}</p>}
+                  </div>
+                  <br />
+                  <div className="col-4">
+                    <label className="form-label">
+                      APELLIDO PATERNO DE QUIEN QUE REALIZA LA DENUNCIA
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="paterno_den"
+                      name="paterno_den"
+                      onChange={handleChange}
+                    />
+                    {errors.paterno_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.paterno_den}</p>}
+                  </div>
+                </div>
+                <br />
+
+
+                <div className="row">
+                  <div className="col-4">
+                    <label className="form-label">
+                      CALLE DEL DOMICILIO DEL DENUNCIANTE
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="calle_den"
+                      name="calle_den"
+                      onChange={handleChange}
+                    />
+                    {errors.calle_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.calle_den}</p>}
+                  </div>
+                  <br />
+                  <div className="col-4">
+                    <label className="form-label">
+                      NUMERO EXTERIOR DEL DOMICILIO DEL DENUNCIANTE
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="numext_dom_den"
+                      name="numext_dom_den"
+                      onChange={handleChange}
+                    />
+                    {errors.numext_dom_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.numext_dom_den}</p>}
+                  </div>
+                  <br />
+                  <div className="col-4">
+                    <label className="form-label">
+                      COLONIA DEL DOMICILIO DEL DENUNCIANTE
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="colonia_den"
+                      name="colonia_den"
+                      onChange={handleChange}
+                    />
+                    {errors.colonia_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.colonia_den}</p>}
+                  </div>
+                </div>
+                <br />
+                <br />
+                <div className="row">
+                  <div className="col-6">
+                    <label className="form-label">
+
+                      IDENTIFICADOR DEL DOMICILIO DEL DENUNCIANTE
+                    </label>
+                    <br />
+                    <select
+                      className="select col-10"
+                      id="id_entidad_den"
+                      name="id_entidad_den"
+                      onChange={handleDenChange}
+                      onClick={handleChange}
+                    >
+                      <option selected disabled value=" ">SELECCIONE LA ENTIDAD DEL DENUNCIANTE</option>
+                      {resultado.map((entidades) => {
+                        return (
+                          <option
+                            name={entidades.id_entidad}
+                            key={entidades.id_entidad}
+                            value={entidades.id_entidad}
+                          >
+                            {entidades.entidad}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    {errors.id_entidad_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_entidad_den}</p>}
+                  </div>
+
+                  <div className="col-6">
+                    <label className="form-label">
+                      IDENTIFICADOR DE LA ENTIDAD DENUNCIANTE:
+                    </label>
+                    <br />
+                    <select
+                      className="select col-10"
+                      id="id_municipio_den"
+                      name="id_municipio_den"
+                      onChange={handleChange}>
+                      <option selected disabled value=" ">SELECCIONE EL MUNICIPIO DEL DENUNCIANTE</option>
+                      {denunciante_muni.map((municipio) => (
+                        <option
+                          key={municipio.id_municipio}
+                          value={municipio.id_municipio}
+                        >
+                          {municipio.municipio}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.id_municipio_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_municipio_den}</p>}
+                  </div>
+                </div>
+                <br />
+
+
+                <div className="row">
+                  <div className="col-6">
+                    <label className="form-label">
+                      CODIGO POSTAL DEL LUGAR DEL ROBO
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="cp_den"
+                      name="cp_den"
+                      onChange={handleChange}
+                    />
+                    {errors.cp_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.cp_den}</p>}
+                  </div>
+
+                  <div className="col-6">
+                    <label className="form-label">
+                      PLACA O PERMISO DEL VEHICULO (SIN ESPACIOS)
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="placa"
+                      name="placa"
+                      onChange={handleChange}
+                    />
+                    {errors.placa && <p style={{ color: "red", fontSize: "13px" }}> {errors.placa}</p>}
+                  </div>
+                </div>
+                <br />
+
+                <div className="row">
+                  <div className="col-6">
+                    <label className="form-label">
+                      IDENTIFICADOR DE LA MARCA DEL VEHÍCULO
+                    </label>
+                    <br />
+                    <select
+                      className="select col-10"
+                      id="id_marca"
+                      name="id_marca"
+                      onChange={handleMarcaChange}
+                      onClick={handleChange}
+                    >
+                      <option selected disabled value=" ">SELECCIONE UNA MARCA</option>
+                      {result_marca.map((marca) => {
+                        return (
+                          <option
+                            name={marca.id_marca}
+                            key={marca.id_marca}
+                            value={marca.id_marca}
+                          >
+                            {marca.descripcion}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    {errors.id_marca && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_marca}</p>}
+                  </div>
+                  <br />
+                  <div className="col-6">
+                    <label className="form-label">
+                      SUBMARCA DEL VEHICULO ROBADO:
+                    </label>
+                    <br />
+                    <select
+                      className="select col-10"
+                      id="id_submarca"
+                      name="id_submarca"
+                      onClick={handleChange}
+                    >
+                      <option disabled value="">SELECCIONE LA SUB-MARCA</option>
+                      {submarca.map((sm) => (
+                        <option
+                          key={sm.id_submarca}
+                          value={sm.id_submarca}>
+
+                          {sm.descripcion}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.id_submarca && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_submarca}</p>}
+                  </div>
+                </div>
+                <br />
+
+
+
+                <div className="row">
+                  <div className="col-4">
+                    <label className="form-label">
+                      AÑO DEL VEHICULO EN CUATRO DIGITOS
+                    </label>
+                    <input
+                      placeholder=" AÑO EN CUATRO DIGITOS"
+                      type="text"
+                      className="form-control"
+                      id="modelo"
+                      name="modelo"
+                      onChange={handleChange}
+                      maxLength="4"
+                    />
+                    {errors.modelo && <p style={{ color: "red", fontSize: "13px" }}> {errors.modelo}</p>}
+                  </div>
+
+                  <div className="col-4">
+                    <label className="form-label">COLOR DEL VEHICULO</label>
+                    <select
+                      id="id_color"
+                      name="id_color"
+                      className="form-control"
+                      onChange={handleChange}
+                    >
+                      <option selected disabled value=" ">Seleccione un color</option>
+                      {color.map((colors) => (
+                        <option key={colors.id_color} value={colors.id_color}>
+                          {colors.descripcion}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.id_color && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_color}</p>}
+                  </div>
+                  <div className="col-4">
+                    <label className="form-label">
+                      N° DE SERIE O NUMERO DE IDENTIFICADOR DEL VEHICULO
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="serie"
+                      name="serie"
+                      onChange={handleChange}
+                    />
+                    {errors.serie && <p style={{ color: "red", fontSize: "13px" }}> {errors.serie}</p>}
+                  </div>
+                </div>
+                <br />
+
+
+                <div className="row">
+                  <div className="col-6">
+                    <label className="form-label">
+                      CLAVE DEL TIPO DE USO DEL VEHICULO
+                    </label>
+                    <select
+                      name="id_tipo_uso"
+                      className="form-control"
+                      onChange={handleChange}
+                    >
+                      <option selected disabled value=" ">Seleccione un tipo de uso</option>
+                      {tipo_uso.map((elemento) => (
+                        <option
+                          key={elemento.id_tipo_uso}
+                          value={elemento.id_tipo_uso}
+                        >
+                          {elemento.descripcion}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.id_tipo_uso && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_tipo_uso}</p>}
+                  </div>
+
+                  <div className="col-6">
+                    <label className="form-label">
+                      IDENTIFICADOR DE LA PROCEDENCIA DEL VEHICULO
+                    </label>
+                    <select
+                      id="id_procedencia"
+                      name="id_procedencia"
+                      className="form-control"
+                      onChange={handleChange}
+
+
+                    >
+                      <option selected disabled value=" " >Seleccione la procedencia del vehiculo</option>
+                      {procedencia.map((element) => (
+                        <option
+                          key={element.id_procedencia}
+                          value={element.id_procedencia}
+                        >
+                          {element.descripcion}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.id_procedencia && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_procedencia}</p>}
+                  </div>
+                </div>
+
+
+
+
+                <Button variant="primary" type="submit" onClick={handleValidation}>
+                  Guardar
+                </Button>
+                <Link to="/" className="btn btn-info">
                   {" "}
-                  NOMBRE COMPLETO DEL AGENTE DEL MINISTERIO PÚBLICO QUE LEVANTO LA
-                  DENUNCIA:
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="agente_mp"
-                  name="agente_mp"
-                  onChange={handleChange}
-                />
-                {errors.agente_mp && <p style={{ color: "red", fontSize: "13px" }}> {errors.agente_mp}</p>}
-              </div>
+                  Inicio
+                </Link>
+              </Form>
             </div>
-            <br />
-
-            <div className="row">
-              <div className="col-4">
-                <label className="form-label">MODALIDAD DEL ROBO</label>
-                <select
-                  name="id_modalidad"
-                  className="form-control"
-                  onChange={handleChange}
-                >
-                  <option selected disabled value=" ">Seleccione una modalidad</option>
-                  {modalidad.map((elemento) => (
-                    <option key={elemento.id} value={elemento.id}>
-                      {elemento.tipo}{" "}
-                    </option>
-                  ))}
-                </select>
-                {errors.id_modalidad && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_modalidad}</p>}
-              </div>
-
-              <div className="col-4">
-                <label className="form-label">FECHA DEL ROBO</label>
-                <input
-                  type="date"
-                  className="form-control"
-                  id="fecha_robo"
-                  name="fecha_robo"
-                  onChange={handleChange}
-                  min="2000-00-01"
-                  max={create.fe}
-
-                />
-                {errors.fecha_robo && <p style={{ color: "red", fontSize: "13px" }}> {errors.fecha_robo}</p>}
-              </div>
-
-              <div className="col-4">
-                <label className="form-label">HORA DEL ROBO</label>
-                <input
-                  type="time"
-                  className="form-control"
-                  id="hora_robo"
-                  name="hora_robo"
-                  defaultValue="00:00"
-                  onChange={handleChange}
-                />
-                {errors.hora_robo && <p style={{ color: "red", fontSize: "13px" }}> {errors.hora_robo}</p>}
-              </div>
-
-            </div>
-            <br />
-            <div className="row">
-              <div className="col-4">
-                <label className="form-label">CALLE DONDE OCURRIO EL ROBO</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="calle_robo"
-                  name="calle_robo"
-                  onChange={handleChange}
-                />
-                {errors.calle_robo && <p style={{ color: "red", fontSize: "13px" }}> {errors.calle_robo}</p>}
-              </div>
-              <br />
-              <div className="col-4">
-                <label className="form-label">
-                  NUMERO EXTERIOR DONDE OCURRIO EL ROBO
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="num_ext_robo"
-                  name="num_ext_robo"
-                  onChange={handleChange}
-                />
-                {errors.num_ext_robo && <p style={{ color: "red", fontSize: "13px" }}> {errors.num_ext_robo}</p>}
-              </div>
-              <br />
-              <div className="col-4">
-                <label className="form-label">
-                  COLONIA DONDE OCURRIO EL ROBO
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="colonia_robo"
-                  name="colonia_robo"
-                  onChange={handleChange}
-                />
-                {errors.colonia_robo && <p style={{ color: "red", fontSize: "13px" }}> {errors.colonia_robo}</p>}
-              </div>
-            </div>
-            <br />
-            <br />
-            <div className="row">
-
-              <div className="col-6">
-                <label className="form-label ">
-                  {" "}
-                  ENTIDAD DONDE OCURRIO EL ROBO:
-                </label>
-                <br />
-                <select
-                  className="select col-10"
-                  id="id_entidad_robo"
-                  name="id_entidad_robo"
-                  onChange={handleEntidadChange}
-                  onClick={handleChange}
-                >
-                  <option selected disabled value=" ">SELECCIONE UNA ENTIDAD</option>
-                  {results2.map((entidades) => {
-                    return (
-                      <option
-                        name={entidades.id_entidad}
-                        key={entidades.id_entidad}
-                        value={entidades.id_entidad}>
-                        {entidades.entidad}
-                      </option>
-                    );
-                  })}
-                </select>
-                {errors.id_entidad_robo && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_entidad_robo}</p>}
-              </div>
-
-              <div className="col-6">
-                <label className="form-label">
-                  MUNICIPIO DONDE OCURRIO EL ROBO:
-                </label>
-                <br />
-                <select
-                  className="select col-10"
-                  id="id_municipio_robo"
-                  name="id_municipio_robo"
-                  onChange={handleChange}
-                >
-                  <option selected disabled value=" ">SELECCIONE UN MUNICIPIO</option>
-                  {municipios.map((municipio) => (
-                    <option
-                      key={municipio.id_municipio}
-                      value={municipio.id_municipio}
-                    >
-                      {municipio.municipio}
-                    </option>
-                  ))}
-                </select>
-                {errors.id_municipio_robo && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_municipio_robo}</p>}
-              </div>
-            </div>
-            <br />
-
-            <div className="row">
-              <div className="col-4">
-                <label className="form-label">
-                  TIPO DEL LUGAR DONDE OCURRIO EL ROBO
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="id_tipo_lugar"
-                  name="id_tipo_lugar"
-                  placeholder="CENTRO COMERCIAL, CASA, ETC"
-                  onChange={handleChange}
-                />
-                {errors.id_tipo_lugar && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_tipo_lugar}</p>}
-              </div>
-              <br />
-              <div className="col-4">
-                <label className="form-label">
-                  NOMBRE DE LA PERSONA QUE REALIZA LA DENUNCIA
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="nombre_den"
-                  name="nombre_den"
-                  onChange={handleChange}
-                />
-                {errors.nombre_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.nombre_den}</p>}
-              </div>
-              <br />
-              <div className="col-4">
-                <label className="form-label">
-                  APELLIDO PATERNO DE QUIEN QUE REALIZA LA DENUNCIA
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="paterno_den"
-                  name="paterno_den"
-                  onChange={handleChange}
-                />
-                {errors.paterno_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.paterno_den}</p>}
-              </div>
-            </div>
-            <br />
-
-
-            <div className="row">
-              <div className="col-4">
-                <label className="form-label">
-                  CALLE DEL DOMICILIO DEL DENUNCIANTE
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="calle_den"
-                  name="calle_den"
-                  onChange={handleChange}
-                />
-                {errors.calle_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.calle_den}</p>}
-              </div>
-              <br />
-              <div className="col-4">
-                <label className="form-label">
-                  NUMERO EXTERIOR DEL DOMICILIO DEL DENUNCIANTE
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="numext_dom_den"
-                  name="numext_dom_den"
-                  onChange={handleChange}
-                />
-                {errors.numext_dom_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.numext_dom_den}</p>}
-              </div>
-              <br />
-              <div className="col-4">
-                <label className="form-label">
-                  COLONIA DEL DOMICILIO DEL DENUNCIANTE
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="colonia_den"
-                  name="colonia_den"
-                  onChange={handleChange}
-                />
-                {errors.colonia_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.colonia_den}</p>}
-              </div>
-            </div>
-            <br />
-            <br />
-            <div className="row">
-              <div className="col-6">
-                <label className="form-label">
-
-                  IDENTIFICADOR DEL DOMICILIO DEL DENUNCIANTE
-                </label>
-                <br />
-                <select
-                  className="select col-10"
-                  id="id_entidad_den"
-                  name="id_entidad_den"
-                  onChange={handleDenChange}
-                  onClick={handleChange}
-                >
-                  <option selected disabled value=" ">SELECCIONE LA ENTIDAD DEL DENUNCIANTE</option>
-                  {resultado.map((entidades) => {
-                    return (
-                      <option
-                        name={entidades.id_entidad}
-                        key={entidades.id_entidad}
-                        value={entidades.id_entidad}
-                      >
-                        {entidades.entidad}
-                      </option>
-                    );
-                  })}
-                </select>
-                {errors.id_entidad_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_entidad_den}</p>}
-              </div>
-
-              <div className="col-6">
-                <label className="form-label">
-                  IDENTIFICADOR DE LA ENTIDAD DENUNCIANTE:
-                </label>
-                <br />
-                <select
-                  className="select col-10"
-                  id="id_municipio_den"
-                  name="id_municipio_den"
-                  onChange={handleChange}>
-                  <option selected disabled value=" ">SELECCIONE EL MUNICIPIO DEL DENUNCIANTE</option>
-                  {denunciante_muni.map((municipio) => (
-                    <option
-                      key={municipio.id_municipio}
-                      value={municipio.id_municipio}
-                    >
-                      {municipio.municipio}
-                    </option>
-                  ))}
-                </select>
-                {errors.id_municipio_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_municipio_den}</p>}
-              </div>
-            </div>
-            <br />
-
-
-            <div className="row">
-              <div className="col-6">
-                <label className="form-label">
-                  CODIGO POSTAL DEL LUGAR DEL ROBO
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="cp_den"
-                  name="cp_den"
-                  onChange={handleChange}
-                />
-                {errors.cp_den && <p style={{ color: "red", fontSize: "13px" }}> {errors.cp_den}</p>}
-              </div>
-
-              <div className="col-6">
-                <label className="form-label">
-                  PLACA O PERMISO DEL VEHICULO (SIN ESPACIOS)
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="placa"
-                  name="placa"
-                  onChange={handleChange}
-                />
-                {errors.placa && <p style={{ color: "red", fontSize: "13px" }}> {errors.placa}</p>}
-              </div>
-            </div>
-            <br />
-
-            <div className="row">
-              <div className="col-6">
-                <label className="form-label">
-                  IDENTIFICADOR DE LA MARCA DEL VEHÍCULO
-                </label>
-                <br />
-                <select
-                  className="select col-10"
-                  id="id_marca"
-                  name="id_marca"
-                  onChange={handleMarcaChange}
-                  onClick={handleChange}
-                >
-                  <option selected disabled value=" ">SELECCIONE UNA MARCA</option>
-                  {result_marca.map((marca) => {
-                    return (
-                      <option
-                        name={marca.id_marca}
-                        key={marca.id_marca}
-                        value={marca.id_marca}
-                      >
-                        {marca.descripcion}
-                      </option>
-                    );
-                  })}
-                </select>
-                {errors.id_marca && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_marca}</p>}
-              </div>
-              <br />
-              <div className="col-6">
-                <label className="form-label">
-                  SUBMARCA DEL VEHICULO ROBADO:
-                </label>
-                <br />
-                <select
-                  className="select col-10"
-                  id="id_submarca"
-                  name="id_submarca"
-                  onClick={handleChange}
-                >
-                  <option disabled value="">SELECCIONE LA SUB-MARCA</option>
-                  {submarca.map((sm) => (
-                    <option
-                      key={sm.id_submarca}
-                      value={sm.id_submarca}>
-
-                      {sm.descripcion}
-                    </option>
-                  ))}
-                </select>
-                {errors.id_submarca && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_submarca}</p>}
-              </div>
-            </div>
-            <br />
-
-
-
-            <div className="row">
-              <div className="col-4">
-                <label className="form-label">
-                  AÑO DEL VEHICULO EN CUATRO DIGITOS
-                </label>
-                <input
-                  placeholder=" AÑO EN CUATRO DIGITOS"
-                  type="text"
-                  className="form-control"
-                  id="modelo"
-                  name="modelo"
-                  onChange={handleChange}
-                  maxLength="4"
-                />
-                {errors.modelo && <p style={{ color: "red", fontSize: "13px" }}> {errors.modelo}</p>}
-              </div>
-
-              <div className="col-4">
-                <label className="form-label">COLOR DEL VEHICULO</label>
-                <select
-                  id="id_color"
-                  name="id_color"
-                  className="form-control"
-                  onChange={handleChange}
-                >
-                  <option selected disabled value=" ">Seleccione un color</option>
-                  {color.map((colors) => (
-                    <option key={colors.id_color} value={colors.id_color}>
-                      {colors.descripcion}
-                    </option>
-                  ))}
-                </select>
-                {errors.id_color && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_color}</p>}
-              </div>
-              <div className="col-4">
-                <label className="form-label">
-                  N° DE SERIE O NUMERO DE IDENTIFICADOR DEL VEHICULO
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="serie"
-                  name="serie"
-                  onChange={handleChange}
-                />
-                {errors.serie && <p style={{ color: "red", fontSize: "13px" }}> {errors.serie}</p>}
-              </div>
-            </div>
-            <br />
-
-
-            <div className="row">
-              <div className="col-6">
-                <label className="form-label">
-                  CLAVE DEL TIPO DE USO DEL VEHICULO
-                </label>
-                <select
-                  name="id_tipo_uso"
-                  className="form-control"
-                  onChange={handleChange}
-                >
-                  <option selected disabled value=" ">Seleccione un tipo de uso</option>
-                  {tipo_uso.map((elemento) => (
-                    <option
-                      key={elemento.id_tipo_uso}
-                      value={elemento.id_tipo_uso}
-                    >
-                      {elemento.descripcion}
-                    </option>
-                  ))}
-                </select>
-                {errors.id_tipo_uso && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_tipo_uso}</p>}
-              </div>
-
-              <div className="col-6">
-                <label className="form-label">
-                  IDENTIFICADOR DE LA PROCEDENCIA DEL VEHICULO
-                </label>
-                <select
-                  id="id_procedencia"
-                  name="id_procedencia"
-                  className="form-control"
-                  onChange={handleChange}
-
-
-                >
-                  <option selected disabled value=" " >Seleccione la procedencia del vehiculo</option>
-                  {procedencia.map((element) => (
-                    <option
-                      key={element.id_procedencia}
-                      value={element.id_procedencia}
-                    >
-                      {element.descripcion}
-                    </option>
-                  ))}
-                </select>
-                {errors.id_procedencia && <p style={{ color: "red", fontSize: "13px" }}> {errors.id_procedencia}</p>}
-              </div>
-            </div>
-
-
-
-
-            <Button variant="primary" type="submit" onClick={handleValidation}>
-              Guardar
-            </Button>
-            <Link to="/" className="btn btn-info">
-              {" "}
-              Inicio
-            </Link>
-          </Form>
-        </div>
-      </div>
+          </div>
+        </>
+      ) : (
+        <Login onLogin={handleLogin} />
+      )
+      }
     </>
   );
 };
