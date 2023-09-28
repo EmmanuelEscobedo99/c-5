@@ -1,14 +1,15 @@
-//import {results5} from '../sistemaBus_VR/src/componentes/Recuperado'
-//const jwt = require('jsonwebtoken');
+const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
 const app = express();
-const bcrypt = require('bcrypt');
-app.use(cors());
-app.use(express.json())
-//const secretKey = 'IJOKJHLKj?=/(%&/kjlkjkJLKJL24545%$&#$%#$"_##$%#$w%#$#$rwseseFD'; // Debes cambiar esto a una clave segura
 
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.json());
+
+const secretKey = 'fsfzdferg45yertg54rgdf$&/%&/%TR';
 
 
 const db = mysql.createConnection({
@@ -65,7 +66,6 @@ app.get('/entidades', (req, res) => {
 })
 
 app.get('/municipios/:id_entidad', async (req, res) => {
-    //const id_entidad_recupera = req.body.id_entidad;
     const id_entidad = req.params.id_entidad;
     const sql = ("SELECT ENTIDAD, MUNICIPIO, ID_MUNICIPIO FROM entidades INNER JOIN municipios ON municipios.ID_ENTIDAD=" + req.params.id_entidad + " AND entidades.ID_ENTIDAD =" + req.params.id_entidad);
     db.query(sql, (err, data) => {
@@ -167,6 +167,12 @@ app.post("/crearRecuperado", (req, res) => {
     const id_municipio_rec = req.body.id_municipio_rec;
     const fechaToday = req.body.fecha;
     const horaToday = req.body.hora;
+    const nombre = req.body.nombre_bitacora;
+    const apellidos = req.body.apellidos_bitacora;
+    const correoIns = req.body.correoIns_bitacora;
+    const username = req.body.username_bitacora;
+    const municipio = req.body.municipio_bitacora;
+    const idUser = req.body.idUser_bitacora;
 
     //TIPO DE MOVIMIENTO = CAMBIO
     // ESTATUS = RECUPERADO
@@ -187,12 +193,20 @@ app.post("/crearRecuperado", (req, res) => {
                         if (err) {
                             console.log(err)
                         } else {
-                            // alert('Registrado!!')
+                            db.query("INSERT INTO bitacora (id, nombre, apellidos, correoIns, username, municipio, fecha, hora, id_user, tabla_movimiento) VALUES (?,?,?,?,?,?,?,?,?,?)",
+                                ['', nombre, apellidos, correoIns, username, municipio, fechaToday, horaToday, idUser, 'Inserción en Vehículo Recuperado'],
+                                (err, result) => {
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+
+                                    }
+                                }
+                            )
                         }
                     }
                 )
-                // res.send("registrado exitosamente !!")
-                //alert('Registrado!!')
+
             }
         }
     )
@@ -220,6 +234,12 @@ app.post("/crearEntregado", (req, res) => {
     const paterno_entrega = req.body.paterno_entrega
     const fechaToday = req.body.fecha;
     const horaToday = req.body.hora;
+    const nombre = req.body.nombre_bitacora;
+    const apellidos = req.body.apellidos_bitacora;
+    const correoIns = req.body.correoIns_bitacora;
+    const username = req.body.username_bitacora;
+    const municipio = req.body.municipio_bitacora;
+    const idUser = req.body.idUser_bitacora;
 
     //TIPO DE MOVIMIENTO = CAMBIO
     // ESTATUS = RECUPERADO
@@ -240,12 +260,20 @@ app.post("/crearEntregado", (req, res) => {
                         if (err) {
                             console.log(err)
                         } else {
-                            // alert('Registrado!!')
+                            db.query("INSERT INTO bitacora (id, nombre, apellidos, correoIns, username, municipio, fecha, hora, id_user, tabla_movimiento) VALUES (?,?,?,?,?,?,?,?,?,?)",
+                                ['', nombre, apellidos, correoIns, username, municipio, fechaToday, horaToday, idUser, 'Inserción en Vehículo Entregado'],
+                                (err, result) => {
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+
+                                    }
+                                }
+                            )
                         }
                     }
                 )
-                // res.send("registrado exitosamente !!")
-                //alert('Registrado!!')
+
             }
         }
     )
@@ -323,7 +351,24 @@ app.get('/fechaRecuperado/:id', (req, res) => {
     })
 })
 
-app.post('/login/:privilegios', (req, res) => {
+// Middleware para verificar el token en las solicitudes protegidas
+function verifyToken(req, res, next) {
+    const token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).json({ message: 'Token no proporcionado' });
+    }
+
+    jwt.verify(token.replace('Bearer ', ''), secretKey, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Token no válido' });
+        }
+        req.userId = decoded.userId;
+        next();
+    });
+}
+
+app.post('/login', (req, res) => {
     const privilegios = req.body.privilegios
     const { username, password } = req.body;
 
@@ -346,15 +391,26 @@ app.post('/login/:privilegios', (req, res) => {
         if (password != user.password) {
             console.log("contraseña incorrecta")
         } else {
-            res.status(200).json({ message: 'Inicio de sesión exitoso' });
             // Si el usuario se autentica correctamente, emitimos un token JWT
-            //const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '1h' });
+            const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '8h' });
 
-            res.json();
+            res.json({ token });
         }
 
 
     });
+});
+
+app.get('/todosDatos', verifyToken, (req, res) => {
+    const userId = req.userId;
+
+    const sql = "SELECT * FROM usuarios WHERE id = ?";
+    db.query(sql, [userId], (err, data) => {
+        if (!sql) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+        res.json(data);
+    })
 });
 
 // para modificar
@@ -472,8 +528,44 @@ app.post("/crear", (req, res) => {
 
 })
 
+app.post("/crearDatos", (req, res) => {
 
+    const nombre = req.body.nombre;
+    const apellidos = req.body.apellidos;
+    const municipio = req.body.municipio;
+    const correoIns = req.body.correoIns;
+    const contraseña = req.body.contraseña;
+    const username = req.body.username
 
+    db.query("INSERT INTO usuarios (id, nombre, apellidos, municipio, correoIns, username, password) VALUES (?,?,?,?,?,?,?)",
+        ['', nombre, apellidos, municipio, correoIns, username, contraseña],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+
+            }
+        }
+    )
+
+})
+
+app.post("/crearBitacora", (req, res) => {
+
+    const nombre = req.body.nombre;
+
+    db.query("INSERT INTO bitacora (id, nombre, apellidos, correoIns, username, municipio, fecha, hora) VALUES (?,?,?,?,?,?,?,?)",
+        ['', 'nombre', 'apellidos', 'correoIns', 'username', 'municipio', 'fecha', 'hora'],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+
+            }
+        }
+    )
+
+})
 
 app.listen(8081, () => {
     console.log("escuchando");

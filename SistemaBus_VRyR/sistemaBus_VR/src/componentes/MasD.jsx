@@ -8,11 +8,44 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useEffect } from "react"
 import axios from "axios"
-
-
-
+import Login from "./Login";
 
 const MasD = () => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'))
+  const [userData, setUserData] = useState([]);
+  let result = []
+  console.log(isLoggedIn, "MASD")
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log("SE EJECUTO EL useEFFECT")
+      const token = localStorage.getItem('token');
+      const traerUsuario = async () => {
+        if (token) {
+          try {
+            const res = await axios.get('http://localhost:8081/todosDatos', {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            setUserData(res.data)
+            console.log(userData)
+          } catch (err) {
+            console.log(err)
+          }
+        }
+      }
+      traerUsuario()
+    }
+
+  }, [isLoggedIn]);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true)
+  }
+
+
   const { id } = useParams();
   const [datos, setDatos] = useState([]);
   datos
@@ -28,17 +61,24 @@ const MasD = () => {
 
   }, [id]);
 
-
-
+  result = userData
 
   return (
 
     <>
       <Navbar></Navbar>
       <div className="area_form">
+        {result.map((userData) => {
+          return (
+            <>
+              
+            </>
+          )
+        })}
         <div className="contenedor">
 
           <h3>Vehiculo Robado Datos Registrados</h3>
+
           <form className="row g-6">
 
             <div className="col-sm-2">
@@ -123,7 +163,7 @@ const MasD = () => {
 
 
             <div className="col-sm-2">
-             <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">MARCA DEL VEHICULO:</label></strong>
+              <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">MARCA DEL VEHICULO:</label></strong>
               <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.ID_MARCA} />
             </div>
 
@@ -380,12 +420,13 @@ const MasD = () => {
       */ }
 
             { /* <Button variant="primary" type="submit" onClick={handleClick}></Button>  */}
-            <Link to="/ListaArchivos" className="btn  btn-info "> Inicio</Link>
+            <Link to="/ListaArchivos" className="btn  btn-info " onClick={() => setIsLoggedIn(false)}> Inicio</Link>
             <Link className="btn  btn-info" to={`/recuperado/${id}`}>Recuperado</Link>
             <Link to={`/entregado/${id}`} className="btn  btn-info"> Entregado</Link>
           </form>
         </div>
       </div>
+
     </>
   );
 };

@@ -1,14 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState} from 'react'
 import axios from 'axios'
-import { Recuperado } from './Recuperado'
-import ListaArchivos from './ListaArchivos'
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import "../archivosCss/formulario.css"
 import "../archivosCss/Login.css"
 
-function Login() {
-
-  const { privilegios } = useParams()
+const Login = ({onLogin}) => {
 
   const navigate = useNavigate()
   const [formData, setFormData] = useState({ username: '', password: '', privilegio: '' })
@@ -20,9 +16,9 @@ function Login() {
     privilegio = 1
   }
   console.log(formData)
+
+
   const handleChange = (e) => {
-    //const { name, value } = e.target;
-    //setFormData({ ...formData, [name]: value });
     privilegio = document.getElementById('privilegio').value
     setFormData((prev) => ({ ...prev, privilegio, [e.target.name]: e.target.value }))
     console.log(formData)
@@ -32,12 +28,15 @@ function Login() {
     e.preventDefault()
 
     try {
-      const response = await axios.post(`http://localhost:8081/login/${privilegios}`, formData)
+      console.log('ENTRE AL TRY')
+      const response = await axios.post(`http://localhost:8081/login`, formData)
+      const { token } = response.data
+       // Almacenar el token en el almacenamiento local
+       localStorage.setItem('token', token)
 
-      //const token = response.data.token;
-      // Almacena el token en el almacenamiento local para usarlo en solicitudes posteriores
-      //localStorage.setItem('token', token);
-
+       // Llamar a la función de inicio de sesión proporcionada por el padre
+       onLogin()
+      
       console.log('BIENVENIDO AL SISTEMA:', response.data)
       navigate('/ListaArchivos')
       // Aquí puedes redirigir al usuario o realizar otras acciones después del inicio de sesión exitoso
@@ -67,7 +66,7 @@ function Login() {
               name="username"
               onChange={handleChange}
               value={formData.username} />
-              <br></br>
+            <br></br>
             <label className='label'>CONTRASEÑA</label>
             <input className='inputs' placeholder="Escriba su contraseña"
               type="password"
@@ -75,8 +74,9 @@ function Login() {
               name="password"
               value={formData.password}
               onChange={handleChange} />
-              <br></br>
+            <br></br>
             <button className='buttons' onClick={handleSubmit}>LOGIN</button>
+            
           </div>
         </div>
       </div >

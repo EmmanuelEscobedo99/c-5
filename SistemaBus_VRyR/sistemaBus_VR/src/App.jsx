@@ -8,16 +8,28 @@ import Formulario from "./componentes/MasD"
 import { Recuperado } from "./componentes/Recuperado"
 import { Entregado } from "./componentes/Entregado"
 import Registrar from "./componentes/Registrar"
-
+import { RegistroUsuarios } from "./componentes/RegistroUsuarios"
+import { useState } from "react"
 
 function App() {
+  const [authenticated, setAuthenticated] = useState(false)
+  const [username, setUsername] = useState('')
 
+  const handleLogin = (user) => {
+    setUsername(user)
+    setAuthenticated(true)
+  }
+
+  const handleLogout = () => {
+    setUsername('')
+    setAuthenticated(false)
+  }
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />}></Route>
+          <Route path="/" element={<ListaArchivos />}></Route>
           <Route path="/ListaArchivos" element={<ListaArchivos />}></Route>
           <Route path="/Login" element={<Login />}></Route>
           <Route path="/Navbar" element={<Baja />}></Route>
@@ -27,10 +39,9 @@ function App() {
           <Route path="/recuperado/:id?" element={<Recuperado />}></Route>
           <Route path="/entregado/:id?" element={<Entregado />}></Route>
           <Route path="/Registrar" element={<Registrar/>}></Route>
+          <Route path="/RegistroUsuarios" element={<RegistroUsuarios/>}></Route>
         </Routes>
       </BrowserRouter>
-
-
     </>
   )
 }
