@@ -104,7 +104,7 @@ export const RegistroUsuarios = () => {
                         {result.map((userData) => {
                             return (
                                 <>
-                                    <h2>Bienvenido: {userData.username}</h2>
+                                    
                                 </>
                             )
                         })}
@@ -112,7 +112,7 @@ export const RegistroUsuarios = () => {
                         <br />
                         {results.map((todosDatos) => {
                             <div class="formulario_grupo col-4" id='grupo_id'>
-                                <input type='hidden' className='form-control' id='id' name='id' value={todosDatos.ID} onChange={handleChange} />
+                                <input type='hidden' className='form-control' id='id' name='id' value={todosDatos.ID} onChange={handleChange}/>
                             </div>
                         })}
                         <div class="formulario_grupo col-4" id='grupo_nombre'>
@@ -154,6 +154,13 @@ export const RegistroUsuarios = () => {
                             <label className="form-label" class="formulario_label" for='contraseña' >CONTRASEÑA:</label>
                             <div class="formulario_grupo-input">
                                 <input type="password" className="form-control" id="contraseña" name="contraseña" onChange={handleChange} required />
+                            </div>
+                            <div class="invalid-feedback">Porfavor rellene el campo.</div>
+                        </div>
+                        <div class="formulario_grupo col-4" id='grupo_contraseña'>
+                            <label className="form-label" class="formulario_label" for='contraseña' >CONTRASEÑA SUPERUSUARIO:</label>
+                            <div class="formulario_grupo-input">
+                                <input type="password" className="form-control" id="contraseñaSU" name="contraseñaSU" onChange={handleChange} />
                             </div>
                             <div class="invalid-feedback">Porfavor rellene el campo.</div>
                         </div>

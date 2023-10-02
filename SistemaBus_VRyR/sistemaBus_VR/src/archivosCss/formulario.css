@@ -13,6 +13,11 @@ h3 {
     padding: 10px;
 }
 
+tr {
+    border-bottom: 1px solid #ddd;
+  }
+
+tr:hover {background-color: #D6EEEE;}
 
 .contenedor {
     border: 3px solid rgb(230, 227, 227);

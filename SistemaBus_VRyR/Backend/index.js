@@ -213,6 +213,145 @@ app.post("/crearRecuperado", (req, res) => {
 
 })
 
+app.post("/crearRecVerificado", (req, res) => {
+
+    const placa = req.body.placaRec;
+    const serie = req.body.serieRec;
+    const calle = req.body.calleRec;
+    const numext = req.body.num_extRec;
+    const colonia = req.body.coloniaRec;
+    const codigoPostal = req.body.cpRec;
+    const fecha = req.body.fechaRec;
+    const hora = req.body.horaRec;
+    const id_color = req.body.colorRec;
+    const id_entidad_recupera = req.body.entidadRec;
+    const id_alterna = req.body.alternaRec;
+    const id_municipio_rec = req.body.municipioRec;
+
+    const ID_ALTERNA = req.body.ID_ALTERNA;
+    const CALLE = req.body.CALLE;
+    const COLONIA = req.body.COLONIA;
+    const COLOR = req.body.COLOR;
+    const CP_REC = req.body.CP_REC;
+    const ENTIDAD = req.body.ENTIDAD;
+    const FECHA = req.body.FECHA;
+    const HORA = req.body.HORA;
+    const MUNICIPIO = req.body.MUNICIPIO;
+    const NUM_EXT = req.body.NUM_EXT;
+    const PLACA = req.body.PLACA;
+    const SERIE = req.body.SERIE;
+
+    const fechaToday = req.body.fecha;
+    const horaToday = req.body.hora;
+    const nombre = req.body.nombre_bitacora;
+    const apellidos = req.body.apellidos_bitacora;
+    const correoIns = req.body.correoIns_bitacora;
+    const username = req.body.username_bitacora;
+    const municipio = req.body.municipio_bitacora;
+    const idUser = req.body.idUser_bitacora;
+
+    console.log(placa)
+
+    //TIPO DE MOVIMIENTO = CAMBIO
+    // ESTATUS = RECUPERADO
+    // PROCESADO = 0
+    // ID_FUENTE = 10
+
+    if (ID_ALTERNA != undefined) {
+        db.query(
+            "INSERT INTO vehiculo_recuperado (ID_ALTERNA, PLACA, SERIE, CALLE_REC, NUMEXT_REC, COLONIA_REC, CP_REC, FECHA_REC, HORA_REC, ID_COLOR, ID_FUENTE, ID_ENTIDAD_RECUPERA, ID_MUNICIPIO_REC) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            [ID_ALTERNA, PLACA, SERIE, CALLE, NUM_EXT, COLONIA, CP_REC, FECHA, HORA, COLOR, 10, ENTIDAD, MUNICIPIO],
+            (err, res) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    db.query(
+                        "INSERT INTO control_alterna (ID_ALTERNA, ID_FUENTE, TIPO_MOVIMIENTO, ESTATUS, FECHA, HORA, USUARIO) VALUES (?,?,?,?,?,?,?)",
+                        [ID_ALTERNA, 10, 'CAMBIO', 'RECUPERADO', fechaToday, horaToday, username],
+                        (err, res) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                db.query("INSERT INTO bitacora (id, nombre, apellidos, correoIns, username, municipio, fecha, hora, id_user, tabla_movimiento) VALUES (?,?,?,?,?,?,?,?,?,?)",
+                                    ['', nombre, apellidos, correoIns, username, municipio, fechaToday, horaToday, idUser, 'Inserción en Vehículo Recuperado'],
+                                    (err, result) => {
+                                        if (err) {
+                                            console.log(err);
+                                        } else {
+                                            db.query("DELETE FROM vehiculo_recuperado_temporal WHERE ID = 3",
+                                                (err, result) => {
+                                                    if (err) {
+                                                        console.log(err);
+                                                    } else {
+
+                                                    }
+                                                }
+                                            )
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    )
+
+                }
+            }
+        )
+    }
+
+    if (ID_ALTERNA === undefined) {
+        db.query(
+            "INSERT INTO vehiculo_recuperado (ID_ALTERNA, PLACA, SERIE, CALLE_REC, NUMEXT_REC, COLONIA_REC, CP_REC, FECHA_REC, HORA_REC, ID_COLOR, ID_FUENTE, ID_ENTIDAD_RECUPERA, ID_MUNICIPIO_REC) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            [id_alterna, placa, serie, calle, numext, colonia, codigoPostal, fecha, hora, id_color, 10, id_entidad_recupera, id_municipio_rec],
+            (err, res) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    db.query(
+                        "INSERT INTO control_alterna (ID_ALTERNA, ID_FUENTE, TIPO_MOVIMIENTO, ESTATUS, FECHA, HORA, USUARIO) VALUES (?,?,?,?,?,?,?)",
+                        [id_alterna, 10, 'CAMBIO', 'RECUPERADO', fechaToday, horaToday, username],
+                        (err, res) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                /*db.query("DELETE FROM vehiculo_recuperado_temporal WHERE ID_ALTERNA = ?", id_alterna,
+                                    (err, result) => {
+                                        if (err) {
+                                            console.log(err);
+                                        } else {
+
+                                        }
+                                    }
+                                )*/
+                                db.query("INSERT INTO bitacora (id, nombre, apellidos, correoIns, username, municipio, fecha, hora, id_user, tabla_movimiento) VALUES (?,?,?,?,?,?,?,?,?,?)",
+                                    ['', nombre, apellidos, correoIns, username, municipio, fechaToday, horaToday, idUser, 'Inserción en Vehículo Recuperado'],
+                                    (err, result) => {
+                                        if (err) {
+                                            console.log(err);
+                                        } else {
+                                            db.query("DELETE FROM vehiculo_recuperado_temporal WHERE ID_ALTERNA = ?", id_alterna,
+                                                (err, result) => {
+                                                    if (err) {
+                                                        console.log(err);
+                                                    } else {
+
+                                                    }
+                                                }
+                                            )
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    )
+
+                }
+            }
+        )
+    }
+
+})
+
 app.post("/crearEntregado", (req, res) => {
 
     const id_alterna = req.body.id_alterna
@@ -329,6 +468,27 @@ app.get('/buscarId/:id', (req, res) => {
     })
 })
 
+app.get('/recuRevision/:id', (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT * FROM vehiculo_recuperado_temporal WHERE ID_ALTERNA = ?", id, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.get('/recuRevisionTodo', (req, res) => {
+    db.query("SELECT * FROM vehiculo_recuperado_temporal", (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
 app.get('/fechaRobado/:id', (req, res) => {
     const id = req.params.id;
     db.query("SELECT FECHA_ROBO FROM vehiculo_robado WHERE ID_ALTERNA= ?", id, (err, result) => {
@@ -395,6 +555,36 @@ app.post('/login', (req, res) => {
             const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '8h' });
 
             res.json({ token });
+        }
+
+
+    });
+});
+
+
+app.post('/passwordSuperUsuario', (req, res) => {
+    const { password, username } = req.body;
+
+    // Realiza una consulta a la base de datos para verificar las credenciales
+    const query = 'SELECT * FROM usuarios WHERE username = ?';
+
+    db.query(query, [username], (err, results) => {
+        if (err) {
+            res.status(500).json({ error: 'Error al buscar usuario en la base de datos' });
+            return;
+        }
+
+        if (results.length === 0) {
+            res.status(401).json({ error: 'Usuario no encontrado' });
+            return;
+        }
+
+        const user = results[0];
+
+        if (password != user.password) {
+            console.log("contraseña incorrecta")
+        } else {
+            res.json()
         }
 
 
@@ -536,9 +726,14 @@ app.post("/crearDatos", (req, res) => {
     const correoIns = req.body.correoIns;
     const contraseña = req.body.contraseña;
     const username = req.body.username
+    const contraseñaSU = req.body.contraseñaSU
 
-    db.query("INSERT INTO usuarios (id, nombre, apellidos, municipio, correoIns, username, password) VALUES (?,?,?,?,?,?,?)",
-        ['', nombre, apellidos, municipio, correoIns, username, contraseña],
+    if(contraseñaSU === null){
+        contraseñaSU = 0
+    }
+
+    db.query("INSERT INTO usuarios (id, nombre, apellidos, municipio, correoIns, username, password, superuserpass) VALUES (?,?,?,?,?,?,?,?)",
+        ['', nombre, apellidos, municipio, correoIns, username, contraseña,contraseñaSU],
         (err, result) => {
             if (err) {
                 console.log(err);

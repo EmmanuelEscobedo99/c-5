@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { NavLink } from 'react-router-dom'
 import Login from "./Login"
+import Dropdown from 'react-bootstrap/Dropdown'
 
 const Navbar = () => {
   const handleChange = (e) => {
@@ -33,6 +34,19 @@ const Navbar = () => {
                   </li>
                   <li>
                     <NavLink to="/" onClick={handleChange} className={({ isActive }) => isActive ? "active" : ""}>Cerrar sesión</NavLink>
+                  </li>
+                  <li>
+                    <Dropdown className="d-inline mx-2">
+                      <Dropdown.Toggle id="dropdown-autoclose-true">
+                        Falta Verificar
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu>
+                        <Dropdown.Item href="/TablaRecuperado">Vehiculos Recuperados</Dropdown.Item>
+                        <Dropdown.Item href="/">Menu Item</Dropdown.Item>
+                        <Dropdown.Item href="/">Menu Item</Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
                   </li>
                 </ul>
               </nav>

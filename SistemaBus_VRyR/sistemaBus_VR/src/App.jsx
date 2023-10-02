@@ -10,6 +10,8 @@ import { Entregado } from "./componentes/Entregado"
 import Registrar from "./componentes/Registrar"
 import { RegistroUsuarios } from "./componentes/RegistroUsuarios"
 import { useState } from "react"
+import { RecFaltantes } from "./componentes/RecFaltantes"
+import { TablaRecuperado } from "./componentes/TablaRecuperado"
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false)
@@ -40,6 +42,8 @@ function App() {
           <Route path="/entregado/:id?" element={<Entregado />}></Route>
           <Route path="/Registrar" element={<Registrar/>}></Route>
           <Route path="/RegistroUsuarios" element={<RegistroUsuarios/>}></Route>
+          <Route path="/RecuperadosFaltaVerificar/:id" element={<RecFaltantes/>}></Route>
+          <Route path="/TablaRecuperado" element={<TablaRecuperado/>}></Route>
         </Routes>
       </BrowserRouter>
     </>
