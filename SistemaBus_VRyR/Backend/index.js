@@ -213,6 +213,50 @@ app.post("/crearRecuperado", (req, res) => {
 
 })
 
+
+app.post("/crearRecuperadoTemporal", (req, res) => {
+
+    const placa = req.body.placa;
+    const serie = req.body.serie;
+    const calle = req.body.calle_rec;
+    const numext = req.body.numext_rec;
+    const colonia = req.body.colonia_rec;
+    const codigoPostal = req.body.cp_rec;
+    const fecha = req.body.fecha_rec;
+    const hora = req.body.hora_rec;
+    const id_color = req.body.id_color;
+    const id_fuente = req.body.id_fuente;
+    const id_entidad_recupera = req.body.id_entidad_recupera;
+    const id_alterna = req.body.id_alterna;
+    const lastId = id_alterna + 1;
+    const id_municipio_rec = req.body.id_municipio_rec;
+    const fechaToday = req.body.fecha;
+    const horaToday = req.body.hora;
+    const nombre = req.body.nombre_bitacora;
+    const apellidos = req.body.apellidos_bitacora;
+    const correoIns = req.body.correoIns_bitacora;
+    const username = req.body.username_bitacora;
+    const municipio = req.body.municipio_bitacora;
+    const idUser = req.body.idUser_bitacora;
+
+    //TIPO DE MOVIMIENTO = CAMBIO
+    // ESTATUS = RECUPERADO
+    // PROCESADO = 0
+    // ID_FUENTE = 10
+
+    db.query(
+        "INSERT INTO vehiculo_recuperado_temporal (ID_ALTERNA, PLACA, SERIE, CALLE, NUM_EXT, COLONIA, CP_REC, FECHA, HORA, COLOR, ID_FUENTE, ENTIDAD, MUNICIPIO) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        [id_alterna, placa, serie, calle, numext, colonia, codigoPostal, fecha, hora, id_color, 10, id_entidad_recupera, id_municipio_rec],
+        (err, res) => {
+            if (err) {
+                console.log(err);
+            } else {
+                
+            }
+        }
+    )
+
+})
 app.post("/crearRecVerificado", (req, res) => {
 
     const placa = req.body.placaRec;
@@ -314,15 +358,7 @@ app.post("/crearRecVerificado", (req, res) => {
                             if (err) {
                                 console.log(err)
                             } else {
-                                /*db.query("DELETE FROM vehiculo_recuperado_temporal WHERE ID_ALTERNA = ?", id_alterna,
-                                    (err, result) => {
-                                        if (err) {
-                                            console.log(err);
-                                        } else {
-
-                                        }
-                                    }
-                                )*/
+                                
                                 db.query("INSERT INTO bitacora (id, nombre, apellidos, correoIns, username, municipio, fecha, hora, id_user, tabla_movimiento) VALUES (?,?,?,?,?,?,?,?,?,?)",
                                     ['', nombre, apellidos, correoIns, username, municipio, fechaToday, horaToday, idUser, 'Inserción en Vehículo Recuperado'],
                                     (err, result) => {
@@ -350,6 +386,38 @@ app.post("/crearRecVerificado", (req, res) => {
         )
     }
 
+})
+app.get('/nombres/:color', (req, res) => {
+    const idColor = req.params.color;
+    db.query("SELECT DESCRIPCION FROM color WHERE ID_COLOR = ?", idColor, (err, result) => {
+        if (err) {
+            console.log("sindatos");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.get('/entidad/:entidad', (req, res) => {
+    const idEntidad = req.params.entidad;
+    db.query("SELECT ENTIDAD FROM entidades WHERE ID_ENTIDAD = ?", idEntidad, (err, result) => {
+        if (err) {
+            console.log("sindatos");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.get('/municipio/:municipio', (req, res) => {
+    const idMunicipio = req.params.municipio;
+    db.query("SELECT MUNICIPIO FROM municipios WHERE ID_MUNICIPIO = ?", idMunicipio, (err, result) => {
+        if (err) {
+            console.log("sindatos");
+        } else {
+            res.send(result);
+        }
+    })
 })
 
 app.post("/crearEntregado", (req, res) => {
@@ -468,7 +536,7 @@ app.get('/buscarId/:id', (req, res) => {
     })
 })
 
-app.get('/recuRevision/:id', (req, res) => {
+app.get('/recuRevision/:id/:color/:entidad/:municipio', (req, res) => {
     const id = req.params.id;
     db.query("SELECT * FROM vehiculo_recuperado_temporal WHERE ID_ALTERNA = ?", id, (err, result) => {
         if (err) {
@@ -560,7 +628,6 @@ app.post('/login', (req, res) => {
 
     });
 });
-
 
 app.post('/passwordSuperUsuario', (req, res) => {
     const { password, username } = req.body;

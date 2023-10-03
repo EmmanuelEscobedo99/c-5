@@ -113,6 +113,7 @@ export const Recuperado = () => {
 
     const [recuperadoBD, setRecuperadoBD] = useState([])
     let results6 = []
+    let nombre_entidad
 
     const [showModalValidacion, setShowModalValidacion] = useState(false)
     const [showModalSuccess, setShowModalSuccess] = useState(false)
@@ -284,7 +285,7 @@ export const Recuperado = () => {
         setRecuperado((prev) => ({ ...prev, id_alterna, nombre_bitacora, apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora, [e.target.name]: e.target.value }))
         id_entidad = document.getElementById('id_entidad_recupera')
     }
-
+    
     const handleChangeModificacionRecuperado = (e) => {
         formatoDia()
         formatoHora()
@@ -326,7 +327,7 @@ export const Recuperado = () => {
 
             if (!camposValidados) return
 
-            await axios.post("http://localhost:8081/crearRecuperado", recuperado);
+            await axios.post("http://localhost:8081/crearRecuperadoTemporal", recuperado);
             console.log(setRecuperado + "SetRecuperado")
 
             alert("El nuevo registro ha sido guardado correctamente ")
@@ -671,12 +672,13 @@ export const Recuperado = () => {
                                             <option selected disabled value="">ENTIDAD QUE RECUPERÓ EL VEHICULO</option>
                                             {results2.map(entidades => {
                                                 return (
-                                                    <option name={entidades.ID_ENTIDAD} key={entidades.ID_ENTIDAD} value={entidades.ID_ENTIDAD}>{entidades.ENTIDAD}</option>
+                                                    <option name={entidades.ENTIDAD} key={entidades.ID_ENTIDAD} value={entidades.ID_ENTIDAD}>{entidades.ENTIDAD}</option>
+                                                    
                                                 )
                                             })}
                                         </select>
                                     </div>
-
+                                        
                                     <div class="invalid-feedback">Porfavor seleccione una entidad.</div>
                                 </div>
                                 <div class="formulario_grupo col-6" id='grupo_municipio'>

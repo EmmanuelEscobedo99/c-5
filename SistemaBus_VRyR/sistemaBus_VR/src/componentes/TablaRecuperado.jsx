@@ -36,7 +36,7 @@ export const TablaRecuperado = () => {
 
     const handleLogin = () => {
         setIsPasswordIn(true)
-      }
+    }
 
     return (
         <>
@@ -66,7 +66,7 @@ export const TablaRecuperado = () => {
                                                 <td>{fila.PLACA}</td>
                                                 <td>{fila.FECHA}</td>
                                                 <td>{fila.HORA}</td>
-                                                <td><Link className="btn" to={`/RecuperadosFaltaVerificar/${fila.ID_ALTERNA}`}>REVISAR</Link></td>
+                                                <td><Link className="btn" to={`/RecuperadosFaltaVerificar/${fila.ID_ALTERNA}/${fila.COLOR}/${fila.ENTIDAD}/${fila.MUNICIPIO}`}>REVISAR</Link></td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -77,7 +77,7 @@ export const TablaRecuperado = () => {
                 </>
             ) : (
                 <>
-                    <PasswordSuperUser onLogin = {handleLogin}/>
+                    <PasswordSuperUser onLogin={handleLogin} />
                 </>
             )
             }

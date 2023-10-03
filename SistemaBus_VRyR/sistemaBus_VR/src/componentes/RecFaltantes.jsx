@@ -11,8 +11,11 @@ import Login from "./Login"
 import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
 import Button from 'react-bootstrap/Button'
+import { useNavigate } from 'react-router-dom'
 
 export const RecFaltantes = () => {
+
+    const navigate = useNavigate()
 
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'))
     const [userData, setUserData] = useState([]);
@@ -48,12 +51,24 @@ export const RecFaltantes = () => {
     }
 
     const { id } = useParams();
+    const { color } = useParams();
+    const { entidad } = useParams();
+    const { municipio } = useParams();
 
-    let nombre_bitacora, id_alterna
+    let nombre_bitacora, id_alterna, colorNombre, entidadNombre, municipioNombre
     let apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora
 
     const [recuperadoBD, setRecuperadoBD] = useState([])
     let results6 = []
+
+    const [nombreColor, setNombreColor] = useState([])
+    let resultsNombres = []
+
+    const [enti, setEnti] = useState([])
+    let resultsEnti = []
+
+    const [muni, setMuni] = useState([])
+    let resultsMuni = []
 
     const [recuperado, setRecuperado] = useState({
         placa: '',
@@ -86,7 +101,74 @@ export const RecFaltantes = () => {
     }
 
     const [datos, setDatos] = useState([]);
-    datos
+    let resultsDatos = []
+
+    const [llenado, setLlenado] = useState([])
+    let results = []
+
+    const [entidades, setEntidades] = useState([])
+    let results2 = []
+
+    const [municipios, setMunicipios] = useState([])
+    let results3 = []
+
+    const [entidadSeleccionada, setEntidadSeleccionada] = useState('')
+
+    const LlenarSelect = async () => {
+        try {
+            const { data } = await axios.get("http://localhost:8081/llenar");
+            setLlenado(data)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+    const entidadesSelect = async () => {
+        try {
+            const { data } = await axios.get("http://localhost:8081/entidades");
+            setEntidades(data)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+    const cargarMunicipios = async (entidadId) => {
+        try {
+            const response = await axios.get(`http://localhost:8081/municipios/${entidadId}`);
+            setMunicipios(response.data)
+        } catch (error) {
+            console.error('Error al cargar los municipios:', error);
+        }
+    }
+
+    const NombreColor = async () => {
+        try {
+            const { data } = await axios.get("http://localhost:8081/nombres/" + color);
+            setNombreColor(data)
+        } catch (err) {
+
+        }
+    }
+
+    const Entidades = async () => {
+        try {
+            const { data } = await axios.get("http://localhost:8081/entidad/" + entidad);
+            setEnti(data)
+        } catch (err) {
+
+        }
+    }
+
+    const Municipios = async () => {
+        try {
+            const { data } = await axios.get("http://localhost:8081/municipio/" + municipio);
+            setMuni(data)
+        } catch (err) {
+
+        }
+    }
 
     //console.log(recuperado)
     const formatoDia = () => {
@@ -111,7 +193,7 @@ export const RecFaltantes = () => {
 
 
     useEffect(() => {
-        axios.get("http://localhost:8081/recuRevision/" + id)
+        axios.get("http://localhost:8081/recuRevision/" + id + "/" + color + "/" + entidad + "/" + municipio)
             .then(res => {
                 console.log("Datos encontrados RECFALTANTES")
                 console.log(res.data)
@@ -127,7 +209,8 @@ export const RecFaltantes = () => {
     }, [id]);
 
     useEffect(() => {
-
+        LlenarSelect()
+        entidadesSelect()
         // Obtén una referencia al input
         const inputs = document.querySelectorAll('.form-control-plaintext')
         // Dispara el evento 'click' en el input después de un pequeño retraso (por ejemplo, 1 segundo)
@@ -137,10 +220,23 @@ export const RecFaltantes = () => {
             setTimeout(() => {
                 input.click()
             }, 1000)
+
+            setTimeout(() => {
+                NombreColor()
+                Entidades()
+                Municipios()
+                console.log("20MIL SEGUNDOS")
+            }, 2000)
         }
 
         RecuperadoBD()
+
     }, [])
+
+    results = llenado
+    results2 = entidades
+    results3 = municipios
+    resultsDatos = datos
 
     const handleClick = async (e) => {
         e.preventDefault();
@@ -168,6 +264,19 @@ export const RecFaltantes = () => {
 
     }
 
+    const handleEntidadChange = (event) => {
+        const selectedEntidad = event.target.value;
+        setEntidadSeleccionada(selectedEntidad);
+
+        // Cargar los municipios correspondientes a la entidad seleccionada
+        if (selectedEntidad) {
+            cargarMunicipios(selectedEntidad);
+        } else {
+            // Si no se selecciona ninguna entidad, vaciar la lista de municipios
+            setMunicipios([]);
+        }
+    }
+
     result = userData
     result.map(userData => {
         nombre_bitacora = userData.nombre
@@ -178,6 +287,23 @@ export const RecFaltantes = () => {
         idUser_bitacora = userData.id
 
     })
+
+    resultsNombres = nombreColor
+    resultsNombres.map(nombreColor => {
+        colorNombre = nombreColor.DESCRIPCION
+    })
+
+    resultsEnti = enti
+    resultsEnti.map(enti => {
+        entidadNombre = enti.ENTIDAD
+    })
+
+    resultsMuni = muni
+    resultsMuni.map(muni => {
+        municipioNombre = muni.MUNICIPIO
+    })
+
+
     results6 = recuperadoBD
     console.log(recuperado)
 
@@ -205,19 +331,33 @@ export const RecFaltantes = () => {
 
                             <form className="row g-6">
 
-                                <div className='col-sm-2'>
-                                    <strong><label>ID ALTERNA</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="alternaRec" name='alternaRec' onClick={handleChange} onChange={(e) => setRecuperado({ ...recuperado, alternaRec: e.target.value })} defaultValue={datos.ID_ALTERNA} />
-                                </div>
+                                <input type="hidden" className="form-control-plaintext" id="alternaRec" name='alternaRec' onClick={handleChange} onChange={(e) => setRecuperado({ ...recuperado, alternaRec: e.target.value })} defaultValue={datos.ID_ALTERNA} />
 
                                 <div className="col-sm-2">
                                     <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">ENTIDAD:</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="entidadRec" name='entidadRec' onClick={handleChange} onChange={(e) => setRecuperado({ ...recuperado, entidadRec: e.target.value })} defaultValue={datos.ENTIDAD} />
+                                    <input type="hidden" className="form-control-plaintext" id="entidadRec" name='entidadRec' onClick={handleChange} onChange={(e) => setRecuperado({ ...recuperado, entidadRec: e.target.value })} defaultValue={datos.ENTIDAD} />
+                                    <select className="form-control-plaintext" id="entidadRec" name='entidadRec' onChange={handleEntidadChange} onClick={handleChange} required>
+                                        <option selected disabled value="">{entidadNombre}</option>
+                                        {results2.map(entidades => {
+                                            return (
+                                                <option onClick={handleChange} name={entidades.ENTIDAD} key={entidades.ID_ENTIDAD} value={entidades.ID_ENTIDAD}>{entidades.ENTIDAD}</option>
+
+                                            )
+                                        })}
+                                    </select>
                                 </div>
 
                                 <div className="col-sm-2">
                                     <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">MUNICIPIO:</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="municipioRec" name='municipioRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.MUNICIPIO} />
+                                    <input type="hidden" className="form-control-plaintext" id="municipioRec" name='municipioRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.MUNICIPIO} />
+                                    <select className="form-control-plaintext" id="municipioRec" name='municipioRec' onChange={handleChange} required>
+                                        <option value="">{municipioNombre}</option>
+                                        {municipios.map((municipio) => (
+                                            <option onClick={handleChange} key={municipio.ID_MUNICIPIO} value={municipio.ID_MUNICIPIO}>
+                                                {municipio.MUNICIPIO}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
 
                                 <div className="col-sm-2">
@@ -252,7 +392,15 @@ export const RecFaltantes = () => {
 
                                 <div className="col-sm-2">
                                     <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">COLOR DEL AUTOMÓVIL:</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="colorRec" name='colorRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.COLOR} />
+                                    <input type="hidden" className="form-control-plaintext" id="colorRec" name='colorRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.COLOR} />
+                                    <select className="form-control-plaintext" id="colorRec" name="colorRec" onChange={handleChange} required>
+                                        <option selected disabled value="">{colorNombre}</option>
+                                        {results.map(llenado => {
+                                            return (
+                                                <option onClick={handleChange} name={llenado.ID_COLOR} key={llenado.ID_COLOR} value={llenado.ID_COLOR}>{llenado.DESCRIPCION}</option>
+                                            )
+                                        })}
+                                    </select>
                                 </div>
 
                                 <div className="col-sm-2">

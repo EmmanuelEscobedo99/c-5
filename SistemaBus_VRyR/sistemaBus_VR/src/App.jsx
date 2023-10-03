@@ -42,7 +42,7 @@ function App() {
           <Route path="/entregado/:id?" element={<Entregado />}></Route>
           <Route path="/Registrar" element={<Registrar/>}></Route>
           <Route path="/RegistroUsuarios" element={<RegistroUsuarios/>}></Route>
-          <Route path="/RecuperadosFaltaVerificar/:id" element={<RecFaltantes/>}></Route>
+          <Route path="/RecuperadosFaltaVerificar/:id/:color/:entidad/:municipio" element={<RecFaltantes/>}></Route>
           <Route path="/TablaRecuperado" element={<TablaRecuperado/>}></Route>
         </Routes>
       </BrowserRouter>
