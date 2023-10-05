@@ -40,9 +40,10 @@ export const TablaRecuperado = () => {
 
     return (
         <>
+            <Navbar />
             {isPasswordIn ? (
                 <>
-                    <Navbar />
+
                     <div className='area-form'>
                         <div className='contenedor'>
                             <div>
@@ -55,7 +56,6 @@ export const TablaRecuperado = () => {
                                             <th style={{ width: "20%" }}>PLACA</th>
                                             <th style={{ width: "20%" }}>FECHA</th>
                                             <th style={{ width: "10%" }}>HORA</th>
-                                            <th style={{ width: "20%" }}>VERIFICACIÓN</th>
                                         </tr>
                                     </thead>
                                     <tbody>

@@ -12,13 +12,14 @@ import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
 import Button from 'react-bootstrap/Button'
 import { useNavigate } from 'react-router-dom'
+import { Cargando } from './Cargando'
 
-export const RecFaltantes = () => {
-
+export const EntregadoFaltantes = () => {
     const navigate = useNavigate()
 
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'))
-    const [userData, setUserData] = useState([]);
+    const [userData, setUserData] = useState([])
+    const [cargando, setCargando] = useState(true)
     let result = []
     console.log(isLoggedIn, "MASD")
 
@@ -51,18 +52,18 @@ export const RecFaltantes = () => {
     }
 
     const { id } = useParams();
-    const { color } = useParams();
+    const { inspeccion } = useParams();
     const { entidad } = useParams();
     const { municipio } = useParams();
 
     let nombre_bitacora, id_alterna, colorNombre, entidadNombre, municipioNombre
     let apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora
 
-    const [recuperadoBD, setRecuperadoBD] = useState([])
+    const [entregadoBD, setEntregadoBD] = useState([])
     let results6 = []
 
-    const [nombreColor, setNombreColor] = useState([])
-    let resultsNombres = []
+    const [nombreInspeccion, setNombreInspeccion] = useState([])
+    let resultsInspeccion = []
 
     const [enti, setEnti] = useState([])
     let resultsEnti = []
@@ -72,26 +73,30 @@ export const RecFaltantes = () => {
 
     const [isLoading, setIsLoading] = useState(true);
 
-    const [recuperado, setRecuperado] = useState({
-        placa: '',
-        serie: '',
-        calle_rec: '',
-        numext_rec: '',
-        colonia_rec: '',
-        cp_rec: '',
-        fecha_rec: '',
-        hora_rec: '',
-        id_color: '',
+    const [entregado, setEntregado] = useState({
         id_fuente: '',
-        id_entidad_recupera: '',
-        id_municipio_rec: '',
-        fecha: ''
+        calle_entrega: '',
+        colonia_entrega: '',
+        id_municipio_entrega: '',
+        id_entidad_entrega: '',
+        cp_entrega: '',
+        inspeccion: '',
+        id_fuente_entrega: '',
+        fecha_entrega: '',
+        hora_entrega: '',
+        serie: '',
+        motor: '',
+        factura_vehiculo: '',
+        comprob_domic_prop: '',
+        persona_entrega: '',
+        nombre_entrega: '',
+        paterno_entrega: ''
     })
 
-    const RecuperadoBD = async () => {
+    const EntregadoDB = async () => {
         try {
-            const { data } = await axios.get(`http://localhost:8081/recuperado/` + id)
-            setRecuperadoBD(data)
+            const { data } = await axios.get(`http://localhost:8081/entregado/` + id)
+            setEntregadoBD(data)
             //const inputAlterna = document.getElementById("alternaRec")
             //inputAlterna.click()
             //const inputEntidad = document.getElementById("entidadRec")
@@ -120,8 +125,11 @@ export const RecFaltantes = () => {
 
     const LlenarSelect = async () => {
         try {
-            const { data } = await axios.get("http://localhost:8081/llenarRec");
+            const { data } = await axios.get("http://localhost:8081/llenar/" + id);
+            //if(data = 1) data = "si"
+            //if(data = 2) data = "no"
             setLlenado(data)
+            setNombreInspeccion(data)
         }
         catch (err) {
             console.log(err)
@@ -144,15 +152,6 @@ export const RecFaltantes = () => {
             setMunicipios(response.data)
         } catch (error) {
             console.error('Error al cargar los municipios:', error);
-        }
-    }
-
-    const NombreColor = async () => {
-        try {
-            const { data } = await axios.get("http://localhost:8081/nombres/" + color);
-            setNombreColor(data)
-        } catch (err) {
-
         }
     }
 
@@ -181,7 +180,7 @@ export const RecFaltantes = () => {
         let today = new Date()
         let mes = today.getMonth() + 1
         fecha = today.getFullYear() + "/" + mes + "/" + today.getDate()
-        recuperado['fecha'] = fecha
+        entregado['fecha'] = fecha
         console.log("la fecha de la funcion es :", fecha)
     }
 
@@ -191,13 +190,13 @@ export const RecFaltantes = () => {
         let hora = today.getHours()
         let minutos = today.getMinutes()
         horaCompleta = hora + ':' + minutos
-        recuperado['hora'] = horaCompleta
+        entregado['hora'] = horaCompleta
         console.log('La hora de registro es: ', horaCompleta)
     }
 
 
     useEffect(() => {
-        axios.get("http://localhost:8081/recuRevision/" + id + "/" + color + "/" + entidad + "/" + municipio)
+        axios.get("http://localhost:8081/entregadoRevision/" + id + "/" + inspeccion + "/" + entidad + "/" + municipio)
             .then(res => {
                 console.log("Datos encontrados RECFALTANTES")
                 console.log(res.data)
@@ -205,8 +204,8 @@ export const RecFaltantes = () => {
                 setDatos(res.data[0])
                 formatoDia()
                 formatoHora()
-                setRecuperado(res.data)
-                console.log(recuperado)
+                setEntregado(res.data)
+                console.log(entregado)
             })
             .catch(err => console.log(err))
 
@@ -226,7 +225,7 @@ export const RecFaltantes = () => {
             }, 1000)
 
             setTimeout(() => {
-                NombreColor()
+                LlenarSelect()
                 Entidades()
                 Municipios()
                 console.log("20MIL SEGUNDOS")
@@ -234,50 +233,37 @@ export const RecFaltantes = () => {
             }, 2000)
         }
 
-        RecuperadoBD()
+        EntregadoDB()
 
     }, [])
 
     useEffect(() => {
-        // Muestra la pantalla de carga
-        setIsLoading(true);
-      
-        // Realiza la petición de datos
-        axios.get('/api/datos')
-          .then((response) => {
-            // Procesa los datos obtenidos
-      
-            // Oculta la pantalla de carga después de un retraso (por ejemplo, 1 segundo)
-            setTimeout(() => {
-              setIsLoading(false);
-            }, 1000);
-          })
-          .catch((error) => {
-            console.error('Error al obtener datos:', error);
-      
-            // Asegúrate de ocultar la pantalla de carga en caso de error
-            setIsLoading(false);
-          });
-      }, []);
-      
+        setTimeout(() => {
+            setCargando(false)
+        }, 2000)
+    }, [])
+
 
     results = llenado
     results2 = entidades
     results3 = municipios
     resultsDatos = datos
 
+    if (datos.INSPECCION = 1) {
+        datos.INSPECCION = "INSPECCION REALIZADA AL VEHICULO ENTREGADO"
+    } else if (datos.INSPECCION = 0) {
+        datos.INSPECCION = "NO REALIZADA"
+    }
+
     const handleClick = async (e) => {
         e.preventDefault();
         try {
             console.log("Entre al try")
-            console.log(recuperado)
+            console.log(entregado)
             //let camposValidados = validarCampos()
             navigate("/Cargando")
             //if (!camposValidados) return
-            await axios.post("http://localhost:8081/crearRecVerificado", recuperado);
-
-            alert("El nuevo registro ha sido guardado correctamente ")
-            navigate("/")
+            await axios.post("http://localhost:8081/crearEntregadoVerificado", entregado);
 
         } catch (err) {
             console.log(err)
@@ -288,7 +274,7 @@ export const RecFaltantes = () => {
         formatoDia()
         formatoHora()
         const { name, value } = e.target
-        setRecuperado({ ...recuperado, nombre_bitacora, apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora, [name]: value })
+        setEntregado({ ...entregado, nombre_bitacora, apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora, [name]: value })
 
     }
 
@@ -316,9 +302,9 @@ export const RecFaltantes = () => {
 
     })
 
-    resultsNombres = nombreColor
-    resultsNombres.map(nombreColor => {
-        colorNombre = nombreColor.DESCRIPCION
+    resultsInspeccion = nombreInspeccion
+    resultsInspeccion.map(nombreInspeccion => {
+        nombreInspeccion = nombreInspeccion.INSPECCION
     })
 
     resultsEnti = enti
@@ -332,8 +318,8 @@ export const RecFaltantes = () => {
     })
 
 
-    results6 = recuperadoBD
-    console.log(recuperado)
+    results6 = entregadoBD
+    console.log(entregado)
 
 
     return (
@@ -355,18 +341,18 @@ export const RecFaltantes = () => {
                             )
                         })}
                         <h3>Faltantes de verificar</h3>
-                        <h4 style={{color:'green'}}>NOTA: Recuerda que puedes editar los campos al hacer click sobre la información.</h4>
+                        <h4 style={{ color: 'green' }}>NOTA: Recuerda que puedes editar los campos al hacer click sobre la información.</h4>
                         <div className="contenedor">
 
                             <form className="row g-6">
 
-                                <input type="hidden" className="form-control-plaintext" id="alternaRec" name='alternaRec' onClick={handleChange} onChange={(e) => setRecuperado({ ...recuperado, alternaRec: e.target.value })} defaultValue={datos.ID_ALTERNA} />
+                                <input type="hidden" className="form-control-plaintext" id="alternaEntrega" name='alternaEntrega' onClick={handleChange} onChange={(e) => setEntregado({ ...entregado, alternaRec: e.target.value })} defaultValue={datos.ID_ALTERNA} />
 
                                 <div className="col-sm-2">
                                     <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">ENTIDAD:</label></strong>
-                                    <input type="hidden" className="form-control-plaintext" id="entidadRec" name='entidadRec' onClick={handleChange} onChange={(e) => setRecuperado({ ...recuperado, entidadRec: e.target.value })} defaultValue={datos.ENTIDAD} />
-                                    <select className="form-control-plaintext" id="entidadRec" name='entidadRec' onChange={handleEntidadChange} required>
-                                        <option selected disabled value="">{entidadNombre}</option>
+                                    <input type="hidden" className="form-control-plaintext" id="id_entidad_entrega" name='id_entidad_entrega' onClick={handleChange} onChange={handleChange} defaultValue={datos.ENTIDAD} />
+                                    <select className="form-control-plaintext" id="id_entidad_entrega" name='id_entidad_entrega' onChange={handleEntidadChange} required>
+                                        <option value="">{entidadNombre}</option>
                                         {results2.map(entidades => {
                                             return (
                                                 <option onClick={handleChange} name={entidades.ENTIDAD} key={entidades.ID_ENTIDAD} value={entidades.ID_ENTIDAD}>{entidades.ENTIDAD}</option>
@@ -378,8 +364,8 @@ export const RecFaltantes = () => {
 
                                 <div className="col-sm-2">
                                     <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">MUNICIPIO:</label></strong>
-                                    <input type="hidden" className="form-control-plaintext" id="municipioRec" name='municipioRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.MUNICIPIO} />
-                                    <select className="form-control-plaintext" id="municipioRec" name='municipioRec' onChange={handleChange} required>
+                                    <input type="hidden" className="form-control-plaintext" id="id_municipio_entrega" name='id_municipio_entrega' onClick={handleChange} onChange={handleChange} defaultValue={datos.MUNICIPIO} />
+                                    <select className="form-control-plaintext" id="id_municipio_entrega" name='id_municipio_entrega' onChange={handleChange} required>
                                         <option value="">{municipioNombre}</option>
                                         {municipios.map((municipio) => (
                                             <option onClick={handleChange} key={municipio.ID_MUNICIPIO} value={municipio.ID_MUNICIPIO}>
@@ -391,101 +377,68 @@ export const RecFaltantes = () => {
 
                                 <div className="col-sm-2">
                                     <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">CALLE:</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="calleRec" name='calleRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.CALLE} />
+                                    <input type="text" className="form-control-plaintext" id="calle_entrega" name='calle_entrega' onClick={handleChange} onChange={handleChange} defaultValue={datos.CALLE} />
                                 </div>
-
                                 <div className="col-sm-2">
-                                    <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">NÚMERO EXTERIOR:</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="num_extRec" name='num_extRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.NUM_EXT} />
+                                    <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">COLONIA:</label></strong>
+                                    <input type="text" className="form-control-plaintext" id="colonia_entrega" name='colonia_entrega' onClick={handleChange} onChange={handleChange} defaultValue={datos.COLONIA} />
                                 </div>
-
                                 <div className="col-sm-2">
-                                    <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">COLONIA:</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="colonia_rec" name='coloniaRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.COLONIA} />
+                                    <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">CÓDIGO POSTAL:</label></strong>
+                                    <input type="text" className="form-control-plaintext" id="cp_entrega" name='cp_entrega' onClick={handleChange} onChange={handleChange} defaultValue={datos.CP_ENTREGA} />
                                 </div>
-
                                 <div className="col-sm-2">
-                                    <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">CÓDIGO POSTAL:</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="cp_rec" name='cpRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.CP_REC} />
+                                    <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">SERIE:</label></strong>
+                                    <input type="text" className="form-control-plaintext" id="serie" name='serie' onClick={handleChange} onChange={handleChange} defaultValue={datos.SERIE} />
                                 </div>
-
                                 <div className="col-sm-2">
-                                    <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">SERIE:</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="serieRec" name='serieRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.SERIE} />
+                                    <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">MOTOR:</label></strong>
+                                    <input type="text" className="form-control-plaintext" id="motor" name='motor' onClick={handleChange} onChange={handleChange} defaultValue={datos.MOTOR} />
                                 </div>
-
                                 <div className="col-sm-2">
-                                    <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">PLACA:</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="placaRec" name='placaRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.PLACA} />
-                                </div>
-
-                                <div className="col-sm-2">
-                                    <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">COLOR DEL AUTOMÓVIL:</label></strong>
-                                    <input type="hidden" className="form-control-plaintext" id="colorRec" name='colorRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.COLOR} />
-                                    <select className="form-control-plaintext" id="colorRec" name="colorRec" onChange={handleChange} required>
-                                        <option selected disabled value="">{colorNombre}</option>
-                                        {results.map(llenado => {
-                                            return (
-                                                <option onClick={handleChange} name={llenado.ID_COLOR} key={llenado.ID_COLOR} value={llenado.ID_COLOR}>{llenado.DESCRIPCION}</option>
-                                            )
-                                        })}
+                                    <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">INSPECCIÓN:</label></strong>
+                                    <input type="hidden" className="form-control-plaintext" id="inpeccion" name='inspeccion' onClick={handleChange} onChange={handleChange} defaultValue={datos.INSPECCION} />
+                                    <select className='form-control-plaintext' id='inspeccion' name='inspeccion' onChange={handleChange} onClick={handleChange} required>
+                                        <option selected disabled value="1">{datos.INSPECCION}</option>
+                                        <option value='1'>INSPECCIÓN REALIZADA AL VEHICULO ENTREGADO</option>
+                                        <option value='0'>NO REALIZADA</option>
                                     </select>
                                 </div>
-
                                 <div className="col-sm-2">
-                                    <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">FECHA:</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="fechaRec" name='fechaRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.FECHA} />
+                                    <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">NÚMERO DE FACTURA:</label></strong>
+                                    <input type="text" className="form-control-plaintext" id="factura_vehiculo" name='factura_vehiculo' onClick={handleChange} onChange={handleChange} defaultValue={datos.NUM_FACTURA} />
+                                </div>
+                                <div className="col-sm-2">
+                                    <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">FECHA:</label></strong>
+                                    <input type="text" className="form-control-plaintext" id="fecha_entrega" name='fecha_entrega' onClick={handleChange} onChange={handleChange} defaultValue={datos.FECHA} />
+                                </div>
+                                <div className="col-sm-2">
+                                    <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">HORA:</label></strong>
+                                    <input type="text" className="form-control-plaintext" id="hora_entrega" name='hora_entrega' onClick={handleChange} onChange={handleChange} defaultValue={datos.HORA} />
+                                </div>
+                                <div className="col-sm-2">
+                                    <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">NOMBRE DEL PROPIETARIO:</label></strong>
+                                    <input type="text" className="form-control-plaintext" id="nombre_entrega" name='nombre_entrega' onClick={handleChange} onChange={handleChange} defaultValue={datos.NOM_PROPIETARIO} />
+                                </div>
+                                <div className="col-sm-2">
+                                    <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">APELLIDO DEL PROPIETARIO:</label></strong>
+                                    <input type="text" className="form-control-plaintext" id="apellido_entrega" name='apellido_entrega' onClick={handleChange} onChange={handleChange} defaultValue={datos.AP_PROPIETARIO} />
+                                </div>
+                                <div className="col-sm-2">
+                                    <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">COMPROBANTE DE DOMICILIO:</label></strong>
+                                    <input type="text" className="form-control-plaintext" id="comprob_domic_prop" name='comprob_domic_prop' onClick={handleChange} onChange={handleChange} defaultValue={datos.COMPR_DOMIC} />
+                                </div>
+                                <div className="col-sm-2">
+                                    <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">RECIBE:</label></strong>
+                                    <input type="text" className="form-control-plaintext" id="recibe" name='persona_recibe' onClick={handleChange} onChange={handleChange} defaultValue={datos.RECIBE} />
                                 </div>
 
-                                <div className="col-sm-2">
-                                    <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">HORA:</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="horaRec" name='horaRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.HORA} />
-                                </div>
                             </form>
                             { /* <Button variant="primary" type="submit" onClick={handleClick}></Button>  */}
-                            <Link to="/TablaRecuperado" className="btn  btn-info " onClick={() => setIsLoggedIn(false)}> INICIO</Link>
+                            <Link to="/TablaEntregado" className="btn  btn-info " onClick={() => setIsLoggedIn(false)}> INICIO</Link>
                             {/*<Link className="btn  btn-info" to={`/recuperado/${id}`}>EDITAR</Link>*/}
-                            <Link to="/TablaRecuperado" className='btn btn-info' variant="primary" type="submit" onClick={handleClick}>VERIFICAR</Link>
+                            <Link to="/TablaEntregado" className='btn btn-info' variant="primary" type="submit" onClick={handleClick}>VERIFICAR</Link>
                         </div>
-
-                        {/*<table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">SERIE</th>
-                                    <th scope="col">PLACA</th>
-                                    <th scope="col">FECHA</th>
-                                    <th scope='col'>HORA</th>
-                                    <th scope='col'>VERIFICAR</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>23:34</td>
-                                    <td><button>VERIFICAR</button></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>11:23</td>
-                                    <td><button>VERIFICAR</button></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Larry the Bird</td>
-                                    <td>@twitter</td>
-                                    <td>dfgdfg</td>
-                                    <td>23:32</td>
-                                    <td><button>VERIFICAR</button></td>
-                                </tr>
-                            </tbody>
-                    </table>*/}
                     </div>
                 </>
             ) : (
@@ -494,5 +447,16 @@ export const RecFaltantes = () => {
             }
 
         </>
-    );
-};
+    )
+}
+
+/*{
+    cargando ? (
+        <>
+            <h3>CARGANDO...</h3>
+            <img src='https://cdn.pixabay.com/animation/2023/08/11/21/18/21-18-05-265_512.gif'></img>
+        </>
+    ) : (
+
+                    )
+}*/

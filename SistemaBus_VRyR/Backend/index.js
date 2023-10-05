@@ -43,7 +43,7 @@ app.get('/registroRec', (req, res) => {
 })
 
 //LLENAR SELECT CON REGISTROS DE LA BD
-app.get('/llenar', (req, res) => {
+app.get('/llenarColor', (req, res) => {
     const sql = "SELECT * FROM color";
     db.query(sql, (err, data) => {
         if (err) {
@@ -387,6 +387,147 @@ app.post("/crearRecVerificado", (req, res) => {
     }
 
 })
+
+app.post("/crearEntregadoVerificado", (req, res) => {
+
+    const alternaEntrega = req.body.alternaEntrega;
+    const apellido_entrega = req.body.apellido_entrega;
+    const calle_entrega = req.body.calle_entrega;
+    const colonia_entrega = req.body.colonia_entrega;
+    const comprob_domic_prop = req.body.comprob_domic_prop;
+    const cp_entrega = req.body.cp_entrega;
+    const factura_vehiculo = req.body.factura_vehiculo;
+    const fecha_entrega = req.body.fecha_entrega;
+    const hora_entrega = req.body.hora_entrega;
+    const id_entidad_entrega = req.body.id_entidad_entrega;
+    const id_municipio_entrega = req.body.id_municipio_entrega;
+    const inspeccion = req.body.inspeccion;
+    const motor  = req.body.motor;
+    const nombre_entrega = req.body.nombre_entrega;
+    const persona_recibe = req.body.persona_recibe;
+    const serie = req.body.serie; 
+    
+
+    const ID_ALTERNA = req.body.ID_ALTERNA;
+    const CALLE = req.body.CALLE;
+    const COLONIA = req.body.COLONIA;
+    const COMPR_DOMIC = req.body.COMPR_DOMIC;
+    const CP_ENTREGA = req.body.CP_ENTREGA;
+    const ENTIDAD = req.body.ENTIDAD;
+    const FECHA = req.body.FECHA;
+    const HORA = req.body.HORA;
+    const INSPECCION = req.body.INSPECCION;
+    const MOTOR = req.body.MOTOR;
+    const MUNICIPIO = req.body.MUNICIPIO;
+    const NOM_PROPIETARIO = req.body.NOM_PROPIETARIO;
+    const NUM_FACTURA = req.body.NUM_FACTURA;
+    const RECIBE = req.body.RECIBE;
+    const SERIE = req.body.SERIE;
+    const AP_PROPIETARIO = req.body.AP_PROPIETARIO
+
+    const fechaToday = req.body.fecha;
+    const horaToday = req.body.hora;
+    const nombre = req.body.nombre_bitacora;
+    const apellidos = req.body.apellidos_bitacora;
+    const correoIns = req.body.correoIns_bitacora;
+    const username = req.body.username_bitacora;
+    const municipio = req.body.municipio_bitacora;
+    const idUser = req.body.idUser_bitacora;
+
+    
+
+    //TIPO DE MOVIMIENTO = CAMBIO
+    // ESTATUS = RECUPERADO
+    // PROCESADO = 0
+    // ID_FUENTE = 10
+
+    if (ID_ALTERNA != undefined) {
+        db.query(
+            "INSERT INTO vehiculo_entregado (ID_ALTERNA, ID_FUENTE, CALLE_ENTREGA, COLONIA_ENTREGA, ID_MUNICIPIO_ENTREGA, ID_ENTIDAD_ENTREGA, CP_ENTREGA, INSPECCION, FECHA_ENTREGA, HORA_ENTREGA, SERIE, MOTOR, FACTURA_VEHICULO, COMPROB_DOMIC_PROP, PERSONA_ENTREGA, NOMBRE_ENTREGA, PATERNO_ENTREGA) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            [ID_ALTERNA, 10, CALLE, COLONIA, MUNICIPIO, ENTIDAD, CP_ENTREGA, INSPECCION, FECHA, HORA, SERIE, MOTOR, NUM_FACTURA, COMPR_DOMIC, RECIBE, NOM_PROPIETARIO, AP_PROPIETARIO],
+            (err, res) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    db.query(
+                        "INSERT INTO control_alterna (ID_ALTERNA, ID_FUENTE, TIPO_MOVIMIENTO, ESTATUS, FECHA, HORA, USUARIO) VALUES (?,?,?,?,?,?,?)",
+                        [ID_ALTERNA, 10, 'CAMBIO', 'RECUPERADO', fechaToday, horaToday, username],
+                        (err, res) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                db.query("INSERT INTO bitacora (id, nombre, apellidos, correoIns, username, municipio, fecha, hora, id_user, tabla_movimiento) VALUES (?,?,?,?,?,?,?,?,?,?)",
+                                    ['', nombre, apellidos, correoIns, username, municipio, fechaToday, horaToday, idUser, 'Inserción en Vehículo Recuperado'],
+                                    (err, result) => {
+                                        if (err) {
+                                            console.log(err);
+                                        } else {
+                                            db.query("DELETE FROM vehiculo_recuperado_temporal WHERE ID_ALTERNA = ?",alternaEntrega,
+                                                (err, result) => {
+                                                    if (err) {
+                                                        console.log(err);
+                                                    } else {
+
+                                                    }
+                                                }
+                                            )
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    )
+
+                }
+            }
+        )
+    }
+
+    if (ID_ALTERNA === undefined) {
+        db.query(
+            "INSERT INTO vehiculo_entregado (ID_ALTERNA, ID_FUENTE, CALLE_ENTREGA, COLONIA_ENTREGA, ID_MUNICIPIO_ENTREGA, ID_ENTIDAD_ENTREGA, CP_ENTREGA, INSPECCION, FECHA_ENTREGA, HORA_ENTREGA, SERIE, MOTOR, FACTURA_VEHICULO, COMPROB_DOMIC_PROP, PERSONA_ENTREGA, NOMBRE_ENTREGA, PATERNO_ENTREGA) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            [alternaEntrega, 10, calle_entrega, colonia_entrega, id_municipio_entrega, id_entidad_entrega, cp_entrega, inspeccion, fecha_entrega, hora_entrega, serie, motor, factura_vehiculo, comprob_domic_prop, persona_recibe, nombre_entrega, apellido_entrega],
+            (err, res) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    db.query(
+                        "INSERT INTO control_alterna (ID_ALTERNA, ID_FUENTE, TIPO_MOVIMIENTO, ESTATUS, FECHA, HORA, USUARIO) VALUES (?,?,?,?,?,?,?)",
+                        [alternaEntrega, 10, 'CAMBIO', 'ENTREGADO', fechaToday, horaToday, username],
+                        (err, res) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                
+                                db.query("INSERT INTO bitacora (id, nombre, apellidos, correoIns, username, municipio, fecha, hora, id_user, tabla_movimiento) VALUES (?,?,?,?,?,?,?,?,?,?)",
+                                    ['', nombre, apellidos, correoIns, username, municipio, fechaToday, horaToday, idUser, 'Inserción en Vehículo Entregado'],
+                                    (err, result) => {
+                                        if (err) {
+                                            console.log(err);
+                                        } else {
+                                            db.query("DELETE FROM vehiculo_entregado_temporal WHERE ID_ALTERNA = ?", alternaEntrega,
+                                                (err, result) => {
+                                                    if (err) {
+                                                        console.log(err);
+                                                    } else {
+
+                                                    }
+                                                }
+                                            )
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    )
+
+                }
+            }
+        )
+    }
+
+})
+
 app.get('/nombres/:color', (req, res) => {
     const idColor = req.params.color;
     db.query("SELECT DESCRIPCION FROM color WHERE ID_COLOR = ?", idColor, (err, result) => {
@@ -510,6 +651,28 @@ app.get("/recuperado/:id?", (req, res) => {
     })
 })
 
+app.get('/llenarRec', (req, res) => {
+    const id = req.params.id
+    db.query("SELECT * FROM vehiculo_recuperado_temporal", (err, result) => {
+        if (err) {
+            console.log("error trayendo data")
+        } else {
+            res.send(result)
+        }
+    })
+})
+
+app.get('/llenar/:id?', (req, res) => {
+    const id = req.params.id
+    db.query("SELECT INSPECCION FROM vehiculo_entregado_temporal WHERE ID_ALTERNA = ?", id, (err, result) => {
+        if (err) {
+            console.log("error trayendo data")
+        } else {
+            res.send(result)
+        }
+    })
+})
+
 app.get("/entregado/:id?", (req, res) => {
     const id = req.params.id
     db.query("SELECT * FROM vehiculo_entregado WHERE ID_ALTERNA = ?", id, (err, result) => {
@@ -547,8 +710,29 @@ app.get('/recuRevision/:id/:color/:entidad/:municipio', (req, res) => {
     })
 })
 
+app.get('/entregadoRevision/:id/:inspeccion/:entidad/:municipio', (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT * FROM vehiculo_entregado_temporal WHERE ID_ALTERNA = ?", id, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
 app.get('/recuRevisionTodo', (req, res) => {
     db.query("SELECT * FROM vehiculo_recuperado_temporal", (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.get('/recuEntregaTodo', (req, res) => {
+    db.query("SELECT * FROM vehiculo_entregado_temporal", (err, result) => {
         if (err) {
             console.log("sindata");
         } else {

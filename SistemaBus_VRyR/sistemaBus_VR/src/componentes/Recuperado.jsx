@@ -179,7 +179,7 @@ export const Recuperado = () => {
 
     const LlenarSelect = async () => {
         try {
-            const { data } = await axios.get("http://localhost:8081/llenar");
+            const { data } = await axios.get("http://localhost:8081/llenarColor");
             setLlenado(data)
         }
         catch (err) {

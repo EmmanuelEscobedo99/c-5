@@ -42,8 +42,8 @@ const Navbar = () => {
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu>
-                        <Dropdown.Item href="/TablaRecuperado">Vehiculos Recuperados</Dropdown.Item>
-                        <Dropdown.Item href="/">Menu Item</Dropdown.Item>
+                        <Dropdown.Item href="/TablaRecuperado">Vehículos Recuperados</Dropdown.Item>
+                        <Dropdown.Item href="/TablaEntregado">Vehículos Entregados</Dropdown.Item>
                         <Dropdown.Item href="/">Menu Item</Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>

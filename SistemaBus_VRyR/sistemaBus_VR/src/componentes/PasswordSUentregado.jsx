@@ -14,7 +14,7 @@ import Button from 'react-bootstrap/Button'
 import { TablaRecuperado } from './TablaRecuperado'
 import { useNavigate } from 'react-router-dom'
 
-export const PasswordSuperUser = ({ onLogin }) => {
+export const PasswordSUentregado = ({ onLogin }) => {
 
     const navigate = useNavigate()
 
@@ -32,7 +32,7 @@ export const PasswordSuperUser = ({ onLogin }) => {
             const response = await axios.post(`http://localhost:8081/passwordSuperUsuario`, formData)
             console.log('BIENVENIDO AL SISTEMA:', response.data)
             onLogin()
-            navigate('/TablaRecuperado')
+            navigate('/TablaEntregado')
         } catch (error) {
             alert("Usuairio o contraseña incorrectos", error)
             console.error('Error al iniciar sesión:', error)
@@ -47,14 +47,17 @@ export const PasswordSuperUser = ({ onLogin }) => {
                         <div class="form-group">
                             <div className="brand-title">SUPER USUARIO </div>
                             <br></br>
-                            <label for="username">INGRESE NOMBRE DE USUARIO</label>
-                            <input type="text" class="form-control" id="username" name="username" onChange={handleChange} placeholder="Usuario" />
+                            <div className='inpustLogin'>
+                                <label for="username">INGRESE NOMBRE DE USUARIO</label>
+                                <input type="text" class="form-control" id="username" name="username" onChange={handleChange} placeholder="Usuario" />
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="password">INGRESE CONTRASEÑA DE USUARIO</label>
                             <input type="password" class="form-control" id="password" name="password" onChange={handleChange} placeholder="Contraseña" />
                         </div>
-                        <Link to="/TablaRecuperado" type="submit" class="btn btn-primary" onClick={handleSubmit}>Enviar</Link>
+
+                        <Link style={{width:'250px'}} to="/TablaEntregado" type="submit" class="btn btn-primary" onClick={handleSubmit}>Enviar</Link>
                     </form>
                 </div>
             </div>

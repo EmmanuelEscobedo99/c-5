@@ -12,6 +12,9 @@ import { RegistroUsuarios } from "./componentes/RegistroUsuarios"
 import { useState } from "react"
 import { RecFaltantes } from "./componentes/RecFaltantes"
 import { TablaRecuperado } from "./componentes/TablaRecuperado"
+import { TablaEntregado } from "./componentes/TablaEntregado"
+import { EntregadoFaltantes } from "./componentes/EntregadoFaltantes"
+import { Cargando } from "./componentes/Cargando"
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false)
@@ -43,7 +46,10 @@ function App() {
           <Route path="/Registrar" element={<Registrar/>}></Route>
           <Route path="/RegistroUsuarios" element={<RegistroUsuarios/>}></Route>
           <Route path="/RecuperadosFaltaVerificar/:id/:color/:entidad/:municipio" element={<RecFaltantes/>}></Route>
+          <Route path="/EntregadosFaltaVerificar/:id/:inspeccion/:entidad/:municipio" element={<EntregadoFaltantes/>}></Route>
           <Route path="/TablaRecuperado" element={<TablaRecuperado/>}></Route>
+          <Route path="/TablaEntregado" element={<TablaEntregado/>}></Route>
+          <Route path="/Cargando" element={<Cargando/>}></Route>
         </Routes>
       </BrowserRouter>
     </>
