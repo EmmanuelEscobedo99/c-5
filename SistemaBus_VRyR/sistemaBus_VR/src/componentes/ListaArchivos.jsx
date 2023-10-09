@@ -11,11 +11,11 @@ const ListaArchivos = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'))
   const [userData, setUserData] = useState([]);
   let result = []
-  console.log(isLoggedIn)
+  //console.log(isLoggedIn)
 
   useEffect(() => {
     if (isLoggedIn) {
-      console.log("SE EJECUTO EL useEFFECT")
+      //console.log("SE EJECUTO EL useEFFECT")
       const token = localStorage.getItem('token');
       const traerUsuario = async () => {
         if (token) {
@@ -28,7 +28,7 @@ const ListaArchivos = () => {
             setUserData(res.data)
             
           } catch (err) {
-            console.log(err)
+            //console.log(err)
           }
         }
       }
@@ -41,7 +41,7 @@ const ListaArchivos = () => {
     setIsLoggedIn(true)
   }
 
-  console.log(userData)
+  //console.log(userData)
   const { id } = useParams()
   //users
   const [registros, setRegistros] = useState([]);
@@ -50,7 +50,7 @@ const ListaArchivos = () => {
   // metodo de filtrado
   const btn_busqueda = (e) => {
     setBusqueda(e.target.value)
-    console.log(e.target.value)
+    //console.log(e.target.value)
 
   }
   // metodo de filtrado
@@ -68,9 +68,9 @@ const ListaArchivos = () => {
       try {
         const res = await axios.get("http://localhost:8081/registro");
         setRegistros(res.data)
-        console.log(res.data)
+        //console.log(res.data)
       } catch (err) {
-        console.log(err)
+        //console.log(err)
       }
     };
     buscarRegistros();

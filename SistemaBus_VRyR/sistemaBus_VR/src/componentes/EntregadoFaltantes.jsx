@@ -195,7 +195,7 @@ export const EntregadoFaltantes = () => {
     }
 
 
-    useEffect(() => {
+    /*useEffect(() => {
         axios.get("http://localhost:8081/entregadoRevision/" + id + "/" + inspeccion + "/" + entidad + "/" + municipio)
             .then(res => {
                 console.log("Datos encontrados RECFALTANTES")
@@ -204,12 +204,70 @@ export const EntregadoFaltantes = () => {
                 setDatos(res.data[0])
                 formatoDia()
                 formatoHora()
+                if (datos && datos.FECHA) {
+                    const fechaBaseDatos = datos.FECHA;
+                    let fechaFormateada = '';
+          
+                    // Formatear la fecha
+                    const fechaSplit = fechaBaseDatos.split('T')[0].split('-');
+                    fechaFormateada = `${fechaSplit[0]}-${fechaSplit[1]}-${fechaSplit[2]}`;
+          
+                    // Establecer el estado con la fecha formateada
+                    setFecha(fechaFormateada);
+                    console.log(fecha, "FECHA FORMATEADA ENTREGA: ")
+                  }
                 setEntregado(res.data)
                 console.log(entregado)
             })
             .catch(err => console.log(err))
 
-    }, [id]);
+    }, [id]);*/
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8081/entregadoRevision/${id}/${inspeccion}/${entidad}/${municipio}`);
+                console.log("Datos encontrados RECFALTANTES", response.data);
+
+                // Verifica si se obtuvieron datos antes de actualizar el estado
+                if (response.data && response.data.length > 0) {
+                    console.log("ENTRE AL USEEFFECT")
+                    const firstDataItem = response.data[0];
+                    setDatos(firstDataItem);
+
+                    // Llama a las funciones de formato (asumiendo que están definidas en otro lugar)
+                    formatoDia();
+                    formatoHora();
+
+                    if (firstDataItem && firstDataItem.FECHA) {
+                        console.log("ENTRE A FECHA")
+                        const fechaBaseDatos = firstDataItem.FECHA;
+                        let fechaFormateada = '';
+
+                        // Formatear la fecha
+                        const fechaSplit = fechaBaseDatos.split('T')[0].split('-');
+                        fechaFormateada = `${fechaSplit[0]}-${fechaSplit[1]}-${fechaSplit[2]}`;
+
+                        // Establecer el estado con la fecha formateada
+                        setFecha(fechaFormateada);
+                        console.log(fecha, "FECHA FORMATEADA ENTREGA: ")
+                    }
+
+                    // Establece el estado entregado con los datos completos (si es necesario)
+                    setEntregado(response.data);
+
+                    console.log("Estado actualizado:", firstDataItem);
+                } else {
+                    console.log("No se encontraron datos");
+                }
+            } catch (error) {
+                console.error("Error al realizar la solicitud:", error);
+            }
+        };
+
+        fetchData();
+    }, [id, inspeccion, entidad, municipio]);
+
 
     useEffect(() => {
         LlenarSelect()
@@ -270,6 +328,24 @@ export const EntregadoFaltantes = () => {
         }
     }
 
+    let fechaFormat, newFechaFormat, getFecha
+    getFecha = datos.FECHA
+    fechaFormat = new Date(getFecha)
+    let monthFecha = fechaFormat.getMonth() + 1
+    if (monthFecha > 0 && monthFecha < 10) {
+        monthFecha = "0" + monthFecha
+    }
+    let dayFecha = fechaFormat.getDate()
+    if (dayFecha > 0 && dayFecha < 10) {
+        console.log("day ", dayFecha)
+        dayFecha = "0" + dayFecha
+    }
+    newFechaFormat = fechaFormat.getFullYear() + "-" + monthFecha + "-" + dayFecha
+
+    console.log(newFechaFormat)
+
+    const [fecha, setFecha] = useState("")
+
     const handleChange = (e) => {
         formatoDia()
         formatoHora()
@@ -289,6 +365,11 @@ export const EntregadoFaltantes = () => {
             // Si no se selecciona ninguna entidad, vaciar la lista de municipios
             setMunicipios([]);
         }
+    }
+
+    const handleInputChange = (e) => {
+        handleEntidadChange(e)
+        handleChange(e)
     }
 
     result = userData
@@ -351,7 +432,7 @@ export const EntregadoFaltantes = () => {
                                 <div className="col-sm-2">
                                     <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">ENTIDAD:</label></strong>
                                     <input type="hidden" className="form-control-plaintext" id="id_entidad_entrega" name='id_entidad_entrega' onClick={handleChange} onChange={handleChange} defaultValue={datos.ENTIDAD} />
-                                    <select className="form-control-plaintext" id="id_entidad_entrega" name='id_entidad_entrega' onChange={handleEntidadChange} required>
+                                    <select className="form-control-plaintext" id="id_entidad_entrega" name='id_entidad_entrega' onChange={handleInputChange} required>
                                         <option value="">{entidadNombre}</option>
                                         {results2.map(entidades => {
                                             return (
@@ -410,7 +491,7 @@ export const EntregadoFaltantes = () => {
                                 </div>
                                 <div className="col-sm-2">
                                     <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">FECHA:</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="fecha_entrega" name='fecha_entrega' onClick={handleChange} onChange={handleChange} defaultValue={datos.FECHA} />
+                                    <input type="date" className="form-control-plaintext" id="fecha_entrega" name='fecha_entrega' onClick={handleChange} onChange={handleChange} value={fecha} />
                                 </div>
                                 <div className="col-sm-2">
                                     <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">HORA:</label></strong>

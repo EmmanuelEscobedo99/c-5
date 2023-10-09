@@ -19,6 +19,7 @@ export const TablaRecuperado = () => {
     console.log(isPasswordIn)
 
     const [datos, setDatos] = useState([])
+    let results = []
 
     const RecuperadoBD = async () => {
         try {
@@ -38,6 +39,27 @@ export const TablaRecuperado = () => {
         setIsPasswordIn(true)
     }
 
+    results = datos
+    let fechaFormat, newFechaFormat, getFecha
+
+    results.map(datos => {
+        getFecha = datos.FECHA
+        console.log(getFecha)
+    })
+
+    //getFecha = datos.FECHA
+    fechaFormat = new Date(getFecha)
+    let monthFecha = fechaFormat.getMonth() + 1
+    if (monthFecha > 0 && monthFecha < 10) {
+        monthFecha = "0" + monthFecha
+    }
+    let dayFecha = fechaFormat.getDate()
+    if (dayFecha > 0 && dayFecha < 10) {
+        console.log("day ", dayFecha)
+        dayFecha = "0" + dayFecha
+    }
+    newFechaFormat = fechaFormat.getFullYear() + "-" + monthFecha + "-" + dayFecha
+    console.log(newFechaFormat)
     return (
         <>
             <Navbar />
@@ -64,7 +86,7 @@ export const TablaRecuperado = () => {
                                                 <td>{fila.ID_ALTERNA}</td>
                                                 <td>{fila.SERIE}</td>
                                                 <td>{fila.PLACA}</td>
-                                                <td>{fila.FECHA}</td>
+                                                <td>{newFechaFormat}</td>
                                                 <td>{fila.HORA}</td>
                                                 <td><Link className="btn" to={`/RecuperadosFaltaVerificar/${fila.ID_ALTERNA}/${fila.COLOR}/${fila.ENTIDAD}/${fila.MUNICIPIO}`}>REVISAR</Link></td>
                                             </tr>

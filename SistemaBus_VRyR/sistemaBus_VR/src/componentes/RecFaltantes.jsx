@@ -13,6 +13,11 @@ import { Link } from "react-router-dom"
 import Button from 'react-bootstrap/Button'
 import { useNavigate } from 'react-router-dom'
 
+
+import "react-datepicker/dist/react-datepicker.css";
+
+
+
 export const RecFaltantes = () => {
 
     const navigate = useNavigate()
@@ -64,6 +69,9 @@ export const RecFaltantes = () => {
     const [nombreColor, setNombreColor] = useState([])
     let resultsNombres = []
 
+    const [fechaRobado, setFechaRobado] = useState([])
+    let results7 = []
+
     const [enti, setEnti] = useState([])
     let resultsEnti = []
 
@@ -108,6 +116,9 @@ export const RecFaltantes = () => {
     const [llenado, setLlenado] = useState([])
     let results = []
 
+    const [colores, setColores] = useState([])
+    let resultsColores = []
+
     const [entidades, setEntidades] = useState([])
     let results2 = []
 
@@ -135,6 +146,16 @@ export const RecFaltantes = () => {
         }
         catch (err) {
             console.log(err)
+        }
+    }
+
+    const fechaDeRobado = async () => {
+        try {
+            const { data } = await axios.get(`http://localhost:8081/fechaRobado/${id}`)
+            setFechaRobado(data)
+        }
+        catch (err) {
+
         }
     }
 
@@ -174,6 +195,15 @@ export const RecFaltantes = () => {
         }
     }
 
+    const Colores = async () => {
+        try {
+            const { data } = await axios.get("http://localhost:8081/llenarColor/");
+            setColores(data)
+        } catch (err) {
+
+        }
+    }
+
     //console.log(recuperado)
     const formatoDia = () => {
 
@@ -195,14 +225,37 @@ export const RecFaltantes = () => {
         console.log('La hora de registro es: ', horaCompleta)
     }
 
+    const [fecha, setFecha] = useState("")
 
-    useEffect(() => {
+    /*useEffect(() => {
         axios.get("http://localhost:8081/recuRevision/" + id + "/" + color + "/" + entidad + "/" + municipio)
             .then(res => {
                 console.log("Datos encontrados RECFALTANTES")
                 console.log(res.data)
                 const datos = res.data
                 setDatos(res.data[0])
+                //VERIFICAR SI DATOS CONTIENE LA PROPIEDAD FECHA
+                if (datos && datos.FECHA) {
+                    // Obtener la fecha de la base de datos y formatearla
+                    const fechaBaseDatos = datos.FECHA;
+                    console.log(datos)
+                    let fechaFormateada = "";
+
+                    if (fechaBaseDatos) {
+                        const fechaObj = new Date(fechaBaseDatos);
+                        const year = fechaObj.getFullYear();
+                        const month = String(fechaObj.getMonth() + 1).padStart(2, '0'); // Añadir ceros iniciales al mes
+                        const day = String(fechaObj.getDate()).padStart(2, '0'); // Añadir ceros iniciales al día
+                        fechaFormateada = `${year}-${month}-${day}`;
+                        //fechaFormateada = year + "-" + month + "-" + day
+                        // Establecer el estado con la fecha formateada
+                        console.log(fechaFormateada, fechaFORMATEADAAAAAAAAAAAAAAAA)
+                        setFecha(fechaFormateada)
+                    } else {
+                        console.log("NO HAY DATOS DE FECHA")
+                    }
+                }
+
                 formatoDia()
                 formatoHora()
                 setRecuperado(res.data)
@@ -210,11 +263,48 @@ export const RecFaltantes = () => {
             })
             .catch(err => console.log(err))
 
-    }, [id]);
+    }, [id]);*/
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await axios.get(`http://localhost:8081/recuRevision/${id}/${color}/${entidad}/${municipio}`);
+            console.log('Datos encontrados RECFALTANTES');
+            console.log(response.data);
+    
+            const datos = response.data[0];
+            setDatos(datos)
+            formatoDia()
+            formatoHora()
+            setRecuperado(datos)
+            console.log(recuperado)
+    
+            // Verificar si datos contiene la propiedad FECHA antes de acceder a ella
+            if (datos && datos.FECHA) {
+              const fechaBaseDatos = datos.FECHA;
+              let fechaFormateada = '';
+    
+              // Formatear la fecha
+              const fechaSplit = fechaBaseDatos.split('T')[0].split('-');
+              fechaFormateada = `${fechaSplit[0]}-${fechaSplit[1]}-${fechaSplit[2]}`;
+    
+              // Establecer el estado con la fecha formateada
+              setFecha(fechaFormateada);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        };
+    
+        fetchData();
+      }, [id]);
 
     useEffect(() => {
         LlenarSelect()
         entidadesSelect()
+        fechaDeRobado()
+        Colores()
         // Obtén una referencia al input
         const inputs = document.querySelectorAll('.form-control-plaintext')
         // Dispara el evento 'click' en el input después de un pequeño retraso (por ejemplo, 1 segundo)
@@ -241,30 +331,48 @@ export const RecFaltantes = () => {
     useEffect(() => {
         // Muestra la pantalla de carga
         setIsLoading(true);
-      
+
         // Realiza la petición de datos
         axios.get('/api/datos')
-          .then((response) => {
-            // Procesa los datos obtenidos
-      
-            // Oculta la pantalla de carga después de un retraso (por ejemplo, 1 segundo)
-            setTimeout(() => {
-              setIsLoading(false);
-            }, 1000);
-          })
-          .catch((error) => {
-            console.error('Error al obtener datos:', error);
-      
-            // Asegúrate de ocultar la pantalla de carga en caso de error
-            setIsLoading(false);
-          });
-      }, []);
-      
+            .then((response) => {
+                // Procesa los datos obtenidos
+
+                // Oculta la pantalla de carga después de un retraso (por ejemplo, 1 segundo)
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 1000);
+            })
+            .catch((error) => {
+                console.error('Error al obtener datos:', error);
+
+                // Asegúrate de ocultar la pantalla de carga en caso de error
+                setIsLoading(false);
+            });
+    }, []);
+
 
     results = llenado
     results2 = entidades
     results3 = municipios
     resultsDatos = datos
+    results7 = fechaRobado
+    resultsColores = colores
+
+    /*const fechaBaseDatos = resultsDatos.FECHA;
+
+    if (fechaBaseDatos) {
+        const fechaObj = new Date(fechaBaseDatos);
+        const year = fechaObj.getFullYear();
+        const month = String(fechaObj.getMonth() + 1).padStart(2, '0'); // Añadir ceros iniciales al mes
+        const day = String(fechaObj.getDate()).padStart(2, '0'); // Añadir ceros iniciales al día
+        //fechaFormateada = `${year}-${month}-${day}`;
+        fechaFormateada = year + "-" + month + "-" + day
+        // Establecer el estado con la fecha formateada
+        console.log(fechaFormateada, "fechaFORMATEADAAAAAAAAAAAAAAAA")
+        setFecha(fechaFormateada)
+    } else {
+        console.log("NO HAY DATOS DE FECHA")
+    }*/
 
     const handleClick = async (e) => {
         e.preventDefault();
@@ -272,7 +380,7 @@ export const RecFaltantes = () => {
             console.log("Entre al try")
             console.log(recuperado)
             //let camposValidados = validarCampos()
-            navigate("/Cargando")
+            navigate("/CargandoRec")
             //if (!camposValidados) return
             await axios.post("http://localhost:8081/crearRecVerificado", recuperado);
 
@@ -284,10 +392,35 @@ export const RecFaltantes = () => {
         }
     }
 
+    let fechaFormat, newFechaFormat, getFecha
+    getFecha = datos.FECHA
+    fechaFormat = new Date(getFecha)
+    let monthFecha = fechaFormat.getMonth() + 1
+    if (monthFecha > 0 && monthFecha < 10) {
+        monthFecha = "0" + monthFecha
+    }
+    let dayFecha = fechaFormat.getDate()
+    if (dayFecha > 0 && dayFecha < 10) {
+        console.log("day ", dayFecha)
+        dayFecha = "0" + dayFecha
+    }
+    newFechaFormat = fechaFormat.getFullYear() + "-" + monthFecha + "-" + dayFecha
+
+    console.log(newFechaFormat)
+
+    //const [fecha, setFecha] = useState("")
+
+
     const handleChange = (e) => {
+        let fechaInput = document.getElementById("fechaRec")
+        console.log(fechaInput.value)
+        console.log(fecha)
         formatoDia()
         formatoHora()
         const { name, value } = e.target
+        newFechaFormat = fechaInput.value
+        setFecha(fechaInput.value)
+        console.log(fecha)
         setRecuperado({ ...recuperado, nombre_bitacora, apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora, [name]: value })
 
     }
@@ -303,6 +436,11 @@ export const RecFaltantes = () => {
             // Si no se selecciona ninguna entidad, vaciar la lista de municipios
             setMunicipios([]);
         }
+    }
+
+    const handleInputChange = (e) => {
+        handleEntidadChange(e)
+        handleChange(e)
     }
 
     result = userData
@@ -331,7 +469,6 @@ export const RecFaltantes = () => {
         municipioNombre = muni.MUNICIPIO
     })
 
-
     results6 = recuperadoBD
     console.log(recuperado)
 
@@ -355,7 +492,7 @@ export const RecFaltantes = () => {
                             )
                         })}
                         <h3>Faltantes de verificar</h3>
-                        <h4 style={{color:'green'}}>NOTA: Recuerda que puedes editar los campos al hacer click sobre la información.</h4>
+                        <h4 style={{ color: 'green' }}>NOTA: Recuerda que puedes editar los campos al hacer click sobre la información.</h4>
                         <div className="contenedor">
 
                             <form className="row g-6">
@@ -365,11 +502,11 @@ export const RecFaltantes = () => {
                                 <div className="col-sm-2">
                                     <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">ENTIDAD:</label></strong>
                                     <input type="hidden" className="form-control-plaintext" id="entidadRec" name='entidadRec' onClick={handleChange} onChange={(e) => setRecuperado({ ...recuperado, entidadRec: e.target.value })} defaultValue={datos.ENTIDAD} />
-                                    <select className="form-control-plaintext" id="entidadRec" name='entidadRec' onChange={handleEntidadChange} required>
+                                    <select className="form-control-plaintext" id="entidadRec" name='entidadRec' onChange={handleInputChange} required>
                                         <option selected disabled value="">{entidadNombre}</option>
                                         {results2.map(entidades => {
                                             return (
-                                                <option onClick={handleChange} name={entidades.ENTIDAD} key={entidades.ID_ENTIDAD} value={entidades.ID_ENTIDAD}>{entidades.ENTIDAD}</option>
+                                                <option onChange={handleChange} onClick={handleChange} name={entidades.ENTIDAD} key={entidades.ID_ENTIDAD} value={entidades.ID_ENTIDAD}>{entidades.ENTIDAD}</option>
 
                                             )
                                         })}
@@ -424,22 +561,22 @@ export const RecFaltantes = () => {
                                     <input type="hidden" className="form-control-plaintext" id="colorRec" name='colorRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.COLOR} />
                                     <select className="form-control-plaintext" id="colorRec" name="colorRec" onChange={handleChange} required>
                                         <option selected disabled value="">{colorNombre}</option>
-                                        {results.map(llenado => {
+                                        {resultsColores.map(colores => {
                                             return (
-                                                <option onClick={handleChange} name={llenado.ID_COLOR} key={llenado.ID_COLOR} value={llenado.ID_COLOR}>{llenado.DESCRIPCION}</option>
+                                                <option onClick={handleChange} name={colores.ID_COLOR} key={colores.ID_COLOR} value={colores.ID_COLOR}>{colores.DESCRIPCION}</option>
                                             )
                                         })}
                                     </select>
                                 </div>
 
                                 <div className="col-sm-2">
-                                    <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">FECHA:</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="fechaRec" name='fechaRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.FECHA} />
-                                </div>
 
+                                    <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">FECHA:</label></strong>
+                                    <input type="date" className="form-control-plaintext" id="fechaRec" name='fechaRec' onClick={handleChange} onChange={handleChange} value={fecha} />
+                                </div>
                                 <div className="col-sm-2">
                                     <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">HORA:</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="horaRec" name='horaRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.HORA} />
+                                    <input type="time" className="form-control-plaintext" id="horaRec" name='horaRec' onClick={handleChange} onChange={handleChange} defaultValue={datos.HORA} />
                                 </div>
                             </form>
                             { /* <Button variant="primary" type="submit" onClick={handleClick}></Button>  */}

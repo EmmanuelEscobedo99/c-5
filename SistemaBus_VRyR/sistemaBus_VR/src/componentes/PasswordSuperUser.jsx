@@ -54,7 +54,8 @@ export const PasswordSuperUser = ({ onLogin }) => {
                             <label for="password">INGRESE CONTRASEÑA DE USUARIO</label>
                             <input type="password" class="form-control" id="password" name="password" onChange={handleChange} placeholder="Contraseña" />
                         </div>
-                        <Link to="/TablaRecuperado" type="submit" class="btn btn-primary" onClick={handleSubmit}>Enviar</Link>
+                        <Link style={{ width: '250px' }} to="/TablaRecuperado" type="submit" class="btn btn-primary" onClick={handleSubmit}>Enviar</Link>
+                        <Link style={{ width: '250px' }} to="/ListaArchivos" type="submit" class="btn btn-primary">Regresar</Link>
                     </form>
                 </div>
             </div>

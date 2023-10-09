@@ -301,7 +301,7 @@ app.post("/crearRecVerificado", (req, res) => {
     // PROCESADO = 0
     // ID_FUENTE = 10
 
-    if (ID_ALTERNA != undefined) {
+    if (ID_ALTERNA === undefined) {
         db.query(
             "INSERT INTO vehiculo_recuperado (ID_ALTERNA, PLACA, SERIE, CALLE_REC, NUMEXT_REC, COLONIA_REC, CP_REC, FECHA_REC, HORA_REC, ID_COLOR, ID_FUENTE, ID_ENTIDAD_RECUPERA, ID_MUNICIPIO_REC) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
             [ID_ALTERNA, PLACA, SERIE, CALLE, NUM_EXT, COLONIA, CP_REC, FECHA, HORA, COLOR, 10, ENTIDAD, MUNICIPIO],
@@ -343,7 +343,7 @@ app.post("/crearRecVerificado", (req, res) => {
         )
     }
 
-    if (ID_ALTERNA === undefined) {
+    if (ID_ALTERNA != undefined) {
         db.query(
             "INSERT INTO vehiculo_recuperado (ID_ALTERNA, PLACA, SERIE, CALLE_REC, NUMEXT_REC, COLONIA_REC, CP_REC, FECHA_REC, HORA_REC, ID_COLOR, ID_FUENTE, ID_ENTIDAD_RECUPERA, ID_MUNICIPIO_REC) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
             [id_alterna, placa, serie, calle, numext, colonia, codigoPostal, fecha, hora, id_color, 10, id_entidad_recupera, id_municipio_rec],

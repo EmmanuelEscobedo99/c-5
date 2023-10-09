@@ -3,23 +3,26 @@ import Navbar from "./Navbar";
 import Form from 'react-bootstrap/Form';
 
 import "../archivosCss/formulario.css"
-import { useParams } from "react-router-dom"
+import { Navigate, useParams } from "react-router-dom"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useEffect } from "react"
 import axios from "axios"
 import Login from "./Login";
+import { useNavigate } from 'react-router-dom'
 
 const MasD = () => {
+
+  const navigate = useNavigate()
 
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'))
   const [userData, setUserData] = useState([]);
   let result = []
-  console.log(isLoggedIn, "MASD")
+  //console.log(isLoggedIn, "MASD")
 
   useEffect(() => {
     if (isLoggedIn) {
-      console.log("SE EJECUTO EL useEFFECT")
+      //console.log("SE EJECUTO EL useEFFECT")
       const token = localStorage.getItem('token');
       const traerUsuario = async () => {
         if (token) {
@@ -30,9 +33,9 @@ const MasD = () => {
               },
             })
             setUserData(res.data)
-            console.log(userData)
+            //console.log(userData)
           } catch (err) {
-            console.log(err)
+            //console.log(err)
           }
         }
       }
@@ -53,8 +56,8 @@ const MasD = () => {
   useEffect(() => {
     axios.get("http://localhost:8081/buscarId/" + id)
       .then(res => {
-        console.log("Datos encontrados")
-        console.log(res.data)
+        //console.log("Datos encontrados")
+        //console.log(res.data)
         setDatos(res.data[0])
       })
       .catch(err => console.log(err))
@@ -62,6 +65,15 @@ const MasD = () => {
   }, [id]);
 
   result = userData
+
+  const [validado, setValidado] = useState(true)
+  const isValidado = () => {
+    if(validado){
+      navigate(`/entregado/${id}`)
+    } else {
+      alert("No se puede entregar el vehiculo porque el registro de Recuperado no ha sido validado")
+    }
+  }
 
   return (
 
@@ -424,7 +436,7 @@ const MasD = () => {
                 { /* <Button variant="primary" type="submit" onClick={handleClick}></Button>  */}
                 <Link to="/ListaArchivos" className="btn  btn-info " onClick={() => setIsLoggedIn(false)}> Inicio</Link>
                 <Link className="btn  btn-info" to={`/recuperado/${id}`}>Recuperado</Link>
-                <Link to={`/entregado/${id}`} className="btn  btn-info"> Entregado</Link>
+                <button /*</form>to={`/entregado/${id}`}*/ onClick={isValidado} className="btn  btn-info"> Entregado</button>
               </form>
             </div>
           </div>

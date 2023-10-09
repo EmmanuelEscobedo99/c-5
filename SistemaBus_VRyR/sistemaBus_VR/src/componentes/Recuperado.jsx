@@ -17,11 +17,11 @@ export const Recuperado = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'))
     const [userData, setUserData] = useState([]);
     let result = []
-    console.log(isLoggedIn, "MASD")
+    //console.log(isLoggedIn, "MASD")
 
     useEffect(() => {
         if (isLoggedIn) {
-            console.log("SE EJECUTO EL useEFFECT")
+            //console.log("SE EJECUTO EL useEFFECT")
             const token = localStorage.getItem('token');
             const traerUsuario = async () => {
                 if (token) {
@@ -34,7 +34,7 @@ export const Recuperado = () => {
                         setUserData(res.data)
 
                     } catch (err) {
-                        console.log(err)
+                        //console.log(err)
                     }
                 }
             }
@@ -43,10 +43,10 @@ export const Recuperado = () => {
 
     }, [isLoggedIn]);
 
-    let nombre_bitacora
+    let nombre_bitacora, entidadName
     let apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora
 
-    console.log(userData)
+    //console.log(userData)
 
     const handleLogin = () => {
         setIsLoggedIn(true)
@@ -62,13 +62,13 @@ export const Recuperado = () => {
         setEditar(0)
         try {
             await axios.post(`http://localhost:8081/modificarRecuperado/${id}`, modificarRecuperado)
-            console.log(setModificarRecuperado + "SetModificarRecuperado")
+            //console.log(setModificarRecuperado + "SetModificarRecuperado")
 
             alert("El nuevo registro ha sido guardado correctamente ")
             navigate("/")
 
         } catch (err) {
-            console.log(err)
+            //console.log(err)
         }
     }
     let id_alterna = id
@@ -183,7 +183,7 @@ export const Recuperado = () => {
             setLlenado(data)
         }
         catch (err) {
-            console.log(err)
+            //console.log(err)
         }
     }
 
@@ -193,19 +193,19 @@ export const Recuperado = () => {
             setEntidades(data)
         }
         catch (err) {
-            console.log(err)
+            //console.log(err)
         }
     }
 
     const municipiosSelect = async (id_entidad) => {
         id_entidad = entidades.ID_ENTIDAD
-        console.log(entidades.ID_ENTIDAD + "ENTIDADES")
+        //console.log(entidades.ID_ENTIDAD + "ENTIDADES")
         try {
             const { data } = await axios.get("http://localhost:8081/municipios", { id_entidad: id_entidad })
             setMunicipios(data)
         }
         catch (err) {
-            console.log(err)
+            //console.log(err)
         }
     }
 
@@ -214,7 +214,7 @@ export const Recuperado = () => {
             const response = await axios.get(`http://localhost:8081/municipios/${entidadId}`);
             setMunicipios(response.data)
         } catch (error) {
-            console.error('Error al cargar los municipios:', error);
+            //console.error('Error al cargar los municipios:', error);
         }
     }
 
@@ -224,7 +224,7 @@ export const Recuperado = () => {
             setFuente(data)
         }
         catch (err) {
-            console.log(err)
+            //console.log(err)
         }
     }
 
@@ -234,7 +234,7 @@ export const Recuperado = () => {
             setUltimoId(data)
         }
         catch (err) {
-            console.log(err)
+            //console.log(err)
         }
     }
 
@@ -266,7 +266,7 @@ export const Recuperado = () => {
         let mes = today.getMonth() + 1
         fecha = today.getFullYear() + "/" + mes + "/" + today.getDate()
         recuperado['fecha'] = fecha
-        console.log("la fecha de la funcion es :", fecha)
+        //console.log("la fecha de la funcion es :", fecha)
     }
 
     const formatoHora = () => {
@@ -276,7 +276,7 @@ export const Recuperado = () => {
         let minutos = today.getMinutes()
         horaCompleta = hora + ':' + minutos
         recuperado['hora'] = horaCompleta
-        console.log('La hora de registro es: ', horaCompleta)
+        //console.log('La hora de registro es: ', horaCompleta)
     }
 
     const handleChange = (e) => {
@@ -285,7 +285,7 @@ export const Recuperado = () => {
         setRecuperado((prev) => ({ ...prev, id_alterna, nombre_bitacora, apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora, [e.target.name]: e.target.value }))
         id_entidad = document.getElementById('id_entidad_recupera')
     }
-    
+
     const handleChangeModificacionRecuperado = (e) => {
         formatoDia()
         formatoHora()
@@ -296,7 +296,6 @@ export const Recuperado = () => {
     const handleEntidadChange = (event) => {
         const selectedEntidad = event.target.value;
         setEntidadSeleccionada(selectedEntidad);
-
         // Cargar los municipios correspondientes a la entidad seleccionada
         if (selectedEntidad) {
             cargarMunicipios(selectedEntidad);
@@ -314,27 +313,28 @@ export const Recuperado = () => {
     let today = new Date().toISOString().split('T')[0];
     let minDate = "1900-01-01"
 
-    console.log(recuperado)
-    console.log(modificarRecuperado)
+    //console.log(recuperado)
+    //console.log(modificarRecuperado)
 
     const handleClick = async (e) => {
         e.preventDefault();
-        console.log(recuperado)
+        //console.log(recuperado)
+
 
         try {
-            console.log("Entre al try")
+            //console.log("Entre al try")
             let camposValidados = validarCampos()
 
             if (!camposValidados) return
 
             await axios.post("http://localhost:8081/crearRecuperadoTemporal", recuperado);
-            console.log(setRecuperado + "SetRecuperado")
+            //console.log(setRecuperado + "SetRecuperado")
 
             alert("El nuevo registro ha sido guardado correctamente ")
             navigate("/")
 
         } catch (err) {
-            console.log(err)
+            //console.log(err)
         }
     }
 
@@ -672,13 +672,13 @@ export const Recuperado = () => {
                                             <option selected disabled value="">ENTIDAD QUE RECUPERÓ EL VEHICULO</option>
                                             {results2.map(entidades => {
                                                 return (
-                                                    <option name={entidades.ENTIDAD} key={entidades.ID_ENTIDAD} value={entidades.ID_ENTIDAD}>{entidades.ENTIDAD}</option>
-                                                    
+                                                    <option name={entidades.ENTIDAD} key={entidades.ID_ENTIDAD} defaultValue={entidades.ENTIDAD} value={entidades.ID_ENTIDAD}>{entidades.ENTIDAD}</option>
+
                                                 )
                                             })}
                                         </select>
                                     </div>
-                                        
+
                                     <div class="invalid-feedback">Porfavor seleccione una entidad.</div>
                                 </div>
                                 <div class="formulario_grupo col-6" id='grupo_municipio'>
@@ -764,18 +764,18 @@ export const Recuperado = () => {
                                         {/* VALIDACIÓN La fecha de recuperación no podrá ser menor a la fecha de robo del vehículo. */}
                                         {results7.map(fechaRobado => {
                                             dateRobo = new Date(fechaRobado.FECHA_ROBO)
-                                            console.log(dateRobo)
+                                            //console.log(dateRobo)
                                             let monthRobo = dateRobo.getMonth() + 1
                                             if (monthRobo > 0 && monthRobo < 10) {
                                                 monthRobo = "0" + monthRobo
                                             }
                                             let dayRobo = dateRobo.getDate()
                                             if (dayRobo > 0 && dayRobo < 10) {
-                                                console.log("day ", dayRobo)
+                                                //console.log("day ", dayRobo)
                                                 dayRobo = "0" + dayRobo
                                             }
                                             newDateRobo = dateRobo.getFullYear() + "-" + monthRobo + "-" + dayRobo
-                                            console.log("FECHA ROBO ", newDateRobo)
+                                            //console.log("FECHA ROBO ", newDateRobo)
                                             return (
                                                 <>
                                                     <input type="date" max={today} min={newDateRobo} className="form-control" id="fecha_rec" name="fecha_rec" onChange={handleChange} required />
@@ -796,9 +796,9 @@ export const Recuperado = () => {
                                 <div class="col-md-12">
                                     <Button variant="primary" type="submit" onClick={handleClick}>Enviar</Button>
                                     <Link to="/ListaArchivos" className="btn btn-info"> Inicio</Link>
-                                    <Button  variant="primary" onClick={() => {
+                                    {/*<Button variant="primary" onClick={() => {
                                         setEditar(id)
-                                    }}>Editar</Button>
+                                    }}>Editar</Button>*/}
 
                                     {editar == id && (
                                         <div className='edit_form'>
@@ -811,7 +811,7 @@ export const Recuperado = () => {
                                                     let date2 = new Date(recuperadoBD.FECHA_REC)
                                                     let newDate2 = date2.getFullYear() + "/" + date2.getMonth() + "/" + date2.getDay()
 
-                                                    console.log(newDate2)
+                                                    //console.log(newDate2)
                                                     return (
                                                         <>
                                                             <label>CALLE:</label>

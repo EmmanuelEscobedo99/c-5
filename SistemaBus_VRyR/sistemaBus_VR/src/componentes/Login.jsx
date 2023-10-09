@@ -15,20 +15,20 @@ const Login = ({onLogin}) => {
   } else {
     privilegio = 1
   }
-  console.log(formData)
+  //console.log(formData)
 
 
   const handleChange = (e) => {
     privilegio = document.getElementById('privilegio').value
     setFormData((prev) => ({ ...prev, privilegio, [e.target.name]: e.target.value }))
-    console.log(formData)
+    //console.log(formData)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     try {
-      console.log('ENTRE AL TRY')
+      //console.log('ENTRE AL TRY')
       const response = await axios.post(`http://localhost:8081/login`, formData)
       const { token } = response.data
        // Almacenar el token en el almacenamiento local
@@ -37,12 +37,12 @@ const Login = ({onLogin}) => {
        // Llamar a la función de inicio de sesión proporcionada por el padre
        onLogin()
       
-      console.log('BIENVENIDO AL SISTEMA:', response.data)
+      //console.log('BIENVENIDO AL SISTEMA:', response.data)
       navigate('/ListaArchivos')
       // Aquí puedes redirigir al usuario o realizar otras acciones después del inicio de sesión exitoso
     } catch (error) {
       alert("Usuairio o contraseña incorrectos")
-      console.error('Error al iniciar sesión:', error.response.data)
+      //console.error('Error al iniciar sesión:', error.response.data)
       // Aquí puedes manejar errores de inicio de sesión, como mostrar mensajes de error al usuario
     }
   }

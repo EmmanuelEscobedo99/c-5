@@ -17,6 +17,7 @@ export const TablaEntregado = () => {
 
     const [isPasswordIn, setIsPasswordIn] = useState(false)
     const [datos, setDatos] = useState([])
+    let results = []
 
     const handleLogin = () => {
         setIsPasswordIn(true)
@@ -36,6 +37,27 @@ export const TablaEntregado = () => {
         RecuperadoBD()
     }, [])
 
+    results = datos
+    let fechaFormat, newFechaFormat, getFecha
+
+    results.map(datos => {
+        getFecha = datos.FECHA
+        console.log(getFecha)
+    })
+
+    //getFecha = datos.FECHA
+    fechaFormat = new Date(getFecha)
+    let monthFecha = fechaFormat.getMonth() + 1
+    if (monthFecha > 0 && monthFecha < 10) {
+        monthFecha = "0" + monthFecha
+    }
+    let dayFecha = fechaFormat.getDate()
+    if (dayFecha > 0 && dayFecha < 10) {
+        console.log("day ", dayFecha)
+        dayFecha = "0" + dayFecha
+    }
+    newFechaFormat = fechaFormat.getFullYear() + "-" + monthFecha + "-" + dayFecha
+    console.log(newFechaFormat)
 
     return (
         <>
@@ -61,7 +83,7 @@ export const TablaEntregado = () => {
                                                 <tr key={fila.ID_ALTERNA}>
                                                     <td>{fila.ID_ALTERNA}</td>
                                                     <td>{fila.SERIE}</td>
-                                                    <td>{fila.FECHA}</td>
+                                                    <td>{newFechaFormat}</td>
                                                     <td>{fila.HORA}</td>
                                                     <td><Link className="btn" to={`/EntregadosFaltaVerificar/${fila.ID_ALTERNA}/${fila.INSPECCION}/${fila.ENTIDAD}/${fila.MUNICIPIO}`}>REVISAR</Link></td>
                                                 </tr>

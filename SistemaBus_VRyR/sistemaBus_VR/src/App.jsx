@@ -15,6 +15,7 @@ import { TablaRecuperado } from "./componentes/TablaRecuperado"
 import { TablaEntregado } from "./componentes/TablaEntregado"
 import { EntregadoFaltantes } from "./componentes/EntregadoFaltantes"
 import { Cargando } from "./componentes/Cargando"
+import { CargandoRec } from "./componentes/CargandoRec"
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false)
@@ -50,6 +51,7 @@ function App() {
           <Route path="/TablaRecuperado" element={<TablaRecuperado/>}></Route>
           <Route path="/TablaEntregado" element={<TablaEntregado/>}></Route>
           <Route path="/Cargando" element={<Cargando/>}></Route>
+          <Route path="/CargandoRec" element={<CargandoRec/>}></Route>
         </Routes>
       </BrowserRouter>
     </>

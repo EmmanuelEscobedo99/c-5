@@ -44,20 +44,18 @@ export const PasswordSUentregado = ({ onLogin }) => {
             <div className='area-form'>
                 <div className='containerLogin'>
                     <form>
-                        <div class="form-group">
+                        <div className='form-group'>
                             <div className="brand-title">SUPER USUARIO </div>
                             <br></br>
-                            <div className='inpustLogin'>
-                                <label for="username">INGRESE NOMBRE DE USUARIO</label>
-                                <input type="text" class="form-control" id="username" name="username" onChange={handleChange} placeholder="Usuario" />
-                            </div>
+                            <label for="username">INGRESE NOMBRE DE USUARIO</label>
+                            <input type="text" class="form-control" id="username" name="username" onChange={handleChange} placeholder="Usuario" />
                         </div>
                         <div class="form-group">
                             <label for="password">INGRESE CONTRASEÑA DE USUARIO</label>
                             <input type="password" class="form-control" id="password" name="password" onChange={handleChange} placeholder="Contraseña" />
                         </div>
-
-                        <Link style={{width:'250px'}} to="/TablaEntregado" type="submit" class="btn btn-primary" onClick={handleSubmit}>Enviar</Link>
+                        <Link style={{ width: '250px' }} to="/TablaEntregado" type="submit" class="btn btn-primary" onClick={handleSubmit}>Enviar</Link>
+                        <Link style={{ width: '250px' }} to="/ListaArchivos" type="submit" class="btn btn-primary">Regresar</Link>
                     </form>
                 </div>
             </div>
