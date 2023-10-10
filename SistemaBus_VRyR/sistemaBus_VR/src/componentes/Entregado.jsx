@@ -54,6 +54,7 @@ export const Entregado = () => {
 
   const handleClickModificarEntregado = async (e, id) => {
     e.preventDefault();
+    
     formatoDia()
     formatoHora()
     setEditar(0)
@@ -311,7 +312,7 @@ export const Entregado = () => {
       let camposValidados = validarCampos()
 
       if (!camposValidados) return
-
+      localStorage.removeItem("registroVerificadoId")
       await axios.post("http://localhost:8081/crearEntregado", entregado);
       console.log(setEntregado + "SetEntregado")
       alert("El nuevo registro ha sido guardado correctamente ")
@@ -625,6 +626,12 @@ export const Entregado = () => {
     }
 
   }
+
+  const isValidado = () => {
+    localStorage.removeItem("registroVerificadoId");
+  }
+
+
   result = userData
   result.map(userData => {
     nombre_bitacora = userData.nombre

@@ -268,37 +268,37 @@ export const RecFaltantes = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-          try {
-            const response = await axios.get(`http://localhost:8081/recuRevision/${id}/${color}/${entidad}/${municipio}`);
-            console.log('Datos encontrados RECFALTANTES');
-            console.log(response.data);
-    
-            const datos = response.data[0];
-            setDatos(datos)
-            formatoDia()
-            formatoHora()
-            setRecuperado(datos)
-            console.log(recuperado)
-    
-            // Verificar si datos contiene la propiedad FECHA antes de acceder a ella
-            if (datos && datos.FECHA) {
-              const fechaBaseDatos = datos.FECHA;
-              let fechaFormateada = '';
-    
-              // Formatear la fecha
-              const fechaSplit = fechaBaseDatos.split('T')[0].split('-');
-              fechaFormateada = `${fechaSplit[0]}-${fechaSplit[1]}-${fechaSplit[2]}`;
-    
-              // Establecer el estado con la fecha formateada
-              setFecha(fechaFormateada);
+            try {
+                const response = await axios.get(`http://localhost:8081/recuRevision/${id}/${color}/${entidad}/${municipio}`);
+                console.log('Datos encontrados RECFALTANTES');
+                console.log(response.data);
+
+                const datos = response.data[0];
+                setDatos(datos)
+                formatoDia()
+                formatoHora()
+                setRecuperado(datos)
+                console.log(recuperado)
+
+                // Verificar si datos contiene la propiedad FECHA antes de acceder a ella
+                if (datos && datos.FECHA) {
+                    const fechaBaseDatos = datos.FECHA;
+                    let fechaFormateada = '';
+
+                    // Formatear la fecha
+                    const fechaSplit = fechaBaseDatos.split('T')[0].split('-');
+                    fechaFormateada = `${fechaSplit[0]}-${fechaSplit[1]}-${fechaSplit[2]}`;
+
+                    // Establecer el estado con la fecha formateada
+                    setFecha(fechaFormateada);
+                }
+            } catch (error) {
+                console.log(error);
             }
-          } catch (error) {
-            console.log(error);
-          }
         };
-    
+
         fetchData();
-      }, [id]);
+    }, [id]);
 
     useEffect(() => {
         LlenarSelect()
@@ -380,6 +380,9 @@ export const RecFaltantes = () => {
             console.log("Entre al try")
             console.log(recuperado)
             //let camposValidados = validarCampos()
+            
+            // Si la verificación es exitosa, guarda el ID en el localStorage
+            localStorage.setItem("registroVerificadoId", id);
             navigate("/CargandoRec")
             //if (!camposValidados) return
             await axios.post("http://localhost:8081/crearRecVerificado", recuperado);
