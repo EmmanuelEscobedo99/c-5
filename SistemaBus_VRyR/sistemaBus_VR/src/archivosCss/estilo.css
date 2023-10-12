@@ -1,158 +1,525 @@
-*{
-
-   margin:0 ;
-   padding:0 ;
-   box-sizing:borde-box;
-  
-
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   transition: all 0.3s;
+   font-family: 'San Francisco', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-
-.titulo{
-     margin-top: 20px;
-       
+body {
+   background-image: url(../assets/fnd2.jpg);
+   background-size: cover;
+   background-attachment: fixed;
+   margin: 0;
+   padding: 0;
 }
 
-.btn-busqueda{
- position: relative;    
- width: 400px;
- margin-left: 540px;
- 
+.titulo {
+   margin-top: 20px;
+   transition: margin 0.3s;
+   font-size: 24px;
+   font-weight: bold;
 }
 
-
+.btn-busqueda {
+   position: relative;
+   width: 400px;
+   margin-left: 540px;
+   transition: all 0.3s;
+   transform: scale(1);
+   font-size: 18px;
+}
 
 .container {
- margin-top: 20px;   
- max-width: 1300px;
- width: 100%;
- top: 0px;
- padding: 0px 20px;
-
+   margin-top: 20px;
+   max-width: 1300px;
+   width: 100%;
+   top: 0px;
+   padding: 0 20px;
+   transition: all 0.3s;
 }
 
-
-
-section{
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-align-items: center;
-
-
+section {
+   min-height: 100vh;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   transition: all 0.3s;
 }
 
-h3{
+h3 {
    font-size: 30px;
-   line-height: 60px;
+   line-height: 1.5;
    text-align: center;
    margin-bottom: 40px;
+   transition: all 0.3s;
+   transform: scale(1);
 }
 
-.cards{
- display: flex;
- flex-wrap: wrap;
- justify-content: space-between ;
- align-items: center;
-
+.cards {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-between;
+   align-items: center;
+   gap: 20px;
+   /* Espacio entre las tarjetas */
+   transition: all 0.3s;
 }
 
-
-.card{
- flex: 0 0 calc(33.33% - 20px);
- max-width: calc(33.33% - 20px);
- width: 100%;
- background: rgb(245, 241, 241);
- border-radius: 10px;
- padding: 20px;
- margin-bottom: 20px;
- transition: .3s;
- border: 3px solid transparent;
-}
-
-
-.card:hover{
-    border-color: rgb(101, 100, 102);
-    background: rgba(198, 197, 199, 0.568);
-}
-
-
-.btn{
-     border: none;
-     outline: none;
-     margin: 8px;
-     background: rgb(132, 142, 175);
-     color: rgb(248, 242, 242);
-     border-radius: 10px;
-     max-width: 100%;
-     width: 300px;
-     height: 40px;
-     margin-left: 30px;
-     justify-content: center;
-     align-items: center;
-     margin-top: 20px;
-     cursor: pointer;
-     transition: .3s;
-     border: 1px solid rgb(49, 51, 59);
+.card {
+   flex: 1;
+   background: #fff;
+   border-radius: 10px;
+   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+   padding: 20px;
+   margin-bottom: 20px;
+   transition: all 0.3s;
+   transform: scale(1);
+   transition: transform 0.3s;
    
+}
+
+.card:hover {
+   transform: scale(1.05);
+   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.card h2 {
+   font-size: 24px;
+   margin-bottom: 10px;
+}
+
+.card p {
+   margin-bottom: 10px;
+}
+
+.card .actions {
+   margin-top: 10px;
+}
+
+.card .actions a {
+   color: #0070f3;
+   text-decoration: none;
+   margin-right: 10px;
+}
+
+.btn {
+   border: none;
+   outline: none;
+   margin: 8px;
+   background: #4285F4;
+   color: #ffffff;
+   border-radius: 10px;
+   max-width: 100%;
+   width: 300px;
+   height: 40px;
+   margin-left: 30px;
+   text-align: center;
+   line-height: 30px;
+   cursor: pointer;
+   transition: all 0.3s;
+   font-size: 16px;
+   transform: scale(1);
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#MyDropDown .btn {
+   margin-left: 0px;
+   width: 100px;
+   height: 40px;
+   text-transform: uppercase;
+   margin-right: 70px;
+}
+
+.btn-container {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin-top: 20px;
+   /* Puedes ajustar el margen superior según tus necesidades */
+}
+
+.btn:hover {
+   background: #1967D2;
+   transform: scale(1.05);
+   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+@media (max-width: 969px) {
+   section {
+      padding: 20px 0;
    }
 
-
-
-
-.btn:hover{
-  background: transparent;
-  color: rgb(55, 55, 218); 
-
-}
-
-
-@media (max-width:969px){
- section{
-    padding: 20px 0px;
- }
-
- h1{
-    font-size: 30px;
-    line-height: 40px;
- }
- .card{
-    flex: 0 0 calc(50% - 20%);
-    max-width: calc(50% - 20%);
- }
-
-
-}
-
-
-@media (max-width:600px){
-   
-    .card{
-       flex: 0 0 100%;
-       max-width: 100%;
-    }  
-   
+   h3 {
+      font-size: 24px;
+      transform: scale(1);
    }
 
-
-   p{
-      color: rgb(61, 61, 63);
-      text-align: center;
+   .card {
+      flex: 0 0 calc(50% - 20px);
+      max-width: calc(50% - 20px);
    }
-
-
-   
-h5{
-  font-size: 20px;
-  line-height: 10px;
-  text-align: center;
- 
 }
-  
-h4{
-  font-size: 17px;
-  line-height: 10px;
-  text-align: center;
-  color: rgb(7, 7, 7);
-  
+
+@media (max-width: 600px) {
+   .card {
+      flex: 0 0 100%;
+      max-width: 100%;
+   }
+}
+
+p {
+   color: rgb(61, 61, 63);
+   text-align: center;
+   transition: all 0.3s;
+   font-size: 18px;
+}
+
+h5 {
+   font-size: 20px;
+   line-height: 1.2;
+   text-align: center;
+   transform: scale(1);
+}
+
+h4 {
+   font-size: 17px;
+   line-height: 1.2;
+   text-align: center;
+   color: rgb(7, 7, 7);
+   transition: all 0.3s;
+   transform: scale(1);
+}
+
+/* Estilos generales del sidebar */
+.sidebar {
+   box-shadow: 0px 5px 15px rgba(0.3, 0.3, 0.3, 0.3);
+   position: fixed;
+   left: 0;
+   top: 1;
+   width: 250px;
+   height: 100%;
+   background-color: #fff6f6;
+   /* Fondo del sidebar */
+   padding: 20px;
+   color: #000000;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+   align-items: center;
+   font-family: 'San Francisco', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Estilo del logo */
+.sidebar-logo a {
+   font-size: 24px;
+   font-weight: bold;
+   margin-bottom: 20px;
+   color: #000000;
+}
+
+/* Estilos para los enlaces del sidebar */
+.sidebar-links {
+   list-style: none;
+   padding: 0;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+   align-items: center;
+   flex-grow: 1;
+   color: black;
+}
+
+.sidebar-links li {
+   margin-bottom: 10px;
+   width: 100%;
+}
+
+.sidebar-links a {
+   text-decoration: none;
+   color: #000000;
+   font-size: 18px;
+   width: 100%;
+   padding: 10px;
+   text-align: center;
+}
+
+/* Cambiar el color al pasar el mouse por encima de los enlaces */
+.sidebar-links a:hover {
+   color: #00f;
+}
+
+/* Otros estilos específicos del sidebar según tus necesidades */
+
+
+
+/* Estilo para el contenedor de la barra de búsqueda */
+.search-container {
+   position: relative;
+   width: 400px;
+   margin-left: 750px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border: 1px solid #dfe1e5;
+   /* Borde ligero */
+   border-radius: 24px;
+   /* Bordes redondeados */
+   background: #fff;
+   /* Fondo blanco */
+   box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+   /* Sutil sombra */
+   transition: all 0.3s;
+}
+
+/* Estilo para el campo de entrada de búsqueda */
+.search-input {
+   width: 100%;
+   padding: 10px;
+   border: none;
+   outline: none;
+   font-size: 16px;
+   border-radius: 24px;
+   /* Bordes redondeados */
+   transition: border-color 0.3s;
+   flex-grow: 1;
+}
+
+.google {
+   border: none;
+   text-decoration: none;
+   outline: none;
+   width: 100%;
+}
+
+/* Estilo para el ícono de búsqueda */
+.search-icon {
+   position: absolute;
+   top: 50%;
+   right: 10px;
+   transform: translateY(-50%);
+   color: #5f6368;
+   /* Color de ícono similar al de Google */
+   transition: color 0.3s;
+   cursor: pointer;
+}
+
+/* Estilo para el ícono de búsqueda al enfocar el campo de entrada */
+.search-input:focus+.search-icon {
+   color: #4285f4;
+   /* Cambia el color del ícono al enfocar el campo de búsqueda */
+}
+
+/* Estilo para el campo de entrada de búsqueda al enfocar */
+.search-input:focus {
+   border-color: #4285f4;
+   /* Cambia el color del borde al enfocar el campo de búsqueda */
+}
+
+/* Reglas de medios para hacerlo responsive */
+@media (max-width: 768px) {
+   .search-input {
+      font-size: 14px;
+      /* Reduce el tamaño de fuente para pantallas más pequeñas */
+   }
+}
+
+@media (max-width: 480px) {
+   .search-input {
+      font-size: 12px;
+      /* Reduce aún más el tamaño de fuente para pantallas más pequeñas */
+   }
+}
+
+/* El resto de tus estilos se mantiene igual */
+
+
+
+.navbar-title {
+   font-family: 'Arial', sans-serif;
+   /* Cambia 'Tu Fuente Personalizada' por la fuente que desees */
+   font-size: 20px;
+   /* Tamaño de fuente */
+   color: #000000;
+   /* Color del texto */
+   text-transform: uppercase;
+   /* Transformar texto a mayúsculas */
+   /* Otros estilos que desees aplicar */
+   padding-top: 20px;
+}
+
+/* ... Resto de tus estilos */
+
+.custom-frop .dropdown-toggle {
+   box-shadow: none;
+   background: transparent;
+   border: none;
+   color: #050101;
+   /* Color de texto personalizado */
+   text-decoration: none;
+   padding: 0px 0px;
+   font-size: 18.2px;
+   font-family: 'San Francisco', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+}
+
+.custom-frop .dropdown-item {
+   padding: 10px 15px;
+   font-size: 16px;
+   /* Tamaño de fuente personalizado */
+   color: #333;
+   /* Color de texto personalizado */
+   text-decoration: none;
+}
+
+.custom-frop .dropdown-item:hover {
+   background-color: #f0f0f0;
+   /* Cambia el color de fondo al pasar el mouse */
+   color: #000000;
+   /* Cambia el color de texto al pasar el mouse */
+}
+
+.custom-frop .dropdown-menu {
+   border: none;
+   box-shadow: none;
+   background: #fff;
+   /* Fondo del menú personalizado */
+}
+
+.custom-frop .dropdown-toggle::after {
+   display: none;
+   /* Oculta el icono de flecha del botón */
+}
+
+.custom-frop .dropdown-menu::before {
+   border-bottom: 8px solid #fff;
+   /* Personaliza la flecha del menú */
+   border-right: 8px solid transparent;
+   border-left: 8px solid transparent;
+}
+
+/* Personaliza cualquier otro estilo según tus preferencias */
+/* Resto de tus estilos CSS */
+
+/* navbar.css */
+
+/* Estilos generales del navbar */
+.navbar {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   background-color: #ffffff;
+   /* Fondo del navbar */
+   padding: 10px 20px;
+   /* Espaciado interior del navbar */
+   height: 70px;
+   /* Altura del navbar */
+   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+   z-index: 1000;
+}
+
+/* Estilo del logo */
+.navbar-logo a {
+   color: #fff;
+   /* Color del texto del logo */
+   font-size: 24px;
+   /* Tamaño de fuente del logo */
+   text-decoration: none;
+}
+
+/* Estilo de los enlaces del navbar */
+.navbar-links {
+   list-style: none;
+   display: flex;
+}
+
+.navbar-links li {
+   margin-right: 20px;
+   /* Espaciado entre enlaces */
+}
+
+.navbar-links a {
+   color: #fff;
+   /* Color del texto de los enlaces */
+   text-decoration: none;
+   font-size: 1px;
+   /* Tamaño de fuente de los enlaces */
+}
+
+/* Cambiar el color al pasar el mouse por encima de los enlaces */
+.navbar-links a:hover {
+   color: #007bff;
+   /* Color al pasar el mouse por encima de los enlaces */
+}
+
+@media (max-width: 768px) {
+   .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px;
+   }
+}
+
+
+/* Estilos para el contenedor de paginación */
+/* Contenedor de la paginación */
+.pagination-container {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   list-style: none;
+   margin: 0;
+   padding: 0;
+   background-color: #f0f0f0;
+   /* Color de fondo del contenedor de paginación */
+   padding: 10px;
+   /* Espacio interno del contenedor de paginación */
+   border-radius: 5px;
+   /* Borde redondeado */
+   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Botón "Anterior" */
+.pagination-button.previous {
+   background: var(--primary-color);
+   color: #333;
+   border: none;
+   border-radius: 5px;
+   padding: 5px 1px;
+   cursor: pointer;
+   transition: background 0.3s;
+}
+
+/* Botón "Siguiente" */
+.pagination-button.next {
+   background: var(--primary-color);
+   color: #333;
+   border: none;
+   border-radius: 5px;
+   padding: 5px 10px;
+   cursor: pointer;
+   transition: background 0.3s;
+}
+
+/* Botón activo */
+.pagination-button.active {
+   background: #007bff;
+   color: #333;
+   border: none;
+   border-radius: 20px;
+   /* Hacer que el botón sea redondo */
+   padding: 8px 15px;
+   margin: 10px 5px;
+   cursor: pointer;
+   transition: background 0.3s;
+}
+
+
+/* Estilo para botones deshabilitados si es necesario */
+.disabled {
+   pointer-events: none;
+   /* Evita interacciones con botones deshabilitados */
+   opacity: 0.6;
+   /* Reduce la opacidad de botones deshabilitados */
 }

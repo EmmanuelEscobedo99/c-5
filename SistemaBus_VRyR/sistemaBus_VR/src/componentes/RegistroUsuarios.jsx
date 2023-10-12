@@ -12,11 +12,11 @@ export const RegistroUsuarios = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'))
     const [userData, setUserData] = useState([]);
     let result = []
-    console.log(isLoggedIn, "MASD")
+    
 
     useEffect(() => {
         if (isLoggedIn) {
-            console.log("SE EJECUTO EL useEFFECT")
+            
             const token = localStorage.getItem('token');
             const traerUsuario = async () => {
                 if (token) {
@@ -27,9 +27,9 @@ export const RegistroUsuarios = () => {
                             },
                         })
                         setUserData(res.data)
-                        console.log(userData)
+                        
                     } catch (err) {
-                        console.log(err)
+                        
                     }
                 }
             }
@@ -59,7 +59,7 @@ export const RegistroUsuarios = () => {
             try {
                 const res = await axios.get("http://localhost:8081/todosDatos");
                 setTodosDatos(res.data)
-                console.log(res.data)
+                
             } catch (err) {
                 console.log(err)
             }
@@ -70,26 +70,25 @@ export const RegistroUsuarios = () => {
 
     const handleClick = async (e) => {
         e.preventDefault();
-        console.log(datos)
+        
         const formulario = document.getElementById('formulario')
         formulario.reset()
 
         try {
-            console.log("Entre al try")
+           
             await axios.post("http://localhost:8081/crearDatos", datos);
-            console.log(setDatos + "SetDatos")
-
+           
             alert("El nuevo registro ha sido guardado correctamente ")
             navigate("/")
 
         } catch (err) {
-            console.log(err)
+           
         }
     }
 
     const handleChange = (e) => {
         setDatos((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-        console.log(datos)
+        
     }
 
     result = userData

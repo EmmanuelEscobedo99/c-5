@@ -21,11 +21,9 @@ export const EntregadoFaltantes = () => {
     const [userData, setUserData] = useState([])
     const [cargando, setCargando] = useState(true)
     let result = []
-    console.log(isLoggedIn, "MASD")
 
     useEffect(() => {
         if (isLoggedIn) {
-            console.log("SE EJECUTO EL useEFFECT")
             const token = localStorage.getItem('token');
             const traerUsuario = async () => {
                 if (token) {
@@ -36,9 +34,8 @@ export const EntregadoFaltantes = () => {
                             },
                         })
                         setUserData(res.data)
-                        console.log(userData)
                     } catch (err) {
-                        console.log(err)
+
                     }
                 }
             }
@@ -132,7 +129,7 @@ export const EntregadoFaltantes = () => {
             setNombreInspeccion(data)
         }
         catch (err) {
-            console.log(err)
+           
         }
     }
 
@@ -142,7 +139,7 @@ export const EntregadoFaltantes = () => {
             setEntidades(data)
         }
         catch (err) {
-            console.log(err)
+            
         }
     }
 
@@ -151,7 +148,7 @@ export const EntregadoFaltantes = () => {
             const response = await axios.get(`http://localhost:8081/municipios/${entidadId}`);
             setMunicipios(response.data)
         } catch (error) {
-            console.error('Error al cargar los municipios:', error);
+           
         }
     }
 
@@ -181,7 +178,6 @@ export const EntregadoFaltantes = () => {
         let mes = today.getMonth() + 1
         fecha = today.getFullYear() + "/" + mes + "/" + today.getDate()
         entregado['fecha'] = fecha
-        console.log("la fecha de la funcion es :", fecha)
     }
 
     const formatoHora = () => {
@@ -191,7 +187,6 @@ export const EntregadoFaltantes = () => {
         let minutos = today.getMinutes()
         horaCompleta = hora + ':' + minutos
         entregado['hora'] = horaCompleta
-        console.log('La hora de registro es: ', horaCompleta)
     }
 
 
@@ -227,11 +222,8 @@ export const EntregadoFaltantes = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:8081/entregadoRevision/${id}/${inspeccion}/${entidad}/${municipio}`);
-                console.log("Datos encontrados RECFALTANTES", response.data);
-
                 // Verifica si se obtuvieron datos antes de actualizar el estado
                 if (response.data && response.data.length > 0) {
-                    console.log("ENTRE AL USEEFFECT")
                     const firstDataItem = response.data[0];
                     setDatos(firstDataItem);
 
@@ -240,7 +232,6 @@ export const EntregadoFaltantes = () => {
                     formatoHora();
 
                     if (firstDataItem && firstDataItem.FECHA) {
-                        console.log("ENTRE A FECHA")
                         const fechaBaseDatos = firstDataItem.FECHA;
                         let fechaFormateada = '';
 
@@ -250,18 +241,15 @@ export const EntregadoFaltantes = () => {
 
                         // Establecer el estado con la fecha formateada
                         setFecha(fechaFormateada);
-                        console.log(fecha, "FECHA FORMATEADA ENTREGA: ")
                     }
 
                     // Establece el estado entregado con los datos completos (si es necesario)
                     setEntregado(response.data);
-
-                    console.log("Estado actualizado:", firstDataItem);
                 } else {
-                    console.log("No se encontraron datos");
+                   
                 }
             } catch (error) {
-                console.error("Error al realizar la solicitud:", error);
+                
             }
         };
 
@@ -286,7 +274,6 @@ export const EntregadoFaltantes = () => {
                 LlenarSelect()
                 Entidades()
                 Municipios()
-                console.log("20MIL SEGUNDOS")
                 setPantallaCarga(true)
             }, 2000)
         }
@@ -316,15 +303,13 @@ export const EntregadoFaltantes = () => {
     const handleClick = async (e) => {
         e.preventDefault();
         try {
-            console.log("Entre al try")
-            console.log(entregado)
             //let camposValidados = validarCampos()
             navigate("/Cargando")
             //if (!camposValidados) return
             await axios.post("http://localhost:8081/crearEntregadoVerificado", entregado);
 
         } catch (err) {
-            console.log(err)
+    
         }
     }
 
@@ -341,8 +326,6 @@ export const EntregadoFaltantes = () => {
         dayFecha = "0" + dayFecha
     }
     newFechaFormat = fechaFormat.getFullYear() + "-" + monthFecha + "-" + dayFecha
-
-    console.log(newFechaFormat)
 
     const [fecha, setFecha] = useState("")
 
@@ -400,9 +383,7 @@ export const EntregadoFaltantes = () => {
 
 
     results6 = entregadoBD
-    console.log(entregado)
-
-
+    
     return (
         <>
             {isLoggedIn ? (

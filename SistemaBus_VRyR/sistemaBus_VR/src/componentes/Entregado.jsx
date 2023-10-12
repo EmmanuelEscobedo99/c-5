@@ -14,11 +14,10 @@ export const Entregado = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'))
   const [userData, setUserData] = useState([]);
   let result = []
-  console.log(isLoggedIn, "MASD")
 
   useEffect(() => {
     if (isLoggedIn) {
-      console.log("SE EJECUTO EL useEFFECT")
+      
       const token = localStorage.getItem('token');
       const traerUsuario = async () => {
         if (token) {
@@ -29,9 +28,9 @@ export const Entregado = () => {
               },
             })
             setUserData(res.data)
-            console.log(userData)
+            
           } catch (err) {
-            console.log(err)
+            
           }
         }
       }
@@ -43,7 +42,7 @@ export const Entregado = () => {
   let nombre_bitacora
   let apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora
 
-  console.log(userData)
+  
 
   const handleLogin = () => {
     setIsLoggedIn(true)
@@ -60,13 +59,13 @@ export const Entregado = () => {
     setEditar(0)
     try {
       await axios.post(`http://localhost:8081/modificarEntregado/${id}`, modificarEntregado)
-      console.log(setModificarEntregado + "SetModificarEntregado")
+      
 
       alert("El nuevo registro ha sido guardado correctamente ")
       navigate("/")
 
     } catch (err) {
-      console.log(err)
+      
     }
   }
 
@@ -122,7 +121,7 @@ export const Entregado = () => {
   const [showModalValidacion, setShowModalValidacion] = useState(false)
   const [showModalSuccess, setShowModalSuccess] = useState(false)
 
-  console.log(entregado)
+  
 
   const [ultimoId, setUltimoId] = useState([])
   let results5 = []
@@ -173,7 +172,7 @@ export const Entregado = () => {
       setEntidades(data)
     }
     catch (err) {
-      console.log(err)
+      
     }
   }
 
@@ -185,7 +184,7 @@ export const Entregado = () => {
       setMunicipios(data)
     }
     catch (err) {
-      console.log(err)
+      
     }
   }
 
@@ -194,7 +193,7 @@ export const Entregado = () => {
       const response = await axios.get(`http://localhost:8081/municipios/${entidadId}`);
       setMunicipios(response.data)
     } catch (error) {
-      console.error('Error al cargar los municipios:', error);
+      
     }
   }
 
@@ -204,7 +203,7 @@ export const Entregado = () => {
       setUltimoId(data)
     }
     catch (err) {
-      console.log(err)
+      
     }
   }
 
@@ -253,7 +252,7 @@ export const Entregado = () => {
     let mes = today.getMonth() + 1
     fecha = today.getFullYear() + "/" + mes + "/" + today.getDate()
     entregado['fecha'] = fecha
-    console.log("la fecha de la funcion es :", fecha)
+    
   }
 
   const formatoHora = () => {
@@ -263,7 +262,7 @@ export const Entregado = () => {
     let minutos = today.getMinutes()
     horaCompleta = hora + ':' + minutos
     entregado['hora'] = horaCompleta
-    console.log('La hora de registro es: ', horaCompleta)
+    
   }
 
   const handleChange = (e) => {
@@ -301,11 +300,10 @@ export const Entregado = () => {
   let today = new Date().toISOString().split('T')[0];
   let minDate = "1900-01-01"
 
-  console.log(modificarEntregado)
+ 
 
   const handleClick = async (e) => {
     e.preventDefault();
-    console.log(entregado)
 
     try {
       console.log("Entre al try")
@@ -314,12 +312,11 @@ export const Entregado = () => {
       if (!camposValidados) return
       localStorage.removeItem("registroVerificadoId")
       await axios.post("http://localhost:8081/crearEntregado", entregado);
-      console.log(setEntregado + "SetEntregado")
       alert("El nuevo registro ha sido guardado correctamente ")
       navigate("/")
 
     } catch (err) {
-      console.log(err)
+      
     }
   }
 
@@ -764,7 +761,7 @@ export const Entregado = () => {
                     {/* VALIDACIÓN La fecha de entrega no puede ser menor a la fecha de robo.*/}
                     {results7.map(fechaRobado => {
                       dateRobo = new Date(fechaRobado.FECHA_ROBO)
-                      console.log(dateRobo)
+                     
                       let monthRobo = dateRobo.getMonth() + 1
                       if (monthRobo > 0 && monthRobo < 10) {
                         monthRobo = "0" + monthRobo
@@ -775,7 +772,7 @@ export const Entregado = () => {
                         dayRobo = "0" + dayRobo
                       }
                       newDateRobo = dateRobo.getFullYear() + "-" + monthRobo + "-" + dayRobo
-                      console.log("FECHA ROBO ", newDateRobo)
+                      
                       return (
                         <>
                           {/* VALIDACIÓN La fecha de factura no puede ser menor a la fecha de recuperación.*/}
@@ -790,7 +787,6 @@ export const Entregado = () => {
                               dayRecuperacion = "0" + dayRecuperacion
                             }
                             newDateRecuperado = dateRecuperado.getFullYear() + "-" + monthRecuperacion + "-" + dayRecuperacion
-                            console.log("FECHA RECUPERADO ", newDateRecuperado)
 
                             if (newDateRobo < newDateRecuperado) {
                               return <input type="date" max={today} min={newDateRobo} className="form-control" id="fecha_entrega" name="fecha_entrega" onChange={handleChange} required />

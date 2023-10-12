@@ -801,7 +801,8 @@ app.post('/login', (req, res) => {
         const user = results[0];
 
         if (password != user.password) {
-            console.log("contraseña incorrecta")
+            res.status(401).json({ error: "Usuario o contraseña incorrectos" });
+
         } else {
             // Si el usuario se autentica correctamente, emitimos un token JWT
             const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '8h' });
@@ -833,7 +834,8 @@ app.post('/passwordSuperUsuario', (req, res) => {
         const user = results[0];
 
         if (password != user.password) {
-            console.log("contraseña incorrecta")
+            res.status(401).json({ error: "Usuario o contraseña incorrectos" });
+
         } else {
             res.json()
         }

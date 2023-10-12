@@ -25,11 +25,11 @@ export const RecFaltantes = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'))
     const [userData, setUserData] = useState([]);
     let result = []
-    console.log(isLoggedIn, "MASD")
+    
 
     useEffect(() => {
         if (isLoggedIn) {
-            console.log("SE EJECUTO EL useEFFECT")
+           
             const token = localStorage.getItem('token');
             const traerUsuario = async () => {
                 if (token) {
@@ -40,9 +40,9 @@ export const RecFaltantes = () => {
                             },
                         })
                         setUserData(res.data)
-                        console.log(userData)
+                        
                     } catch (err) {
-                        console.log(err)
+                       
                     }
                 }
             }
@@ -135,7 +135,7 @@ export const RecFaltantes = () => {
             setLlenado(data)
         }
         catch (err) {
-            console.log(err)
+           
         }
     }
 
@@ -145,7 +145,7 @@ export const RecFaltantes = () => {
             setEntidades(data)
         }
         catch (err) {
-            console.log(err)
+           
         }
     }
 
@@ -164,7 +164,7 @@ export const RecFaltantes = () => {
             const response = await axios.get(`http://localhost:8081/municipios/${entidadId}`);
             setMunicipios(response.data)
         } catch (error) {
-            console.error('Error al cargar los municipios:', error);
+            
         }
     }
 
@@ -212,7 +212,7 @@ export const RecFaltantes = () => {
         let mes = today.getMonth() + 1
         fecha = today.getFullYear() + "/" + mes + "/" + today.getDate()
         recuperado['fecha'] = fecha
-        console.log("la fecha de la funcion es :", fecha)
+        
     }
 
     const formatoHora = () => {
@@ -222,7 +222,7 @@ export const RecFaltantes = () => {
         let minutos = today.getMinutes()
         horaCompleta = hora + ':' + minutos
         recuperado['hora'] = horaCompleta
-        console.log('La hora de registro es: ', horaCompleta)
+        
     }
 
     const [fecha, setFecha] = useState("")
@@ -270,15 +270,13 @@ export const RecFaltantes = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:8081/recuRevision/${id}/${color}/${entidad}/${municipio}`);
-                console.log('Datos encontrados RECFALTANTES');
-                console.log(response.data);
-
+                
                 const datos = response.data[0];
                 setDatos(datos)
                 formatoDia()
                 formatoHora()
                 setRecuperado(datos)
-                console.log(recuperado)
+               
 
                 // Verificar si datos contiene la propiedad FECHA antes de acceder a ella
                 if (datos && datos.FECHA) {
@@ -293,7 +291,7 @@ export const RecFaltantes = () => {
                     setFecha(fechaFormateada);
                 }
             } catch (error) {
-                console.log(error);
+                
             }
         };
 
@@ -319,7 +317,6 @@ export const RecFaltantes = () => {
                 NombreColor()
                 Entidades()
                 Municipios()
-                console.log("20MIL SEGUNDOS")
                 setPantallaCarga(true)
             }, 2000)
         }
@@ -343,7 +340,7 @@ export const RecFaltantes = () => {
                 }, 1000);
             })
             .catch((error) => {
-                console.error('Error al obtener datos:', error);
+                
 
                 // Asegúrate de ocultar la pantalla de carga en caso de error
                 setIsLoading(false);
@@ -377,10 +374,8 @@ export const RecFaltantes = () => {
     const handleClick = async (e) => {
         e.preventDefault();
         try {
-            console.log("Entre al try")
-            console.log(recuperado)
             //let camposValidados = validarCampos()
-            
+
             // Si la verificación es exitosa, guarda el ID en el localStorage
             localStorage.setItem("registroVerificadoId", id);
             navigate("/CargandoRec")
@@ -391,7 +386,7 @@ export const RecFaltantes = () => {
             navigate("/")
 
         } catch (err) {
-            console.log(err)
+            
         }
     }
 
@@ -404,26 +399,20 @@ export const RecFaltantes = () => {
     }
     let dayFecha = fechaFormat.getDate()
     if (dayFecha > 0 && dayFecha < 10) {
-        console.log("day ", dayFecha)
         dayFecha = "0" + dayFecha
     }
     newFechaFormat = fechaFormat.getFullYear() + "-" + monthFecha + "-" + dayFecha
-
-    console.log(newFechaFormat)
 
     //const [fecha, setFecha] = useState("")
 
 
     const handleChange = (e) => {
         let fechaInput = document.getElementById("fechaRec")
-        console.log(fechaInput.value)
-        console.log(fecha)
         formatoDia()
         formatoHora()
         const { name, value } = e.target
         newFechaFormat = fechaInput.value
         setFecha(fechaInput.value)
-        console.log(fecha)
         setRecuperado({ ...recuperado, nombre_bitacora, apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora, [name]: value })
 
     }
@@ -473,8 +462,6 @@ export const RecFaltantes = () => {
     })
 
     results6 = recuperadoBD
-    console.log(recuperado)
-
 
     return (
         <>

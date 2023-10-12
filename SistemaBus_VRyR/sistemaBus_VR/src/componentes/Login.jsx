@@ -55,8 +55,8 @@ const Login = ({onLogin}) => {
 
         <div className="containerLogin">
           {/*<img src='../src/assets/c5.png' height="100px"></img>*/}
-          <div className="brand-title">REGISTRO </div>
-          <div className="brand-title2">De vehículos robados y recuperados</div>
+          <div className="brand-title">BUS DE INTEGRACIÓN </div>
+          <div className="brand-title2">Inicio de sesión</div>
           <div className="inputsLogin">
             <br></br>
             <label className='label'>USUARIO</label>

@@ -16,7 +16,7 @@ import { PasswordSuperUser } from './PasswordSuperUser'
 export const TablaRecuperado = () => {
 
     const [isPasswordIn, setIsPasswordIn] = useState(false)
-    console.log(isPasswordIn)
+   
 
     const [datos, setDatos] = useState([])
     let results = []
@@ -44,7 +44,6 @@ export const TablaRecuperado = () => {
 
     results.map(datos => {
         getFecha = datos.FECHA
-        console.log(getFecha)
     })
 
     //getFecha = datos.FECHA
@@ -55,11 +54,9 @@ export const TablaRecuperado = () => {
     }
     let dayFecha = fechaFormat.getDate()
     if (dayFecha > 0 && dayFecha < 10) {
-        console.log("day ", dayFecha)
         dayFecha = "0" + dayFecha
     }
     newFechaFormat = fechaFormat.getFullYear() + "-" + monthFecha + "-" + dayFecha
-    console.log(newFechaFormat)
     return (
         <>
             <Navbar />

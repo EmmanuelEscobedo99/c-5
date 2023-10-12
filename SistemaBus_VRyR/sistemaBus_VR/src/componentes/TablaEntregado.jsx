@@ -42,7 +42,7 @@ export const TablaEntregado = () => {
 
     results.map(datos => {
         getFecha = datos.FECHA
-        console.log(getFecha)
+        
     })
 
     //getFecha = datos.FECHA
@@ -53,11 +53,11 @@ export const TablaEntregado = () => {
     }
     let dayFecha = fechaFormat.getDate()
     if (dayFecha > 0 && dayFecha < 10) {
-        console.log("day ", dayFecha)
+        
         dayFecha = "0" + dayFecha
     }
     newFechaFormat = fechaFormat.getFullYear() + "-" + monthFecha + "-" + dayFecha
-    console.log(newFechaFormat)
+    
 
     return (
         <>
