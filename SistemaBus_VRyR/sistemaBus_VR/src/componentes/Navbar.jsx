@@ -68,7 +68,7 @@ const Navbar = () => {
                 <ul>
                   <div className="logo">
                     <span></span>
-                    <h4 style={{paddingRight:"0px", fontSize:"19px"}} className="navbar-title">BUS DE INTEGRACIÓN</h4>
+                    <h4 style={{paddingRight:"65px", fontSize:"19px"}} className="navbar-title">BUS DE INTEGRACIÓN</h4>
                   </div>
                   <li>
                     <NavLink to="/Registrar" className={({ isActive }) => isActive ? "active" : ""}>
@@ -111,7 +111,7 @@ const Navbar = () => {
                     </Dropdown>
                   </li>
                   <li>
-                    <p style={{marginLeft:"200px", color:"black", paddingTop:"15px"}}><FontAwesomeIcon icon={faUser} className="mr-2" /> Bienvenido: {correo}</p>
+                    <p style={{marginLeft:"200px", color:"black", paddingTop:"15px"}}><FontAwesomeIcon icon={faUser} className="mr-2" /> Bienvenid@: {correo}</p>
                   </li>
                 </ul>
               </nav>

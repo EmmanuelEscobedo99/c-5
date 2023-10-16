@@ -4,17 +4,34 @@ import { useParams, Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import Navbar from "./Navbar";
 import Login from "./Login";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MasD = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [datos, setDatos] = useState([]);
   const [validado, setValidado] = useState(false);
+  const [entregado, setEntregado] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'));
   const [userData, setUserData] = useState([]);
-  
+  const [recuperadoMessage, setRecuperadoMessage] = useState("");
+  const [entregadoMessage, setEntregadoMessage] = useState("");
+
+
+
+  const handleRecuperadoClick = () => {
+    setRecuperadoMessage("Este vehículo ya ha sido recuperado.");
+  };
+
+  const handleEntregadoClick = () => {
+    setEntregadoMessage("Este vehículo ya ha sido entregado.");
+  };
+
+
   useEffect(() => {
-    const registroVerificadoId = localStorage.getItem("registroVerificadoId");
+    const registroVerificadoId = localStorage.getItem(`registroVerificadoId_${id}`);
+    const entregadoId = localStorage.getItem(`entregadoId_${id}`);
 
     if (!registroVerificadoId) {
       console.log("NO SE PUEDE ACCEDER");
@@ -25,6 +42,17 @@ const MasD = () => {
         setValidado(false);
       }
       console.log("SI SE PUEDE ACCEDER");
+    }
+
+    if (!entregadoId) {
+      console.log("NO ESTA ENTREGADO")
+    } else {
+      if (entregadoId === id) {
+        setEntregado(true);
+      } else {
+        setEntregado(false);
+      }
+      console.log("ENTREGADO")
     }
   }, [id]);
 
@@ -223,13 +251,34 @@ const MasD = () => {
 
                 { /* <Button variant="primary" type="submit" onClick={handleClick}></Button>  */}
                 <Link to="/ListaArchivos" className="btn  btn-info " onClick={() => setIsLoggedIn(false)}> Inicio</Link>
-                <Link className="btn  btn-info" to={`/recuperado/${id}`}>Recuperado</Link>
+
                 {validado ? (
                   <>
-                    <Link to={`/entregado/${id}`} className="btn  btn-info" disabled={!validado}> Entregado</Link>
+                    <Link to="#" className="btn btn-info" onClick={handleRecuperadoClick}>
+                      Recuperado
+                    </Link>
+
+                    {entregado ? (
+                      <>
+                        <Link to="#" className="btn  btn-info" onClick={handleEntregadoClick}> Entregado</Link>
+                      </>
+                    ) : (
+                      <>
+                        <Link to={`/entregado/${id}`} className="btn  btn-info" disabled={!validado}> Entregado</Link>
+                      </>
+                    )
+                    }
+                    <div><br></br></div>
+                    {recuperadoMessage && (
+                      <div className="alert alert-success">{recuperadoMessage}</div>
+                    )}
+                    {entregadoMessage && (
+                      <div className="alert alert-success">{entregadoMessage}</div>
+                    )}
                   </>
                 ) : (
                   <>
+                    <Link className="btn  btn-info" to={`/recuperado/${id}`}>Recuperado</Link>
 
                   </>
                 )

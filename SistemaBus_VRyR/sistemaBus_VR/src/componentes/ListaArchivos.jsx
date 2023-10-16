@@ -4,16 +4,31 @@ import axios from "axios";
 import Login from "./Login";
 import ReactPaginate from "react-paginate";
 import Sidebar from "./Sidebar";
-import Navbar from "./Navbar"; // Asegúrate de importar el componente Navbar
-import "../archivosCss/estilo.css"; // Asegúrate de importar tus estilos existentes si es necesario
-
+import Navbar from "./Navbar";
+import "../archivosCss/estilo.css";
 
 const ListaArchivos = () => {
+  const { id } = useParams();
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'));
   const [userData, setUserData] = useState([]);
   const [registros, setRegistros] = useState([]);
+  const [validado, setValidado] = useState(false);
   const [busqueda, setBusqueda] = useState("");
-  const [pageNumber, setPageNumber] = useState(0); // Página actual
+  const [pageNumber, setPageNumber] = useState(0);
+
+  useEffect(() => {
+    const registroVerificadoId = localStorage.getItem("registroVerificadoId");
+    if (!registroVerificadoId) {
+      console.log("NO SE PUEDE ACCEDER");
+    } else {
+      if (registroVerificadoId === id) {
+        setValidado(true);
+      } else {
+        setValidado(false);
+      }
+      console.log("SI SE PUEDE ACCEDER");
+    }
+  }, [id]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -38,7 +53,7 @@ const ListaArchivos = () => {
 
   const handleLogin = () => {
     setIsLoggedIn(true);
-  }
+  };
 
   useEffect(() => {
     const buscarRegistros = async () => {
@@ -52,23 +67,28 @@ const ListaArchivos = () => {
     buscarRegistros();
   }, []);
 
-  const { id } = useParams();
-
   const btn_busqueda = (e) => {
     setBusqueda(e.target.value);
   };
 
-  let filteredResults = [];
-  if (!busqueda) {
-    filteredResults = registros;
-  } else {
-    filteredResults = registros.filter((datos) =>
-      datos.AVERIGUACION.toLowerCase().includes(busqueda.toLowerCase())
-    );
+  let filteredResults = registros;
+
+  if (busqueda) {
+    const searchTerms = busqueda.toLowerCase().split(' ');
+
+    filteredResults = registros.filter((datos) => {
+      return searchTerms.every((term) => {
+        return (
+          datos.AVERIGUACION.toLowerCase().includes(term) ||
+          datos.PLACA.toLowerCase().includes(term) ||
+          datos.FECHA_ROBO.includes(term) ||
+          datos.NOMBRE_DEN.toLowerCase().includes(term)
+        );
+      });
+    });
   }
 
-  // Paginación
-  const cardsPerPage = 3; // Cantidad de tarjetas por página
+  const cardsPerPage = 3;
   const pagesVisited = pageNumber * cardsPerPage;
   const pageCount = Math.ceil(filteredResults.length / cardsPerPage);
 
@@ -92,6 +112,9 @@ const ListaArchivos = () => {
         <p>{registro.PLACA}</p>
         <h4>MODELO</h4>
         <p>{registro.MODELO}</p>
+        {/*<p style={{ color: registro.recuperado ? "green" : "red", fontSize: "15px" }}>
+          {registro.recuperado ? "RECUPERADO" : "NO RECUPERADO"}
+    </p>*/}
         <div>
           <div className="btn-container">
             <Link id="btn" className="btn" to={`/detalles/${registro.ID_ALTERNA}`}>
@@ -106,13 +129,11 @@ const ListaArchivos = () => {
     <>
       {isLoggedIn ? (
         <>
-          <Navbar /> {/* Renderiza el componente Navbar */}
+          <Navbar />
           <div className="titulo">
-            <h3>Registros</h3>
+            <h3>Vehiculos Robados</h3>
             {userData.map((user) => (
-              <div key={user.id}>
-                {/* Render user-specific content here */}
-              </div>
+              <div key={user.id}></div>
             ))}
           </div>
           <div className="search-container">
@@ -135,11 +156,11 @@ const ListaArchivos = () => {
                   nextLabel={"Siguiente"}
                   pageCount={pageCount}
                   onPageChange={changePage}
-                  containerClassName={"pagination-container"} 
-                  previousLinkClassName={"pagination-button previous"} 
-                  nextLinkClassName={"pagination-button next"} 
+                  containerClassName={"pagination-container"}
+                  previousLinkClassName={"pagination-button previous"}
+                  nextLinkClassName={"pagination-button next"}
                   disabledClassName={"disabled"}
-                  activeClassName={"pagination-button active"} 
+                  activeClassName={"pagination-button active"}
                 />
               </div>
             </section>
@@ -152,7 +173,6 @@ const ListaArchivos = () => {
   );
 };
 
-// Helper function to format a date as YYYY-MM-DD
 function formatDate(dateString) {
   if (!dateString) {
     return "";

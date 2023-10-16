@@ -257,6 +257,54 @@ app.post("/crearRecuperadoTemporal", (req, res) => {
     )
 
 })
+
+app.post("/crearEntregadoTemporal", (req, res) => {
+
+    const id_alterna = req.body.id_alterna
+    const calle_entrega = req.body.calle_entrega
+    const colonia_entrega = req.body.colonia_entrega
+    const id_municipio_entrega = req.body.id_municipio_entrega
+    const id_entidadid_entrega = req.body.id_entidad_entrega
+    const cp_entrega = req.body.cp_entrega
+    const inspeccion = req.body.inspeccion
+    const id_fuente_entrega = req.body.id_fuente_entrega
+    const fecha_entrega = req.body.fecha_entrega
+    const hora_entrega = req.body.hora_entrega
+    const serie = req.body.serie
+    const motor = req.body.motor
+    const factura_vehiculo = req.body.factura_vehiculo
+    const comprob_domic_prop = req.body.comprob_domic_prop
+    const persona_entrega = req.body.persona_entrega
+    const nombre_entrega = req.body.nombre_entrega
+    const paterno_entrega = req.body.paterno_entrega
+    const fechaToday = req.body.fecha;
+    const horaToday = req.body.hora;
+    const nombre = req.body.nombre_bitacora;
+    const apellidos = req.body.apellidos_bitacora;
+    const correoIns = req.body.correoIns_bitacora;
+    const username = req.body.username_bitacora;
+    const municipio = req.body.municipio_bitacora;
+    const idUser = req.body.idUser_bitacora;
+
+    //TIPO DE MOVIMIENTO = CAMBIO
+    // ESTATUS = RECUPERADO
+    // PROCESADO = 0
+    // ID_FUENTE = 10
+
+    db.query(
+        "INSERT INTO vehiculo_entregado_temporal (ID_ALTERNA, ID_FUENTE, ENTIDAD, MUNICIPIO, CALLE, COLONIA, CP_ENTREGA, SERIE, MOTOR, INSPECCION, NUM_FACTURA, FECHA, HORA, NOM_PROPIETARIO, AP_PROPIETARIO, COMPR_DOMIC, RECIBE) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        [id_alterna, 10, id_entidadid_entrega, id_municipio_entrega, calle_entrega, colonia_entrega, cp_entrega, serie, motor, inspeccion, factura_vehiculo, fecha_entrega, hora_entrega, nombre_entrega, paterno_entrega, comprob_domic_prop, persona_entrega],
+        (err, res) => {
+            if (err) {
+                console.log(err);
+            } else {
+
+            }
+        }
+    )
+
+})
+
 app.post("/crearRecVerificado", (req, res) => {
 
     const placa = req.body.placaRec;
@@ -561,72 +609,7 @@ app.get('/municipio/:municipio', (req, res) => {
     })
 })
 
-app.post("/crearEntregado", (req, res) => {
 
-    const id_alterna = req.body.id_alterna
-    const calle_entrega = req.body.calle_entrega
-    const colonia_entrega = req.body.colonia_entrega
-    const id_municipio_entrega = req.body.id_municipio_entrega
-    const id_entidadid_entrega = req.body.id_entidad_entrega
-    const cp_entrega = req.body.cp_entrega
-    const inspeccion = req.body.inspeccion
-    const id_fuente_entrega = req.body.id_fuente_entrega
-    const fecha_entrega = req.body.fecha_entrega
-    const hora_entrega = req.body.hora_entrega
-    const serie = req.body.serie
-    const motor = req.body.motor
-    const factura_vehiculo = req.body.factura_vehiculo
-    const comprob_domic_prop = req.body.comprob_domic_prop
-    const persona_entrega = req.body.persona_entrega
-    const nombre_entrega = req.body.nombre_entrega
-    const paterno_entrega = req.body.paterno_entrega
-    const fechaToday = req.body.fecha;
-    const horaToday = req.body.hora;
-    const nombre = req.body.nombre_bitacora;
-    const apellidos = req.body.apellidos_bitacora;
-    const correoIns = req.body.correoIns_bitacora;
-    const username = req.body.username_bitacora;
-    const municipio = req.body.municipio_bitacora;
-    const idUser = req.body.idUser_bitacora;
-
-    //TIPO DE MOVIMIENTO = CAMBIO
-    // ESTATUS = RECUPERADO
-    // PROCESADO = 0
-    // ID_FUENTE = 10
-
-    db.query(
-        "INSERT INTO vehiculo_entregado (ID_ALTERNA, ID_FUENTE, CALLE_ENTREGA, COLONIA_ENTREGA, ID_MUNICIPIO_ENTREGA, ID_ENTIDAD_ENTREGA, CP_ENTREGA, INSPECCION, ID_FUENTE_ENTREGA, FECHA_ENTREGA, HORA_ENTREGA, SERIE, MOTOR, FACTURA_VEHICULO, COMPROB_DOMIC_PROP, PERSONA_ENTREGA, NOMBRE_ENTREGA, PATERNO_ENTREGA) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-        [id_alterna, 10, calle_entrega, colonia_entrega, id_municipio_entrega, id_entidadid_entrega, cp_entrega, inspeccion, 10, fecha_entrega, hora_entrega, serie, motor, factura_vehiculo, comprob_domic_prop, persona_entrega, nombre_entrega, paterno_entrega],
-        (err, res) => {
-            if (err) {
-                console.log(err);
-            } else {
-                db.query(
-                    "INSERT INTO control_alterna (ID_ALTERNA, ID_FUENTE, TIPO_MOVIMIENTO, ESTATUS, FECHA, HORA, USUARIO) VALUES (?,?,?,?,?,?,?)",
-                    [id_alterna, 10, 'CAMBIO', 'ENTREGADO', fechaToday, horaToday, username],
-                    (err, res) => {
-                        if (err) {
-                            console.log(err)
-                        } else {
-                            db.query("INSERT INTO bitacora (id, nombre, apellidos, correoIns, username, municipio, fecha, hora, id_user, tabla_movimiento) VALUES (?,?,?,?,?,?,?,?,?,?)",
-                                ['', nombre, apellidos, correoIns, username, municipio, fechaToday, horaToday, idUser, 'Inserción en Vehículo Entregado'],
-                                (err, result) => {
-                                    if (err) {
-                                        console.log(err);
-                                    } else {
-
-                                    }
-                                }
-                            )
-                        }
-                    }
-                )
-
-            }
-        }
-    )
-
-})
 
 app.get("/maxId", (req, res) => {
     db.query("SELECT MAX(ID_ALTERNA) AS id FROM vehiculo_recuperado"), (err, result) => {

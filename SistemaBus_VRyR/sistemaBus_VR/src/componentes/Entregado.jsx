@@ -310,8 +310,8 @@ export const Entregado = () => {
       let camposValidados = validarCampos()
 
       if (!camposValidados) return
-      localStorage.removeItem("registroVerificadoId")
-      await axios.post("http://localhost:8081/crearEntregado", entregado);
+      //localStorage.removeItem("registroVerificadoId")
+      await axios.post("http://localhost:8081/crearEntregadoTemporal", entregado);
       alert("El nuevo registro ha sido guardado correctamente ")
       navigate("/")
 

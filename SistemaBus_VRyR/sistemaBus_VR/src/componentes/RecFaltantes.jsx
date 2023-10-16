@@ -25,11 +25,11 @@ export const RecFaltantes = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'))
     const [userData, setUserData] = useState([]);
     let result = []
-    
+
 
     useEffect(() => {
         if (isLoggedIn) {
-           
+
             const token = localStorage.getItem('token');
             const traerUsuario = async () => {
                 if (token) {
@@ -40,9 +40,9 @@ export const RecFaltantes = () => {
                             },
                         })
                         setUserData(res.data)
-                        
+
                     } catch (err) {
-                       
+
                     }
                 }
             }
@@ -135,7 +135,7 @@ export const RecFaltantes = () => {
             setLlenado(data)
         }
         catch (err) {
-           
+
         }
     }
 
@@ -145,7 +145,7 @@ export const RecFaltantes = () => {
             setEntidades(data)
         }
         catch (err) {
-           
+
         }
     }
 
@@ -164,7 +164,7 @@ export const RecFaltantes = () => {
             const response = await axios.get(`http://localhost:8081/municipios/${entidadId}`);
             setMunicipios(response.data)
         } catch (error) {
-            
+
         }
     }
 
@@ -212,7 +212,7 @@ export const RecFaltantes = () => {
         let mes = today.getMonth() + 1
         fecha = today.getFullYear() + "/" + mes + "/" + today.getDate()
         recuperado['fecha'] = fecha
-        
+
     }
 
     const formatoHora = () => {
@@ -222,10 +222,9 @@ export const RecFaltantes = () => {
         let minutos = today.getMinutes()
         horaCompleta = hora + ':' + minutos
         recuperado['hora'] = horaCompleta
-        
+
     }
 
-    const [fecha, setFecha] = useState("")
 
     /*useEffect(() => {
         axios.get("http://localhost:8081/recuRevision/" + id + "/" + color + "/" + entidad + "/" + municipio)
@@ -270,13 +269,13 @@ export const RecFaltantes = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:8081/recuRevision/${id}/${color}/${entidad}/${municipio}`);
-                
+
                 const datos = response.data[0];
                 setDatos(datos)
                 formatoDia()
                 formatoHora()
                 setRecuperado(datos)
-               
+
 
                 // Verificar si datos contiene la propiedad FECHA antes de acceder a ella
                 if (datos && datos.FECHA) {
@@ -286,12 +285,12 @@ export const RecFaltantes = () => {
                     // Formatear la fecha
                     const fechaSplit = fechaBaseDatos.split('T')[0].split('-');
                     fechaFormateada = `${fechaSplit[0]}-${fechaSplit[1]}-${fechaSplit[2]}`;
-
+                    console.log(fecha)
                     // Establecer el estado con la fecha formateada
                     setFecha(fechaFormateada);
                 }
             } catch (error) {
-                
+
             }
         };
 
@@ -340,7 +339,7 @@ export const RecFaltantes = () => {
                 }, 1000);
             })
             .catch((error) => {
-                
+
 
                 // Asegúrate de ocultar la pantalla de carga en caso de error
                 setIsLoading(false);
@@ -377,7 +376,8 @@ export const RecFaltantes = () => {
             //let camposValidados = validarCampos()
 
             // Si la verificación es exitosa, guarda el ID en el localStorage
-            localStorage.setItem("registroVerificadoId", id);
+            localStorage.setItem(`registroVerificadoId_${id}`, id);
+            
             navigate("/CargandoRec")
             //if (!camposValidados) return
             await axios.post("http://localhost:8081/crearRecVerificado", recuperado);
@@ -386,7 +386,7 @@ export const RecFaltantes = () => {
             navigate("/")
 
         } catch (err) {
-            
+
         }
     }
 
@@ -403,7 +403,7 @@ export const RecFaltantes = () => {
     }
     newFechaFormat = fechaFormat.getFullYear() + "-" + monthFecha + "-" + dayFecha
 
-    //const [fecha, setFecha] = useState("")
+    const [fecha, setFecha] = useState("")
 
 
     const handleChange = (e) => {
@@ -411,8 +411,9 @@ export const RecFaltantes = () => {
         formatoDia()
         formatoHora()
         const { name, value } = e.target
-        newFechaFormat = fechaInput.value
-        setFecha(fechaInput.value)
+        if (name === 'fechaRec') {
+            setFecha(value); // Actualiza el estado fecha
+        }
         setRecuperado({ ...recuperado, nombre_bitacora, apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora, [name]: value })
 
     }

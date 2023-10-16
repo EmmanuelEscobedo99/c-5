@@ -304,6 +304,7 @@ export const EntregadoFaltantes = () => {
         e.preventDefault();
         try {
             //let camposValidados = validarCampos()
+            localStorage.setItem(`entregadoId_${id}`, id)
             navigate("/Cargando")
             //if (!camposValidados) return
             await axios.post("http://localhost:8081/crearEntregadoVerificado", entregado);
@@ -333,6 +334,9 @@ export const EntregadoFaltantes = () => {
         formatoDia()
         formatoHora()
         const { name, value } = e.target
+        if (name === 'fecha_entrega') {
+            setFecha(value); // Actualiza el estado fecha
+        }
         setEntregado({ ...entregado, nombre_bitacora, apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora, [name]: value })
 
     }
@@ -473,6 +477,7 @@ export const EntregadoFaltantes = () => {
                                 <div className="col-sm-2">
                                     <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">FECHA:</label></strong>
                                     <input type="date" className="form-control-plaintext" id="fecha_entrega" name='fecha_entrega' onClick={handleChange} onChange={handleChange} value={fecha} />
+
                                 </div>
                                 <div className="col-sm-2">
                                     <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">HORA:</label></strong>

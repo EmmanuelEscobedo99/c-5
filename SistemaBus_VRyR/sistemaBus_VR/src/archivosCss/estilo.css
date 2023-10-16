@@ -71,12 +71,19 @@ h3 {
    background: #fff;
    border-radius: 10px;
    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-   padding: 20px;
+   padding: 16px;
    margin-bottom: 20px;
    transition: all 0.3s;
    transform: scale(1);
    transition: transform 0.3s;
-   
+   transition: all 0.3s;
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   cursor: pointer;
+   height: auto;
+   border-radius: 10px 10px 0 0;
+
 }
 
 .card:hover {
@@ -121,6 +128,14 @@ h3 {
    font-size: 16px;
    transform: scale(1);
    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   background-color: #007bff;
+   color: #fff;
+   border: none;
+   padding: 8px 16px;
+   border-radius: 4px;
+   font-weight: 500;
+   cursor: pointer;
+   text-align: center;
 }
 
 #MyDropDown .btn {
@@ -472,11 +487,8 @@ h4 {
    margin: 0;
    padding: 0;
    background-color: #f0f0f0;
-   /* Color de fondo del contenedor de paginación */
    padding: 10px;
-   /* Espacio interno del contenedor de paginación */
    border-radius: 5px;
-   /* Borde redondeado */
    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
@@ -486,9 +498,16 @@ h4 {
    color: #333;
    border: none;
    border-radius: 5px;
-   padding: 5px 1px;
+   padding: 5px 10px;
    cursor: pointer;
-   transition: background 0.3s;
+   transition: background 0.3s, transform 0.2s ease-in-out;
+   margin: 0 5px;
+}
+
+.pagination-button.previous:hover {
+   transform: scale(1.1);
+   background: #007bff;
+   color: #fff;
 }
 
 /* Botón "Siguiente" */
@@ -499,27 +518,103 @@ h4 {
    border-radius: 5px;
    padding: 5px 10px;
    cursor: pointer;
-   transition: background 0.3s;
+   transition: background 0.3s, transform 0.2s ease-in-out;
+   margin: 0 5px;
+}
+
+.pagination-button.next:hover {
+   transform: scale(1.1);
+   background: #007bff;
+   color: #fff;
 }
 
 /* Botón activo */
 .pagination-button.active {
    background: #007bff;
-   color: #333;
+   color: #fff;
    border: none;
    border-radius: 20px;
-   /* Hacer que el botón sea redondo */
    padding: 8px 15px;
-   margin: 10px 5px;
    cursor: pointer;
-   transition: background 0.3s;
+   transition: background 0.3s, transform 0.2s ease-in-out;
+   margin: 0 5px;
+}
+
+.pagination-button.active:hover {
+   transform: scale(1.05);
+}
+
+/* Estilo para botones deshabilitados */
+.pagination-button.disabled {
+   pointer-events: none;
+   opacity: 0.6;
+   margin: 0 5px;
 }
 
 
-/* Estilo para botones deshabilitados si es necesario */
-.disabled {
+/* Estilos generales del formulario */
+.md-form {
+   max-width: 400px;
+   margin: 0 auto;
+}
+
+/* Estilos para los grupos de campos de entrada */
+.md-form-group {
+   position: relative;
+   margin-bottom: 20px;
+}
+
+/* Estilos para los campos de entrada */
+.md-input {
+   width: 100%;
+   padding: 12px;
+   border: 1px solid #ccc;
+   border-radius: 4px;
+   font-size: 16px;
+}
+
+/* Estilos para las etiquetas de los campos de entrada */
+.md-label {
+   position: absolute;
+   top: 0;
+   left: 0;
+   font-size: 16px;
    pointer-events: none;
-   /* Evita interacciones con botones deshabilitados */
-   opacity: 0.6;
-   /* Reduce la opacidad de botones deshabilitados */
+   transition: 0.2s ease all;
+}
+
+/* Estilos para los campos de entrada enfocados */
+.md-input:focus {
+   border-color: #007bff;
+}
+
+/* Estilos para las etiquetas de los campos de entrada cuando están enfocados */
+.md-input:focus+.md-label,
+.md-input:valid+.md-label {
+   top: -20px;
+   font-size: 14px;
+   color: #007bff;
+}
+
+/* Estilos para los ayudantes o descripciones de los campos de entrada */
+.md-helper {
+   font-size: 14px;
+   margin-top: 5px;
+   color: #888;
+}
+
+/* Estilos para los botones */
+.md-button {
+   background-color: #007bff;
+   color: #fff;
+   border: none;
+   padding: 10px 20px;
+   border-radius: 4px;
+   cursor: pointer;
+   font-size: 16px;
+   transition: background-color 0.3s;
+}
+
+.md-button:hover {
+   background-color: #0056b3;
 }
