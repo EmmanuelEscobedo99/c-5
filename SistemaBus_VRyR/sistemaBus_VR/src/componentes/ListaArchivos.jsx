@@ -88,7 +88,7 @@ const ListaArchivos = () => {
     });
   }
 
-  const cardsPerPage = 3;
+  const cardsPerPage = 4;
   const pagesVisited = pageNumber * cardsPerPage;
   const pageCount = Math.ceil(filteredResults.length / cardsPerPage);
 
@@ -112,9 +112,8 @@ const ListaArchivos = () => {
         <p>{registro.PLACA}</p>
         <h4>MODELO</h4>
         <p>{registro.MODELO}</p>
-        {/*<p style={{ color: registro.recuperado ? "green" : "red", fontSize: "15px" }}>
-          {registro.recuperado ? "RECUPERADO" : "NO RECUPERADO"}
-    </p>*/}
+        <p style={{color:"green"}}>{registro.recuperado ? 'RECUPERADO' : ''}</p> 
+        <p style={{color:"green"}}>{registro.entregado ? 'ENTREGADO' : ''}</p>
         <div>
           <div className="btn-container">
             <Link id="btn" className="btn" to={`/detalles/${registro.ID_ALTERNA}`}>

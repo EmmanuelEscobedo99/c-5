@@ -27,7 +27,7 @@ app.get('/', (re, res) => {
 //traer registros  GET
 
 app.get('/registro', (req, res) => {
-    const sql = "SELECT * FROM vehiculo_robado";
+    const sql = "select robado.*, recuperado.ID_ALTERNA as recuperado , entregado.ID_ALTERNA as entregado from vehiculo_robado robado left join vehiculo_recuperado recuperado on robado.ID_ALTERNA = recuperado.ID_ALTERNA left join vehiculo_entregado entregado on entregado.ID_ALTERNA = robado.ID_ALTERNA";
     db.query(sql, (err, data) => {
         if (err) return res.json(err);
         return res.json(data);

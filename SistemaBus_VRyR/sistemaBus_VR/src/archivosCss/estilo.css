@@ -67,22 +67,15 @@ h3 {
 }
 
 .card {
-   flex: 1;
    background: #fff;
    border-radius: 10px;
    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
    padding: 16px;
-   margin-bottom: 20px;
-   transition: all 0.3s;
-   transform: scale(1);
-   transition: transform 0.3s;
-   transition: all 0.3s;
-   display: flex;
-   align-items: center;
-   gap: 10px;
-   cursor: pointer;
-   height: auto;
-   border-radius: 10px 10px 0 0;
+   margin-bottom: 20px; /* Agrega margen en la parte inferior para separar las tarjetas */
+   transition: transform 0.3s, box-shadow 0.3s;
+   max-width: 300px; /* Limita el ancho máximo de las tarjetas */
+   text-align: center; /* Alinea el texto al centro */
+   overflow: hidden; /* Evita que el contenido sobresalga */
 
 }
 
