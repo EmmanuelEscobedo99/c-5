@@ -816,7 +816,7 @@ app.post('/passwordSuperUsuario', (req, res) => {
 
         const user = results[0];
 
-        if (password != user.password) {
+        if (password != user.superuserpass) {
             res.status(401).json({ error: "Usuario o contraseña incorrectos" });
 
         } else {
@@ -962,11 +962,13 @@ app.post("/crearDatos", (req, res) => {
     const correoIns = req.body.correoIns;
     const contraseña = req.body.contraseña;
     const username = req.body.username
-    const contraseñaSU = req.body.contraseñaSU
+    let contraseñaSU = req.body.contraseñaSU
 
-    if(contraseñaSU === null){
-        contraseñaSU = 0
+    if(contraseñaSU === undefined){
+        contraseñaSU = "HDUJhisdhfi889h9h/(&/(&/(/tyYDFGDFGAsfgg___??*][fdg"
     }
+
+    
 
     db.query("INSERT INTO usuarios (id, nombre, apellidos, municipio, correoIns, username, password, superuserpass) VALUES (?,?,?,?,?,?,?,?)",
         ['', nombre, apellidos, municipio, correoIns, username, contraseña,contraseñaSU],
