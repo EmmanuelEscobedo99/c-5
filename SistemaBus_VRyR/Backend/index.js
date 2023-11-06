@@ -909,7 +909,7 @@ app.post("/temporal_crear", (req, res) => {
 //video /users/:id
 app.put("/modificar/:id", (req, res) => {
     const id = req.params.id;
-    const query_u = "UPDATE temporal_vr SET AVERIGUACION=?,FECHA_AVERIGUA=?,AGENCIA_MP=?,AGENTE_MP=?,ID_MODALIDAD=?,FECHA_ROBO=?,HORA_ROBO=?,CALLE_ROBO=?,NUM_EXT_ROBO=?,COLONIA_ROBO=?,ID_MUNICIPIO_ROBO=?,ID_ENTIDAD_ROBO=?,ID_TIPO_LUGAR=?,NOMBRE_DEN=?,PATERNO_DEN=?,CALLE_DEN=?,NUMEXT_DOM_DEN=?,COLONIA_DEN=?,ID_MUNICIPIO_DEN=?,ID_ENTIDAD_DEN=?,CP_DEN=?,PLACA=?,ID_MARCA=?,ID_SUBMARCA=?,MODELO=?,ID_COLOR=?,SERIE=?,ID_TIPO_USO=?,ID_PROCEDENCIA=?   WHERE ID_TEMPORAL=?"
+    const query_u = "UPDATE temporal_vr SET AVERIGUACION=?,PLACA_EXT=?, FECHA_AVERIGUA=?,AGENCIA_MP=?,AGENTE_MP=?,ID_MODALIDAD=?,FECHA_ROBO=?,HORA_ROBO=?,CALLE_ROBO=?,NUM_EXT_ROBO=?,COLONIA_ROBO=?,ID_MUNICIPIO_ROBO=?,ID_ENTIDAD_ROBO=?,ID_TIPO_LUGAR=?,NOMBRE_DEN=?,PATERNO_DEN=?,CALLE_DEN=?,NUMEXT_DOM_DEN=?,COLONIA_DEN=?,ID_MUNICIPIO_DEN=?,ID_ENTIDAD_DEN=?,CP_DEN=?,PLACA=?,ID_MARCA=?,ID_SUBMARCA=?,MODELO=?,ID_COLOR=?,SERIE=?,ID_TIPO_USO=?,ID_PROCEDENCIA=?   WHERE ID_TEMPORAL=?"
     const values = [
         req.body.AVERIGUACION,
         req.body.FECHA_AVERIGUA,
@@ -939,7 +939,8 @@ app.put("/modificar/:id", (req, res) => {
         req.body.ID_COLOR,
         req.body.SERIE,
         req.body.ID_TIPO_USO,
-        req.body.ID_PROCEDENCIA
+        req.body.ID_PROCEDENCIA,
+        req.body.PE
     ];
 
     db.query(query_u, [...values, id], (err, result) => {
