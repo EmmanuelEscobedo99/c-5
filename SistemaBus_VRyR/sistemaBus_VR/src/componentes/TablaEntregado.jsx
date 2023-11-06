@@ -16,11 +16,13 @@ import { PasswordSUentregado } from './PasswordSUentregado'
 export const TablaEntregado = () => {
 
     const [isPasswordIn, setIsPasswordIn] = useState(false)
+    const [isTokenEntregados, setIsTokenEntregados] = useState(localStorage.getItem('tokenEntregados'))
+
     const [datos, setDatos] = useState([])
     let results = []
 
     const handleLogin = () => {
-        setIsPasswordIn(true)
+        setIsTokenEntregados(true)
     }
 
     const RecuperadoBD = async () => {
@@ -63,7 +65,7 @@ export const TablaEntregado = () => {
         <>
             <Navbar />
             {
-                isPasswordIn ? (
+                isTokenEntregados ? (
                     <>
                         <div className='area-form'>
                             <div className='contenedor'>

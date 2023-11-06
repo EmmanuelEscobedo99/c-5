@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const PasswordSuperUser = ({ onLogin }) => {
+export const PasswordSU = ({ onLogin }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ username: '', password: '' });
 
@@ -22,12 +22,9 @@ export const PasswordSuperUser = ({ onLogin }) => {
       const response = await axios.post(`http://localhost:8081/passwordSuperUsuario`, formData);
       onLogin();
 
-      //Almacenar token en localstorage
-      localStorage.setItem('tokenRecuperados', 'true')
-
       // Espera unos segundos antes de redirigir al usuario
       setTimeout(() => {
-        navigate('/TablaRecuperado');
+        navigate('/RegistroUsuarios');
       }, 2000); // Espera 2 segundos (ajusta este valor según tus necesidades)
     } catch (error) {
       // Mostrar un mensaje de error al usuario utilizando react-toastify
@@ -36,20 +33,20 @@ export const PasswordSuperUser = ({ onLogin }) => {
   }
 
   return (
-    <div className='bodyLogin' style={{ height: "776px" }}>
+    <div className='bodyLogin' style={{height:"776px"}}>
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop closeOnClick rtl pauseOnFocusLoss draggable pauseOnHover />
       <div className='area-form'>
-        <div className='containerLogin' style={{ height: "450px" }}>
+        <div className='containerLogin' style={{height:"450px"}}>
           <form>
             <div className="form-group">
-              <div style={{ fontSize: "26px" }} className="brand-title">ADMINISTRACIÓN</div>
+              <div style={{fontSize:"26px"}} className="brand-title">ADMINISTRACIÓN</div>
               <br></br>
               <label for="username" style={{paddingBottom:"10px"}}>INGRESE USUARIO</label>
-              <input type="text" className="form-control" id="username" name="username" onChange={handleChange} placeholder="Usuario" />
+              <input type="text" className="form-control" id="username" name="username" onChange={handleChange}  />
             </div>
             <div className="form-group">
             <label for="password" style={{paddingBottom:"10px", paddingTop:"10px"}}>INGRESE CONTRASEÑA</label>
-              <input type="password" className="form-control" id="password" name="password" onChange={handleChange} placeholder="Contraseña" />
+              <input  type="password" className="form-control" id="password" name="password" onChange={handleChange}  />
             </div>
             <br></br>
             <Button style={{ width: '280px', marginBottom:"10px" }} type="submit" className="btn btn-primary" onClick={handleSubmit}>

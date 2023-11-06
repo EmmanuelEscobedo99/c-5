@@ -6,7 +6,8 @@ import ReactPaginate from "react-paginate";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import "../archivosCss/estilo.css";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCar, faSearch, faUser, faSignOutAlt, faCheck, faArrowRight } from "@fortawesome/free-solid-svg-icons"
 const ListaArchivos = () => {
   const { id } = useParams();
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'));
@@ -17,9 +18,18 @@ const ListaArchivos = () => {
   const [pageNumber, setPageNumber] = useState(0);
 
   useEffect(() => {
+    if (localStorage.getItem('tokenRecuperados')) {
+      localStorage.removeItem('tokenRecuperados')
+    }
+    if (localStorage.getItem('tokenEntregados')) {
+      localStorage.removeItem('tokenEntregados')
+    }
+    if (localStorage.getItem('tokenRobados')) {
+      localStorage.removeItem('tokenRobados')
+    }
     const registroVerificadoId = localStorage.getItem("registroVerificadoId");
     if (!registroVerificadoId) {
-      console.log("NO SE PUEDE ACCEDER");
+
     } else {
       if (registroVerificadoId === id) {
         setValidado(true);
@@ -100,23 +110,37 @@ const ListaArchivos = () => {
     .slice(pagesVisited, pagesVisited + cardsPerPage)
     .map((registro, i) => (
       <div key={i} className="card">
-        <h4>DENUNCIANTE</h4>
-        <p>
+        {/*<p style={{ fontSize: "15px", fontWeight:"bold", textTransform:"uppercase"}}>
           {registro.NOMBRE_DEN} {registro.PATERNO_DEN}
+    </p>*/}
+        <h4 className="vehi-pla">PLACA</h4>
+        <div className="card-header">
+          <p className="plac-ve">{registro.PLACA}</p>
+        </div>
+        <h4>NOMBRE</h4>
+        <p style={{ fontSize: "15px", fontWeight: "bold", textTransform: "uppercase" }}>
+          {registro.NOMBRE_DEN}
         </p>
-        <h4>AVERIGUACION</h4>
+        <h4>APELLIDO</h4>
+        <p style={{ fontSize: "15px", fontWeight: "bold", textTransform: "uppercase" }}>
+          {registro.PATERNO_DEN}
+        </p>
+        <h4>AVERIGUACIÓN</h4>
         <p>{registro.AVERIGUACION}</p>
         <h4>FECHA DE ROBO</h4>
         <p>{formatDate(registro.FECHA_ROBO)}</p>
-        <h4>PLACA DEL VEHICULO ROBADO</h4>
-        <p>{registro.PLACA}</p>
+
+
         <h4>MODELO</h4>
         <p>{registro.MODELO}</p>
-        <p style={{color:"green"}}>{registro.recuperado ? 'RECUPERADO' : ''}</p> 
-        <p style={{color:"green"}}>{registro.entregado ? 'ENTREGADO' : ''}</p>
+        <p style={{ color: "green" }}>{registro.recuperado ? 'RECUPERADO' : ''}</p>
+        <p style={{ color: "green" }}>{registro.entregado ? 'ENTREGADO' : ''}</p>
+
+        <p style={{ color: "red" }}>{!registro.recuperado ? 'NO RECUPERADO' : ''}</p>
+        <p style={{ color: "red" }}>{!registro.entregado ? 'NO ENTREGADO' : ''}</p>
         <div>
           <div className="btn-container">
-            <Link id="btn" className="btn" to={`/detalles/${registro.ID_ALTERNA}`}>
+            <Link style={{marginLeft:"0px"}} id="btn" className="btn" to={`/detalles/${registro.ID_ALTERNA}`}>
               Detalles
             </Link>
           </div>
@@ -129,6 +153,7 @@ const ListaArchivos = () => {
       {isLoggedIn ? (
         <>
           <Navbar />
+
           <div className="titulo">
             <h3>Vehiculos Robados</h3>
             {userData.map((user) => (
@@ -136,6 +161,9 @@ const ListaArchivos = () => {
             ))}
           </div>
           <div className="search-container">
+            <div className="icon-busqueda">
+              <FontAwesomeIcon icon={faSearch} />
+            </div>
             <div className="search-input">
               <input
                 value={busqueda}
@@ -146,24 +174,24 @@ const ListaArchivos = () => {
               />
             </div>
           </div>
-          <div>
-            <section>
-              <div className="container">
-                <div className="cards">{displayResults}</div>
-                <ReactPaginate
-                  previousLabel={"Anterior"}
-                  nextLabel={"Siguiente"}
-                  pageCount={pageCount}
-                  onPageChange={changePage}
-                  containerClassName={"pagination-container"}
-                  previousLinkClassName={"pagination-button previous"}
-                  nextLinkClassName={"pagination-button next"}
-                  disabledClassName={"disabled"}
-                  activeClassName={"pagination-button active"}
-                />
-              </div>
-            </section>
+
+
+          <div className="container">
+            <div className="cards">{displayResults}</div>
+            <ReactPaginate
+              previousLabel={"Anterior"}
+              nextLabel={"Siguiente"}
+              pageCount={pageCount}
+              onPageChange={changePage}
+              containerClassName={"pagination-container"}
+              previousLinkClassName={"pagination-button previous"}
+              nextLinkClassName={"pagination-button next"}
+              disabledClassName={"disabled"}
+              activeClassName={"pagination-button active"}
+            />
           </div>
+
+
         </>
       ) : (
         <Login onLogin={handleLogin} />

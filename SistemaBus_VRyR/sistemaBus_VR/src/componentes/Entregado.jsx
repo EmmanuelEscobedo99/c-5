@@ -8,8 +8,10 @@ import Modal from 'react-bootstrap/Modal'
 import { Toaster, toast } from 'sonner'
 import { BiCheck } from 'react-icons/bi'
 import Login from './Login'
+import { useNavigate } from 'react-router-dom';
 
 export const Entregado = () => {
+  const navigate = useNavigate()
 
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'))
   const [userData, setUserData] = useState([]);
@@ -17,7 +19,7 @@ export const Entregado = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      
+
       const token = localStorage.getItem('token');
       const traerUsuario = async () => {
         if (token) {
@@ -28,9 +30,9 @@ export const Entregado = () => {
               },
             })
             setUserData(res.data)
-            
+
           } catch (err) {
-            
+
           }
         }
       }
@@ -39,10 +41,10 @@ export const Entregado = () => {
 
   }, [isLoggedIn]);
 
-  let nombre_bitacora
+  let nombre_bitacora, serie
   let apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora
 
-  
+
 
   const handleLogin = () => {
     setIsLoggedIn(true)
@@ -53,19 +55,19 @@ export const Entregado = () => {
 
   const handleClickModificarEntregado = async (e, id) => {
     e.preventDefault();
-    
+
     formatoDia()
     formatoHora()
     setEditar(0)
     try {
       await axios.post(`http://localhost:8081/modificarEntregado/${id}`, modificarEntregado)
-      
+
 
       alert("El nuevo registro ha sido guardado correctamente ")
       navigate("/")
 
     } catch (err) {
-      
+
     }
   }
 
@@ -115,13 +117,55 @@ export const Entregado = () => {
     paterno_entrega: ''
   })
 
+  const [temporal, setTemporal] = useState({
+    fe: "",
+    hora: "",
+    ID_TEMPORAL: "",
+    ID_ALTERNA: "",
+    AVERIGUACION: "",
+    FECHA_AVERIGUA: "",
+    AGENCIA_MP: "",
+
+    AGENTE_MP: "",
+    ID_MODALIDAD: "",
+    FECHA_ROBO: "",
+
+    HORA_ROBO: "",
+    CALLE_ROBO: "",
+    NUM_EXT_ROBO: "",
+    COLONIA_ROBO: "",
+
+    ID_MUNICIPIO_ROBO: "",
+    ID_ENTIDAD_ROBO: "",
+    ID_TIPO_LUGAR: "",
+    NOMBRE_DEN: "",
+    PATERNO_DEN: "",
+
+    CALLE_DEN: "",
+    NUMEXT_DOM_DEN: "",
+    COLONIA_DEN: "",
+    ID_MUNICIPIO_DEN: "",
+    ID_ENTIDAD_DEN: "",
+    CP_DEN: "",
+    PLACA: "",
+
+    ID_MARCA: "",
+    ID_SUBMARCA: "",
+    MODELO: "",
+    ID_COLOR: "",
+    SERIE: "",
+    ID_TIPO_USO: "",
+    ID_PROCEDENCIA: "",
+
+  })
+
   const [entregadoBD, setEntregadoBD] = useState([])
   let results6 = []
 
   const [showModalValidacion, setShowModalValidacion] = useState(false)
   const [showModalSuccess, setShowModalSuccess] = useState(false)
 
-  
+
 
   const [ultimoId, setUltimoId] = useState([])
   let results5 = []
@@ -142,6 +186,12 @@ export const Entregado = () => {
 
   const [descValidacion, setDescValidacion] = useState('')
   const [desc2Validacion, setDesc2Validacion] = useState('')
+
+  const [datos, setDatos] = useState([]);
+  let resultsDatos = []
+
+  const [datosColor, setDatosColor] = useState([]);
+  let resultsColors = []
 
   const handleCloseModalValidacion = () => {
     setDescValidacion('')
@@ -166,13 +216,31 @@ export const Entregado = () => {
     }
   }
 
+  function traer_datos() {
+    axios.get("http://localhost:8081/bId2/" + id)
+      .then(res => {
+        //console.log(res)
+        setTemporal(res.data[0])
+      })
+      .catch(err => console.log(err))
+  }
+
+  function modalidad_color() {
+    axios.get("http://localhost:8081/color/" + temporal.ID_COLOR)
+      .then(res => {
+        //console.log(res)
+        setDatosColor(res.data[0].DESCRIPCION)
+      })
+      .catch(err => console.log(err))
+  }
+
   const entidadesSelect = async () => {
     try {
       const { data } = await axios.get("http://localhost:8081/entidades");
       setEntidades(data)
     }
     catch (err) {
-      
+
     }
   }
 
@@ -184,7 +252,7 @@ export const Entregado = () => {
       setMunicipios(data)
     }
     catch (err) {
-      
+
     }
   }
 
@@ -193,7 +261,7 @@ export const Entregado = () => {
       const response = await axios.get(`http://localhost:8081/municipios/${entidadId}`);
       setMunicipios(response.data)
     } catch (error) {
-      
+
     }
   }
 
@@ -203,7 +271,7 @@ export const Entregado = () => {
       setUltimoId(data)
     }
     catch (err) {
-      
+
     }
   }
 
@@ -226,16 +294,49 @@ export const Entregado = () => {
 
     }
   }
+
+  const serieAutomovil = async () => {
+    try {
+        const { data } = await axios.get(`http://localhost:8081/serieAutomovil/${id}`)
+        setDatos(data)
+    } catch (err) {
+
+    }
+}
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      traer_datos()
+      modalidad_color()
+    }, 100);
+    return () => clearTimeout(timer);
+  })
+
   useEffect(() => {
     entidadesSelect()
     ultimoIdSelect()
     fechaDeRobado()
     fechaDeRecuperado()
+    serieAutomovil()
   }, [])
 
   useEffect(() => {
     EntregadoBD()
   }, setEditar)
+
+  useEffect(() => {
+    // Obtén una referencia al input
+    const inputs = document.querySelectorAll('.form-control')
+    // Dispara el evento 'click' en el input después de un pequeño retraso (por ejemplo, 1 segundo)
+
+    for (let i = 0; i < inputs.length; i++) {
+        const input = inputs[i]
+        setTimeout(() => {
+            console.log("click")
+            input.click()
+        }, 1000)
+    }
+}, [])
 
 
   results2 = entidades
@@ -244,6 +345,7 @@ export const Entregado = () => {
   results6 = entregadoBD
   results7 = fechaRobado
   results8 = fechaRecuperado
+  resultsDatos = datos
 
   const formatoDia = () => {
 
@@ -252,7 +354,7 @@ export const Entregado = () => {
     let mes = today.getMonth() + 1
     fecha = today.getFullYear() + "/" + mes + "/" + today.getDate()
     entregado['fecha'] = fecha
-    
+
   }
 
   const formatoHora = () => {
@@ -262,7 +364,7 @@ export const Entregado = () => {
     let minutos = today.getMinutes()
     horaCompleta = hora + ':' + minutos
     entregado['hora'] = horaCompleta
-    
+
   }
 
   const handleChange = (e) => {
@@ -270,6 +372,7 @@ export const Entregado = () => {
     formatoHora()
     setEntregado((prev) => ({ ...prev, id_alterna, nombre_bitacora, apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora, [e.target.name]: e.target.value }))
     id_entidad = document.getElementById('id_entidad_entrega')
+    console.log("datos", entregado);
   }
 
   const handleChangeModificacionEntregado = (e) => {
@@ -300,23 +403,25 @@ export const Entregado = () => {
   let today = new Date().toISOString().split('T')[0];
   let minDate = "1900-01-01"
 
- 
+
 
   const handleClick = async (e) => {
     e.preventDefault();
 
     try {
-      console.log("Entre al try")
+
       let camposValidados = validarCampos()
 
       if (!camposValidados) return
       //localStorage.removeItem("registroVerificadoId")
-      await axios.post("http://localhost:8081/crearEntregadoTemporal", entregado);
+      
       alert("El nuevo registro ha sido guardado correctamente ")
-      navigate("/")
+      navigate(`/detalles/${id}`)
+      await axios.post("http://localhost:8081/crearEntregadoTemporal", entregado);
+      
 
     } catch (err) {
-      
+
     }
   }
 
@@ -639,6 +744,12 @@ export const Entregado = () => {
     idUser_bitacora = userData.id
 
   })
+
+  resultsDatos.map(datos => {
+    serie = datos.SERIE
+})
+
+
   return (
     <>
       {isLoggedIn ? (
@@ -660,7 +771,7 @@ export const Entregado = () => {
                     </>
                   )
                 })}
-                <center><h1>REGISTRO DE VEHICULOS ENTREGADOS</h1></center>
+                <center><h3>Datos del Vehículo Entregado</h3></center>
                 {results5.map(ultimoId => {
                   return (
                     <input id='id_alterna' type="hidden" name="id_alterna" key={ultimoId.id} value={ultimoId.id + 1} onChange={handleChange} ></input>
@@ -701,14 +812,14 @@ export const Entregado = () => {
                 <div class="formulario_grupo col-md-2" id='grupo_calle'>
                   <label className="form-label" for='calle_entrega' class="formulario_label" > CALLE:</label>
                   <div class="formulario_grupo-input">
-                    <input type="text" className="form-control" id="calle_entrega" name="calle_entrega" onKeyDown={Solo_Texto} onChange={handleChange} required />
+                    <input type="text" className="form-control" id="calle_entrega" name="calle_entrega"  onChange={handleChange} required />
                   </div>
                   <div class="invalid-feedback">Porfavor rellene el campo.</div>
                 </div>
                 <div class="formulario_grupo col-md-2" id='grupo_colonia'>
                   <label className="form-label" class="formulario_label" for='colonia_entrega' > COLONIA:</label>
                   <div class="formulario_grupo-input">
-                    <input type="text" className="form-control" id="colonia_entrega" name="colonia_entrega" onKeyDown={Solo_Texto} onChange={handleChange} required />
+                    <input type="text" className="form-control" id="colonia_entrega" name="colonia_entrega"  onChange={handleChange} required />
                   </div>
                   <div class="invalid-feedback">Porfavor rellene el campo.</div>
                 </div>
@@ -723,7 +834,7 @@ export const Entregado = () => {
                 <div class="formulario_grupo col-md-3" id='grupo_serie'>
                   <label className="form-label" class="formulario_label" for='serie' > SERIE:</label>
                   <div class="formulario_grupo-input">
-                    <input type="text" className="form-control" id="serie" name="serie" onChange={handleChange} required />
+                    <input type="text" className="form-control" id="serie" name="serie" onClick={handleChange} onChange={handleChange} value={serie} required />
                   </div>
                   <div class="invalid-feedback">Porfavor rellene el campo.</div>
                 </div>
@@ -761,7 +872,7 @@ export const Entregado = () => {
                     {/* VALIDACIÓN La fecha de entrega no puede ser menor a la fecha de robo.*/}
                     {results7.map(fechaRobado => {
                       dateRobo = new Date(fechaRobado.FECHA_ROBO)
-                     
+
                       let monthRobo = dateRobo.getMonth() + 1
                       if (monthRobo > 0 && monthRobo < 10) {
                         monthRobo = "0" + monthRobo
@@ -772,7 +883,7 @@ export const Entregado = () => {
                         dayRobo = "0" + dayRobo
                       }
                       newDateRobo = dateRobo.getFullYear() + "-" + monthRobo + "-" + dayRobo
-                      
+
                       return (
                         <>
                           {/* VALIDACIÓN La fecha de factura no puede ser menor a la fecha de recuperación.*/}
@@ -845,7 +956,7 @@ export const Entregado = () => {
                 </div>
                 <div class="col-md-12">
                   <Button variant="primary" type="submit" onClick={handleClick}>Enviar</Button>
-                  <Link to="/ListaArchivos" className="btn btn-info"> Inicio</Link>
+
                   {/*<Button disabled variant='primary' onClick={() => {
                     setEditar(id)
                   }}> Editar </Button>*/}

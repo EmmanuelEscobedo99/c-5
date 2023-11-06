@@ -49,6 +49,10 @@ const Navbar = () => {
   }
   return (
     <>
+      <div>
+        <center><h2 style={{paddingTop:"30px", paddingBottom:"20px"}}>BUS DE INTEGRACIÓN</h2></center>
+      </div>
+      <div style={{marginLeft:"40px", marginRight:"40px"}}>
       <nav className="navbar navbar-expand-lg navbar-light bg-custom">
         <div className="container-fluid">
           <button
@@ -62,39 +66,38 @@ const Navbar = () => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div className="navbar-nav ">
-              <nav>
+          <div className="collapse navbar-collapse" id="navbarNavAltMarkup" >
+            <div className="navbar-nav " >
+              <nav >
                 <ul>
                   <div className="logo">
                     <span></span>
-                    <h4 style={{paddingRight:"65px", fontSize:"19px"}} className="navbar-title">BUS DE INTEGRACIÓN</h4>
+                    
                   </div>
                   <li>
+                    <img src="/src/assets/logo2.jpeg" style={{ width: "75px"}} />
+                  </li>
+                  <li>
                     <NavLink to="/Registrar" className={({ isActive }) => isActive ? "active" : ""}>
-                      <FontAwesomeIcon icon={faCar} /> Registrar vehiculo
+                      Registrar 
                     </NavLink>
                   </li>
                   <li>
                     <NavLink to="/ListaArchivos" className={({ isActive }) => isActive ? "active" : ""}>
-                      <FontAwesomeIcon icon={faSearch} /> Buscar vehiculo
+                      <FontAwesomeIcon icon={faSearch} /> Búsqueda
                     </NavLink>
                   </li>
-                  <li>
+                 {/* <li>
                     <NavLink to="/RegistroUsuarios" className={({ isActive }) => isActive ? "active" : ""}>
-                      <FontAwesomeIcon icon={faUser} /> Registrar usuarios
+                       Registrar usuarios
                     </NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/" onClick={handleChange} className={({ isActive }) => isActive ? "active" : ""}>
-                      <FontAwesomeIcon icon={faSignOutAlt} /> Cerrar sesión
-                    </NavLink>
-                  </li>
+  </li>*/}
+                 
 
                   <li>
                     <Dropdown id="MyDropDown" className="d-inline mx-2 custom-frop">
                       <Dropdown.Toggle variant="transparent" id="dropdown-autoclose-true">
-                        <FontAwesomeIcon icon={faCheck} /> Falta Verificar
+                        Subir Registros
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu>
@@ -104,14 +107,40 @@ const Navbar = () => {
                         <Dropdown.Item href="/TablaEntregado">
                           <FontAwesomeIcon icon={faArrowRight} /> Vehículos Entregados
                         </Dropdown.Item>
-                        <Dropdown.Item href="/">
-                          <FontAwesomeIcon icon={faArrowRight} /> Menu Item
+                        <Dropdown.Item href="/lrsr">
+                          <FontAwesomeIcon icon={faArrowRight} /> Vehiculos Robados
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
                   </li>
+                  {/*<li>
+                    <NavLink to="/" onClick={handleChange} className={({ isActive }) => isActive ? "active" : ""}>
+                      Cerrar sesión
+                    </NavLink>
+  </li>*/}
+
                   <li>
-                    <p style={{marginLeft:"200px", color:"black", paddingTop:"15px"}}><FontAwesomeIcon icon={faUser} className="mr-2" /> Bienvenid@: {correo}</p>
+                    <Dropdown id="MyDropDown" className="d-inline mx-2 custom-frop">
+                      <Dropdown.Toggle variant="transparent" id="dropdown-autoclose-true">
+                        Sistema
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <Dropdown.Item href="/RegistroUsuarios">
+                          <FontAwesomeIcon icon={faArrowRight} /> registrar usuarios
+                        </Dropdown.Item>
+                        <Dropdown.Item href="/" onClick={handleChange}>
+                          <FontAwesomeIcon icon={faArrowRight} /> cerrar sesión
+                        </Dropdown.Item>
+
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </li>
+
+                  <li>
+                    <p style={{ marginLeft: "300px", color: "black", paddingTop: "15px" }}> Bienvenido: {correo}</p>
+                  </li>
+                  <li>
+                    <img src="/src/assets/logo1.jpeg" style={{ width: "150px", marginLeft:"20px"}} />
                   </li>
                 </ul>
               </nav>
@@ -119,6 +148,7 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
+      </div>
     </>
   );
 }

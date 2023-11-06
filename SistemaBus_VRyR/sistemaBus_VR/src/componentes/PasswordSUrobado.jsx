@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const PasswordSuperUser = ({ onLogin }) => {
+export const PasswordSUrobado = ({ onLogin }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ username: '', password: '' });
 
@@ -23,11 +23,11 @@ export const PasswordSuperUser = ({ onLogin }) => {
       onLogin();
 
       //Almacenar token en localstorage
-      localStorage.setItem('tokenRecuperados', 'true')
+      localStorage.setItem('tokenRobados', 'true')
 
       // Espera unos segundos antes de redirigir al usuario
       setTimeout(() => {
-        navigate('/TablaRecuperado');
+        navigate('/lrsr');
       }, 2000); // Espera 2 segundos (ajusta este valor según tus necesidades)
     } catch (error) {
       // Mostrar un mensaje de error al usuario utilizando react-toastify
@@ -44,15 +44,15 @@ export const PasswordSuperUser = ({ onLogin }) => {
             <div className="form-group">
               <div style={{ fontSize: "26px" }} className="brand-title">ADMINISTRACIÓN</div>
               <br></br>
-              <label for="username" style={{paddingBottom:"10px"}}>INGRESE USUARIO</label>
+              <label for="username" style={{ paddingBottom: "10px" }}>INGRESE USUARIO</label>
               <input type="text" className="form-control" id="username" name="username" onChange={handleChange} placeholder="Usuario" />
             </div>
             <div className="form-group">
-            <label for="password" style={{paddingBottom:"10px", paddingTop:"10px"}}>INGRESE CONTRASEÑA</label>
+              <label for="password" style={{ paddingBottom: "10px", paddingTop: "10px" }}>INGRESE CONTRASEÑA</label>
               <input type="password" className="form-control" id="password" name="password" onChange={handleChange} placeholder="Contraseña" />
             </div>
             <br></br>
-            <Button style={{ width: '280px', marginBottom:"10px" }} type="submit" className="btn btn-primary" onClick={handleSubmit}>
+            <Button style={{ width: '280px', marginBottom: "10px" }} type="submit" className="btn btn-primary" onClick={handleSubmit}>
               Enviar
             </Button>
             <br></br>

@@ -51,7 +51,7 @@ h3 {
    font-size: 30px;
    line-height: 1.5;
    text-align: center;
-   margin-bottom: 40px;
+   margin-bottom: 0px;
    transition: all 0.3s;
    transform: scale(1);
 }
@@ -76,7 +76,7 @@ h3 {
    max-width: 300px; /* Limita el ancho máximo de las tarjetas */
    text-align: center; /* Alinea el texto al centro */
    overflow: hidden; /* Evita que el contenido sobresalga */
-
+   height: 510px;
 }
 
 .card:hover {
@@ -90,30 +90,51 @@ h3 {
 }
 
 .card p {
-   margin-bottom: 10px;
+   margin-bottom: 3px;
 }
 
 .card .actions {
    margin-top: 10px;
 }
 
-.card .actions a {
-   color: #0070f3;
-   text-decoration: none;
-   margin-right: 10px;
+.plac-ve {
+   font-size: 25px;
+   color: white;
 }
+/* Estilo para el encabezado de las tarjetas */
+.card-header {
+   background-color: #76a6f3;
+   color: #fff;
+   font-weight: bold;
+   padding-top: 10px;
+   padding-left: 10px;
+   padding-right: 10px;
+   padding-bottom: 0px;
+   border-radius: 15px;
+   margin-bottom: 10px;
+}
+
+/* Aplica el estilo del encabezado en el elemento h4 dentro de la tarjeta */
+
+.vehi-pla{
+   font-size: 15px;
+   padding-bottom: 2px;
+}
+
+
+
 
 .btn {
    border: none;
    outline: none;
-   margin: 8px;
+   
    background: #4285F4;
    color: #ffffff;
    border-radius: 10px;
    max-width: 100%;
    width: 300px;
    height: 40px;
-   margin-left: 30px;
+   margin-left: 10px;
    text-align: center;
    line-height: 30px;
    cursor: pointer;
@@ -124,7 +145,7 @@ h3 {
    background-color: #007bff;
    color: #fff;
    border: none;
-   padding: 8px 16px;
+   padding: 6px 16px;
    border-radius: 4px;
    font-weight: 500;
    cursor: pointer;
@@ -143,7 +164,7 @@ h3 {
    display: flex;
    justify-content: center;
    align-items: center;
-   margin-top: 20px;
+   margin-top: 0px;
    /* Puedes ajustar el margen superior según tus necesidades */
 }
 
@@ -265,6 +286,7 @@ h4 {
 /* Estilo para el contenedor de la barra de búsqueda */
 .search-container {
    position: relative;
+   
    width: 400px;
    margin-left: 750px;
    display: flex;
@@ -281,10 +303,13 @@ h4 {
    transition: all 0.3s;
 }
 
+
+
 /* Estilo para el campo de entrada de búsqueda */
 .search-input {
    width: 100%;
    padding: 10px;
+   
    border: none;
    outline: none;
    font-size: 16px;
@@ -294,7 +319,12 @@ h4 {
    flex-grow: 1;
 }
 
+.icon-busqueda {
+   padding-left: 15px;
+}
+
 .google {
+   
    border: none;
    text-decoration: none;
    outline: none;
@@ -419,12 +449,13 @@ h4 {
    align-items: center;
    background-color: #ffffff;
    /* Fondo del navbar */
-   padding: 10px 20px;
+   padding: 10px 0px;
    /* Espaciado interior del navbar */
-   height: 70px;
+   height: 90px;
    /* Altura del navbar */
    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
    z-index: 1000;
+   border-radius: 25px;
 }
 
 /* Estilo del logo */
@@ -611,3 +642,4 @@ h4 {
 .md-button:hover {
    background-color: #0056b3;
 }
+

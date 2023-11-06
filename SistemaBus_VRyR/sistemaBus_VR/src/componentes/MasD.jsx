@@ -34,25 +34,25 @@ const MasD = () => {
     const entregadoId = localStorage.getItem(`entregadoId_${id}`);
 
     if (!registroVerificadoId) {
-      console.log("NO SE PUEDE ACCEDER");
+      
     } else {
       if (registroVerificadoId === id) {
         setValidado(true);
       } else {
         setValidado(false);
       }
-      console.log("SI SE PUEDE ACCEDER");
+      
     }
 
     if (!entregadoId) {
-      console.log("NO ESTA ENTREGADO")
+      
     } else {
       if (entregadoId === id) {
         setEntregado(true);
       } else {
         setEntregado(false);
       }
-      console.log("ENTREGADO")
+      
     }
   }, [id]);
 
@@ -113,6 +113,14 @@ const MasD = () => {
     newFechaFormat2 = `${fechaFormat2.getFullYear()}-${monthFecha}-${dayFecha}`;
   }
 
+  //CONDICIONAR EL NÚMERO EN BD DE TIPO DE PLACA PARA IDENTIFICAR EL TIPO Y ASIGNARLO MANUALMENTE
+  let placaExt
+  if (datos.PLACA_EXTRANJERA == 1){
+    placaExt = "Nacional"
+  } else if (datos.PLACA_EXTRANJERA == 0){
+    placaExt = "Extranjera"
+  }
+
   return (
 
     <>
@@ -129,7 +137,7 @@ const MasD = () => {
             })}
             <div className="contenedor">
 
-              <h3>Vehiculo Robado Datos Registrados</h3>
+              <h3>Datos Registrados del Vehículo Robado</h3>
 
               <form className="row g-6">
 
@@ -212,6 +220,12 @@ const MasD = () => {
                   <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={datos.PLACA} />
                 </div>
 
+                <div className="col-sm-2">
+                  <strong><label htmlFor="staticEmail" className="col-sm-12 col-form-label">TIPO DE PLACA:</label></strong>
+                  <input type="text" readOnly className="form-control-plaintext" id="staticEmail" value={placaExt} />
+
+                </div>
+
 
 
                 <div className="col-sm-2">
@@ -250,7 +264,7 @@ const MasD = () => {
                 </div>
 
                 { /* <Button variant="primary" type="submit" onClick={handleClick}></Button>  */}
-                <Link to="/ListaArchivos" className="btn  btn-info " onClick={() => setIsLoggedIn(false)}> Inicio</Link>
+                {/*<Link to="/ListaArchivos" className="btn  btn-info " onClick={() => setIsLoggedIn(false)}> Inicio</Link>*/}
 
                 {validado ? (
                   <>

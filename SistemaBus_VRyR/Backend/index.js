@@ -251,7 +251,7 @@ app.post("/crearRecuperadoTemporal", (req, res) => {
             if (err) {
                 console.log(err);
             } else {
-                
+
             }
         }
     )
@@ -406,7 +406,7 @@ app.post("/crearRecVerificado", (req, res) => {
                             if (err) {
                                 console.log(err)
                             } else {
-                                
+
                                 db.query("INSERT INTO bitacora (id, nombre, apellidos, correoIns, username, municipio, fecha, hora, id_user, tabla_movimiento) VALUES (?,?,?,?,?,?,?,?,?,?)",
                                     ['', nombre, apellidos, correoIns, username, municipio, fechaToday, horaToday, idUser, 'Inserción en Vehículo Recuperado'],
                                     (err, result) => {
@@ -450,11 +450,11 @@ app.post("/crearEntregadoVerificado", (req, res) => {
     const id_entidad_entrega = req.body.id_entidad_entrega;
     const id_municipio_entrega = req.body.id_municipio_entrega;
     const inspeccion = req.body.inspeccion;
-    const motor  = req.body.motor;
+    const motor = req.body.motor;
     const nombre_entrega = req.body.nombre_entrega;
     const persona_recibe = req.body.persona_recibe;
-    const serie = req.body.serie; 
-    
+    const serie = req.body.serie;
+
 
     const ID_ALTERNA = req.body.ID_ALTERNA;
     const CALLE = req.body.CALLE;
@@ -482,7 +482,7 @@ app.post("/crearEntregadoVerificado", (req, res) => {
     const municipio = req.body.municipio_bitacora;
     const idUser = req.body.idUser_bitacora;
 
-    
+
 
     //TIPO DE MOVIMIENTO = CAMBIO
     // ESTATUS = RECUPERADO
@@ -510,7 +510,7 @@ app.post("/crearEntregadoVerificado", (req, res) => {
                                         if (err) {
                                             console.log(err);
                                         } else {
-                                            db.query("DELETE FROM vehiculo_recuperado_temporal WHERE ID_ALTERNA = ?",alternaEntrega,
+                                            db.query("DELETE FROM vehiculo_recuperado_temporal WHERE ID_ALTERNA = ?", alternaEntrega,
                                                 (err, result) => {
                                                     if (err) {
                                                         console.log(err);
@@ -546,7 +546,7 @@ app.post("/crearEntregadoVerificado", (req, res) => {
                             if (err) {
                                 console.log(err)
                             } else {
-                                
+
                                 db.query("INSERT INTO bitacora (id, nombre, apellidos, correoIns, username, municipio, fecha, hora, id_user, tabla_movimiento) VALUES (?,?,?,?,?,?,?,?,?,?)",
                                     ['', nombre, apellidos, correoIns, username, municipio, fechaToday, horaToday, idUser, 'Inserción en Vehículo Entregado'],
                                     (err, result) => {
@@ -575,6 +575,493 @@ app.post("/crearEntregadoVerificado", (req, res) => {
     }
 
 })
+
+
+//traer registros de temporales
+
+app.get('/registro_temp', (req, res) => {
+    const sql = "SELECT * FROM temporal_vr ORDER BY ID_ALTERNA DESC LIMIT 6";
+    db.query(sql, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+})
+
+//traer ultimo registro  GET
+
+app.get('/ultimo', (req, res) => {
+    const sql = "SELECT ID_ALTERNA FROM `vehiculo_robado` ORDER BY ID_ALTERNA DESC LIMIT 1";
+    db.query(sql, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+})
+
+
+//fecha
+
+app.get('/fecha/:id', (req, res) => {
+    const pro = req.params.id;
+    db.query("SELECT DATE_FORMAT(FECHA_AVERIGUA,'%Y-%m-%d') as fecha FROM temporal_vr where ID_TEMPORAL= ?", pro, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+
+//fecha robo
+
+app.get('/fechaRobo/:id', (req, res) => {
+    const pro = req.params.id;
+    db.query("SELECT DATE_FORMAT(FECHA_ROBO,'%Y-%m-%d') as fecha FROM temporal_vr where ID_TEMPORAL= ?", pro, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+//seleccion por id sin revisar
+
+app.get('/bId/:id', (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT * FROM temporal_vr WHERE ID_TEMPORAL=?", id, (err, result) => {
+        if (err) {
+            console.log("sindatos");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.get('/bId2/:id', (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT * FROM vehiculo_robado WHERE ID_ALTERNA=?", id, (err, result) => {
+        if (err) {
+            console.log("sindatos");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+//seleccion modalidad por id sin revisar
+app.get('/moda/:id', (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT tipo FROM modalidad_robo WHERE id=?", id, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+//entidad
+
+app.get('/entirobo/:id', (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT ENTIDAD FROM entidades WHERE ID_ENTIDAD= ?", id, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+// select anidados entidad municipio
+app.get('/entidades', (req, res) => {
+    const sql = "SELECT * FROM entidades";
+    db.query(sql, (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            return res.json(data);
+        }
+    })
+})
+
+// tipo lugar
+
+app.get('/tipolugar', (req, res) => {
+    const sql = "SELECT * FROM tipo_lugar";
+    db.query(sql, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+})
+
+app.get('/municipios/:id_entidad', async (req, res) => {
+    //const id_entidad_recupera = req.body.id_entidad;
+    const id_entidad = req.params.id_entidad;
+    const sql = ("SELECT ENTIDAD, MUNICIPIO, ID_MUNICIPIO FROM municipios INNER JOIN entidades ON municipios.ID_ENTIDAD=" + req.params.id_entidad + " AND entidades.ID_ENTIDAD =" + req.params.id_entidad);
+    db.query(sql, (err, data) => {
+        if (err) {
+            return res.json(err + "error del municipio ");
+        } else {
+            return res.json(data);
+        }
+    })
+})
+
+//muni
+
+app.get('/munirobo/:id', (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT MUNICIPIO FROM municipios WHERE ID_MUNICIPIO= ?", id, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+// select anidados marca
+
+app.get('/marca', (req, res) => {
+    const sql = "SELECT * FROM catalogo_marca";
+    db.query(sql, (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            return res.json(data);
+        }
+    })
+})
+
+app.get('/submarca/:id_marca', async (req, res) => {
+    //const id_entidad_recupera = req.body.id_entidad;
+    const id_entidad = req.params.id_marca;
+    const sql = ("SELECT catalogo_marca.descripcion, submarcas.DESCRIPCION, submarcas.ID_SUBMARCA FROM catalogo_marca INNER JOIN submarcas ON submarcas.ID_MARCA=" + req.params.id_marca + " AND catalogo_marca.id_marca =" + req.params.id_marca);
+    db.query(sql, (err, data) => {
+        if (err) {
+            return res.json(err + "error ");
+        } else {
+            return res.json(data);
+        }
+    })
+})
+
+
+//color
+
+app.get('/color', (req, res) => {
+    const sql = "SELECT * FROM color";
+    db.query(sql, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+})
+
+
+//tipo de uso
+
+app.get('/tipouso', (req, res) => {
+    const sql = "SELECT * FROM catalogo_tipouso";
+    db.query(sql, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+})
+
+//procedencia
+
+app.get('/procedencia', (req, res) => {
+    const sql = "SELECT * FROM catalogo_procedencia";
+    db.query(sql, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+})
+
+//marca
+
+app.get('/m_marca/:id', (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT descripcion FROM catalogo_marca WHERE id_marca= ?", id, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+
+
+//sub-marca
+
+app.get('/subm/:id', (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT DESCRIPCION FROM submarcas WHERE ID_SUBMARCA = ?", id, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+//color
+
+app.get('/color/:id', (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT DESCRIPCION, ID_COLOR FROM color WHERE ID_COLOR= ?", id, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.get('/serieAutomovil/:id', (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT SERIE, PLACA FROM vehiculo_robado WHERE ID_ALTERNA =?", id, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.get('/colorAutomovil/:id', (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT DESCRIPCION FROM color WHERE ID_COLOR =?", id, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+// Crear un registro POST
+
+app.post("/temporal_crear", (req, res) => {
+    procesado = 0;
+    id_fuente = 10;
+    const edo = req.body.edo;
+    const fe = req.body.fe;
+    const hora = req.body.hora;
+    const id_alterna = req.body.id_alterna;
+    const averiguacion = req.body.averiguacion;
+    const fecha_averigua = req.body.fecha_averigua;
+    const agencia_mp = req.body.agencia_mp;
+
+    const agente_mp = req.body.agente_mp;
+    const id_modalidad = req.body.id_modalidad;
+    const fecha_robo = req.body.fecha_robo;
+
+    const hora_robo = req.body.hora_robo;
+    const calle_robo = req.body.calle_robo;
+    const num_ext_robo = req.body.num_ext_robo;
+    const colonia_robo = req.body.colonia_robo;
+
+    const id_municipio_robo = req.body.id_municipio_robo;
+    const id_entidad_robo = req.body.id_entidad_robo;
+    const id_tipo_lugar = req.body.id_tipo_lugar;
+    const nombre_den = req.body.nombre_den;
+    const paterno_den = req.body.paterno_den;
+
+    const calle_den = req.body.calle_den;
+    const numext_dom_den = req.body.numext_dom_den;
+    const colonia_den = req.body.colonia_den;
+    const id_municipio_den = req.body.id_municipio_den;
+    const id_entidad_den = req.body.id_entidad_den;
+    const cp_den = req.body.cp_den;
+    const placa = req.body.placa;
+
+    const id_marca = req.body.id_marca;
+    const id_submarca = req.body.id_submarca;
+    const modelo = req.body.modelo;
+    const id_color = req.body.id_color;
+    const serie = req.body.serie;
+    const id_tipo_uso = req.body.id_tipo_uso;
+    const id_procedencia = req.body.id_procedencia;
+
+
+
+    db.query("INSERT INTO temporal_vr (fecha,hora,id_alterna,id_fuente,averiguacion,fecha_averigua,agencia_mp, agente_mp, id_modalidad, fecha_robo, hora_robo, calle_robo, num_ext_robo, colonia_robo,id_municipio_robo , id_entidad_robo,id_tipo_lugar,nombre_den,paterno_den, calle_den, numext_dom_den, colonia_den, id_municipio_den, id_entidad_den, cp_den, placa,id_marca, id_submarca, modelo, id_color, serie, id_tipo_uso, id_procedencia, placa_ext   ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        [fe, hora, id_alterna, id_fuente, averiguacion, fecha_averigua, agencia_mp, agente_mp, id_modalidad, fecha_robo, hora_robo, calle_robo, num_ext_robo, colonia_robo, id_municipio_robo,
+            id_entidad_robo, id_tipo_lugar, nombre_den, paterno_den, calle_den, numext_dom_den, colonia_den, id_municipio_den, id_entidad_den, cp_den, placa,
+            id_marca, id_submarca, modelo, id_color, serie, id_tipo_uso, id_procedencia, edo],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+
+                //    db.query("INSERT INTO control_alterna (id_alterna, id_fuente, fecha, hora, procesado ) VALUES (?,?,?,?,?)",[ id_alterna, id_fuente, fe, hora, procesado ])
+                res.send("registrado")
+
+            }
+        })
+})
+
+// para modificar
+//video /users/:id
+app.put("/modificar/:id", (req, res) => {
+    const id = req.params.id;
+    const query_u = "UPDATE temporal_vr SET AVERIGUACION=?,FECHA_AVERIGUA=?,AGENCIA_MP=?,AGENTE_MP=?,ID_MODALIDAD=?,FECHA_ROBO=?,HORA_ROBO=?,CALLE_ROBO=?,NUM_EXT_ROBO=?,COLONIA_ROBO=?,ID_MUNICIPIO_ROBO=?,ID_ENTIDAD_ROBO=?,ID_TIPO_LUGAR=?,NOMBRE_DEN=?,PATERNO_DEN=?,CALLE_DEN=?,NUMEXT_DOM_DEN=?,COLONIA_DEN=?,ID_MUNICIPIO_DEN=?,ID_ENTIDAD_DEN=?,CP_DEN=?,PLACA=?,ID_MARCA=?,ID_SUBMARCA=?,MODELO=?,ID_COLOR=?,SERIE=?,ID_TIPO_USO=?,ID_PROCEDENCIA=?   WHERE ID_TEMPORAL=?"
+    const values = [
+        req.body.AVERIGUACION,
+        req.body.FECHA_AVERIGUA,
+        req.body.AGENCIA_MP,
+        req.body.AGENTE_MP,
+        req.body.ID_MODALIDAD,
+        req.body.FECHA_ROBO,
+        req.body.HORA_ROBO,
+        req.body.CALLE_ROBO,
+        req.body.NUM_EXT_ROBO,
+        req.body.COLONIA_ROBO,
+        req.body.ID_MUNICIPIO_ROBO,
+        req.body.ID_ENTIDAD_ROBO,
+        req.body.ID_TIPO_LUGAR,
+        req.body.NOMBRE_DEN,
+        req.body.PATERNO_DEN,
+        req.body.CALLE_DEN,
+        req.body.NUMEXT_DOM_DEN,
+        req.body.COLONIA_DEN,
+        req.body.ID_MUNICIPIO_DEN,
+        req.body.ID_ENTIDAD_DEN,
+        req.body.CP_DEN,
+        req.body.PLACA,
+        req.body.ID_MARCA,
+        req.body.ID_SUBMARCA,
+        req.body.MODELO,
+        req.body.ID_COLOR,
+        req.body.SERIE,
+        req.body.ID_TIPO_USO,
+        req.body.ID_PROCEDENCIA
+    ];
+
+    db.query(query_u, [...values, id], (err, result) => {
+        if (err) return res.send(err);
+        return res.json(result)
+    })
+})
+
+//tipo de uso
+
+app.get('/tipo/:id', (req, res) => {
+    const tipo = req.params.id;
+    db.query("SELECT descripcion FROM catalogo_tipouso WHERE id_tipo_uso= ?", tipo, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+
+
+
+//procedencia
+
+app.get('/pro/:id', (req, res) => {
+    const pro = req.params.id;
+    db.query("SELECT descripcion FROM catalogo_procedencia WHERE id_procedencia = ?", pro, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+//tipo lugar
+
+app.get('/tlugar/:id', (req, res) => {
+    const tipo = req.params.id;
+    db.query("SELECT descripcion FROM tipo_lugar WHERE id_tipo_lugar= ?", tipo, (err, result) => {
+        if (err) {
+            console.log("sindata");
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+
+
+
+app.post("/tabla_VR", (req, res) => {
+    procesado = 0;
+    id_fuente = 10;
+    const fe = req.body.FECHA;
+    const hora = req.body.HORA;
+    const id_temporal = req.body.ID_TEMPORAL;
+    const id_alterna = req.body.ID_ALTERNA;
+    const averiguacion = req.body.AVERIGUACION;
+    const fecha_averigua = req.body.FECHA_AVERIGUA;
+    const agencia_mp = req.body.AGENCIA_MP;
+
+    const agente_mp = req.body.AGENTE_MP;
+    const id_modalidad = req.body.ID_MODALIDAD;
+    const fecha_robo = req.body.FECHA_ROBO;
+
+    const hora_robo = req.body.HORA_ROBO;
+    const calle_robo = req.body.CALLE_ROBO;
+    const num_ext_robo = req.body.NUM_EXT_ROBO;
+    const colonia_robo = req.body.COLONIA_ROBO;
+
+    const id_municipio_robo = req.body.ID_MUNICIPIO_ROBO;
+    const id_entidad_robo = req.body.ID_ENTIDAD_ROBO;
+    const id_tipo_lugar = req.body.ID_TIPO_LUGAR;
+    const nombre_den = req.body.NOMBRE_DEN;
+    const paterno_den = req.body.PATERNO_DEN;
+
+    const calle_den = req.body.CALLE_DEN;
+    const numext_dom_den = req.body.NUMEXT_DOM_DEN;
+    const colonia_den = req.body.COLONIA_DEN;
+    const id_municipio_den = req.body.ID_MUNICIPIO_DEN;
+    const id_entidad_den = req.body.ID_ENTIDAD_DEN;
+    const cp_den = req.body.CP_DEN;
+    const placa = req.body.PLACA;
+    const placa_ext = req.body.PLACA_EXT;
+
+    const id_marca = req.body.ID_MARCA;
+    const id_submarca = req.body.ID_SUBMARCA;
+    const modelo = req.body.MODELO;
+    const id_color = req.body.ID_COLOR;
+    const serie = req.body.SERIE;
+    const id_tipo_uso = req.body.ID_TIPO_USO;
+    const id_procedencia = req.body.ID_PROCEDENCIA;
+
+
+    db.query("INSERT INTO vehiculo_robado (ID_ALTERNA,ID_FUENTE,AVERIGUACION,FECHA_AVERIGUA,AGENCIA_MP,AGENTE_MP,ID_MODALIDAD,FECHA_ROBO,HORA_ROBO,CALLE_ROBO,NUM_EXT_ROBO,COLONIA_ROBO,ID_MUNICIPIO_ROBO,ID_ENTIDAD_ROBO,ID_TIPO_LUGAR,NOMBRE_DEN,PATERNO_DEN,CALLE_DEN,NUMEXT_DOM_DEN,COLONIA_DEN,ID_MUNICIPIO_DEN,ID_ENTIDAD_DEN,CP_DEN,PLACA,PLACA_EXTRANJERA,ID_MARCA,ID_SUBMARCA,MODELO,ID_COLOR,SERIE,ID_TIPO_USO,ID_PROCEDENCIA) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        [id_alterna, id_fuente, averiguacion, fecha_averigua, agencia_mp, agente_mp, id_modalidad, fecha_robo, hora_robo, calle_robo, num_ext_robo, colonia_robo, id_municipio_robo,
+            id_entidad_robo, id_tipo_lugar, nombre_den, paterno_den, calle_den, numext_dom_den, colonia_den, id_municipio_den, id_entidad_den, cp_den, placa, placa_ext,
+            id_marca, id_submarca, modelo, id_color, serie, id_tipo_uso, id_procedencia],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+
+                db.query("INSERT INTO control_alterna (ID_ALTERNA,ID_FUENTE,FECHA,HORA,PROCESADO) VALUES (?,?,?,?,?)", [id_alterna, id_fuente, fe, hora, procesado],
+
+                    (err, result) => {
+                        if (err) {   ///
+                            console.log("error en el segundo query")
+                        } else {
+                            db.query("DELETE FROM `temporal_vr` WHERE  ID_TEMPORAL=?", id_temporal)
+                        }
+                    })
+            }
+        })
+})
+
+
+
+
 
 app.get('/nombres/:color', (req, res) => {
     const idColor = req.params.color;
@@ -631,6 +1118,16 @@ app.get("/recuperado/:id?", (req, res) => {
         } else {
             res.send(result)
         }
+    })
+})
+
+//modalidad
+
+app.get('/modalidad', (req, res) => {
+    const sql = "SELECT * FROM  modalidad_robo";
+    db.query(sql, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
     })
 })
 
@@ -964,14 +1461,14 @@ app.post("/crearDatos", (req, res) => {
     const username = req.body.username
     let contraseñaSU = req.body.contraseñaSU
 
-    if(contraseñaSU === undefined){
+    if (contraseñaSU === undefined) {
         contraseñaSU = "HDUJhisdhfi889h9h/(&/(&/(/tyYDFGDFGAsfgg___??*][fdg"
     }
 
-    
+
 
     db.query("INSERT INTO usuarios (id, nombre, apellidos, municipio, correoIns, username, password, superuserpass) VALUES (?,?,?,?,?,?,?,?)",
-        ['', nombre, apellidos, municipio, correoIns, username, contraseña,contraseñaSU],
+        ['', nombre, apellidos, municipio, correoIns, username, contraseña, contraseñaSU],
         (err, result) => {
             if (err) {
                 console.log(err);

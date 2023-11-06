@@ -21,6 +21,8 @@ export const PasswordSUentregado = ({ onLogin }) => {
     try {
       const response = await axios.post(`http://localhost:8081/passwordSuperUsuario`, formData);
       onLogin();
+       //Almacenar token en localstorage
+       localStorage.setItem('tokenEntregados', 'true')
       navigate('/TablaEntregado');
     } catch (error) {
       // Mostrar un mensaje de error al usuario utilizando react-toastify
@@ -29,25 +31,27 @@ export const PasswordSUentregado = ({ onLogin }) => {
   }
 
   return (
-    <div className='bodyLogin'>
+    <div className='bodyLogin' style={{height:"776px"}}>
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop closeOnClick rtl pauseOnFocusLoss draggable pauseOnHover />
       <div className='area-form'>
-        <div className='containerLogin'>
+        <div className='containerLogin' style={{height:"450px"}}>
           <form>
             <div className='form-group'>
-              <div className="brand-title">SUPER USUARIO</div>
+            <div style={{fontSize:"26px"}} className="brand-title">ADMINISTRACIÓN</div>
               <br></br>
-              <label for="username">INGRESE NOMBRE DE USUARIO</label>
+              <label for="username" style={{paddingBottom:"10px"}}>INGRESE USUARIO</label>
               <input type="text" className="form-control" id="username" name="username" onChange={handleChange} placeholder="Usuario" />
             </div>
             <div className="form-group">
-              <label for="password">INGRESE CONTRASEÑA DE USUARIO</label>
+            <label for="password" style={{paddingBottom:"10px", paddingTop:"10px"}}>INGRESE CONTRASEÑA</label>
               <input type="password" className="form-control" id="password" name="password" onChange={handleChange} placeholder="Contraseña" />
             </div>
-            <Button style={{ width: '250px' }} type="submit" className="btn btn-primary" onClick={handleSubmit}>
+            <br></br>
+            <Button style={{ width: '280px', marginBottom:"10px" }} type="submit" className="btn btn-primary" onClick={handleSubmit}>
               Enviar
             </Button>
-            <Link style={{ width: '250px' }} to="/ListaArchivos" type="submit" className="btn btn-primary">
+            <br></br>
+            <Link style={{ width: '280px' }} to="/ListaArchivos" type="submit" className="btn btn-primary">
               Regresar
             </Link>
           </form>

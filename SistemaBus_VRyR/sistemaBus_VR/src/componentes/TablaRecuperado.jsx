@@ -16,7 +16,7 @@ import { PasswordSuperUser } from './PasswordSuperUser'
 export const TablaRecuperado = () => {
 
     const [isPasswordIn, setIsPasswordIn] = useState(false)
-   
+    const [isTokenRecuperados, setIsTokenRecuperados] = useState(localStorage.getItem('tokenRecuperados'))
 
     const [datos, setDatos] = useState([])
     let results = []
@@ -36,7 +36,7 @@ export const TablaRecuperado = () => {
     }, [])
 
     const handleLogin = () => {
-        setIsPasswordIn(true)
+        setIsTokenRecuperados(true)
     }
 
     results = datos
@@ -60,7 +60,7 @@ export const TablaRecuperado = () => {
     return (
         <>
             <Navbar />
-            {isPasswordIn ? (
+            {isTokenRecuperados ? (
                 <>
 
                     <div className='area-form'>

@@ -11,11 +11,16 @@ import { Toaster, toast } from 'sonner'
 import { BiCheck } from 'react-icons/bi'
 import { Editar } from './Editar'
 import Login from "./Login"
+import { useNavigate } from 'react-router-dom';
+
 
 export const Recuperado = () => {
 
+    const navigate = useNavigate()
+
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'))
     const [userData, setUserData] = useState([]);
+    let [color, setColor] = useState([]);
     let result = []
     //console.log(isLoggedIn, "MASD")
 
@@ -43,7 +48,7 @@ export const Recuperado = () => {
 
     }, [isLoggedIn]);
 
-    let nombre_bitacora, entidadName
+    let nombre_bitacora, entidadName, serie, placa, colores
     let apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora
 
     //console.log(userData)
@@ -111,6 +116,48 @@ export const Recuperado = () => {
         fecha: ''
     })
 
+    const [temporal, setTemporal] = useState({
+        fe: "",
+        hora: "",
+        ID_TEMPORAL: "",
+        ID_ALTERNA: "",
+        AVERIGUACION: "",
+        FECHA_AVERIGUA: "",
+        AGENCIA_MP: "",
+
+        AGENTE_MP: "",
+        ID_MODALIDAD: "",
+        FECHA_ROBO: "",
+
+        HORA_ROBO: "",
+        CALLE_ROBO: "",
+        NUM_EXT_ROBO: "",
+        COLONIA_ROBO: "",
+
+        ID_MUNICIPIO_ROBO: "",
+        ID_ENTIDAD_ROBO: "",
+        ID_TIPO_LUGAR: "",
+        NOMBRE_DEN: "",
+        PATERNO_DEN: "",
+
+        CALLE_DEN: "",
+        NUMEXT_DOM_DEN: "",
+        COLONIA_DEN: "",
+        ID_MUNICIPIO_DEN: "",
+        ID_ENTIDAD_DEN: "",
+        CP_DEN: "",
+        PLACA: "",
+
+        ID_MARCA: "",
+        ID_SUBMARCA: "",
+        MODELO: "",
+        ID_COLOR: "",
+        SERIE: "",
+        ID_TIPO_USO: "",
+        ID_PROCEDENCIA: "",
+
+    })
+
     const [recuperadoBD, setRecuperadoBD] = useState([])
     let results6 = []
     let nombre_entidad
@@ -143,6 +190,15 @@ export const Recuperado = () => {
     const [descValidacion, setDescValidacion] = useState('')
 
     const [desc2Validacion, setDesc2Validacion] = useState('')
+
+    const [datos, setDatos] = useState([]);
+    let resultsDatos = []
+
+    const [datosColor, setDatosColor] = useState([]);
+    let resultsColors = []
+
+    const [idDatosColor, setIdDatosColor] = useState([])
+    let resultsIdColor = []
 
     const handleCloseModalValidacion = () => {
         setDescValidacion('')
@@ -185,6 +241,25 @@ export const Recuperado = () => {
         catch (err) {
             //console.log(err)
         }
+    }
+
+    function traer_datos() {
+        axios.get("http://localhost:8081/bId2/" + id)
+            .then(res => {
+                //console.log(res)
+                setTemporal(res.data[0])
+            })
+            .catch(err => console.log(err))
+    }
+
+    function modalidad_color() {
+        axios.get("http://localhost:8081/color/" + temporal.ID_COLOR)
+            .then(res => {
+                //console.log(res)
+                setDatosColor(res.data[0].DESCRIPCION)
+                setIdDatosColor(res.data[0].ID_COLOR)
+            })
+            .catch(err => console.log(err))
     }
 
     const entidadesSelect = async () => {
@@ -238,6 +313,33 @@ export const Recuperado = () => {
         }
     }
 
+    const serieAutomovil = async () => {
+        try {
+            const { data } = await axios.get(`http://localhost:8081/serieAutomovil/${id}`)
+            setDatos(data)
+        } catch (err) {
+
+        }
+    }
+
+    const colorAutomovil = async () => {
+        try {
+            const { data } = await axios.get(`http://localhost:8081/colorAutomovil/${id}`)
+        } catch (err) {
+
+        }
+    }
+
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            traer_datos()
+            modalidad_color()
+
+        }, 100);
+        return () => clearTimeout(timer);
+    })
+
 
     useEffect(() => {
         LlenarSelect()
@@ -245,11 +347,31 @@ export const Recuperado = () => {
         fuenteSelect()
         ultimoIdSelect()
         fechaDeRobado()
+        serieAutomovil()
+        colorAutomovil()
+
+
+    }, [])
+
+    useEffect(() => {
+        // Obtén una referencia al input
+        const inputs = document.querySelectorAll('.form-control')
+        // Dispara el evento 'click' en el input después de un pequeño retraso (por ejemplo, 1 segundo)
+
+        for (let i = 0; i < inputs.length; i++) {
+            const input = inputs[i]
+            setTimeout(() => {
+                console.log("click")
+                input.click()
+            }, 1000)
+        }
     }, [])
 
     useEffect(() => {
         RecuperadoBD()
     }, setEditar)
+
+
 
     results = llenado
     results2 = entidades
@@ -258,6 +380,11 @@ export const Recuperado = () => {
     results5 = ultimoId
     results6 = recuperadoBD
     results7 = fechaRobado
+    resultsDatos = datos
+    resultsColors = datosColor
+    resultsIdColor = idDatosColor
+
+    //console.log("color: ",datosColor)
 
     const formatoDia = () => {
 
@@ -279,11 +406,17 @@ export const Recuperado = () => {
         //console.log('La hora de registro es: ', horaCompleta)
     }
 
+    const handleClicker = (e) => {
+        handleChange()
+    }
+
     const handleChange = (e) => {
         formatoDia()
         formatoHora()
         setRecuperado((prev) => ({ ...prev, id_alterna, nombre_bitacora, apellidos_bitacora, correoIns_bitacora, username_bitacora, municipio_bitacora, idUser_bitacora, [e.target.name]: e.target.value }))
+
         id_entidad = document.getElementById('id_entidad_recupera')
+        console.log("datos", recuperado);
     }
 
     const handleChangeModificacionRecuperado = (e) => {
@@ -327,12 +460,10 @@ export const Recuperado = () => {
 
             if (!camposValidados) return
 
+            alert("El nuevo registro ha sido guardado correctamente ")
+            navigate(`/detalles/${id}`)
             await axios.post("http://localhost:8081/crearRecuperadoTemporal", recuperado);
             //console.log(setRecuperado + "SetRecuperado")
-
-            alert("El nuevo registro ha sido guardado correctamente ")
-            navigate("/")
-
         } catch (err) {
             //console.log(err)
         }
@@ -377,7 +508,7 @@ export const Recuperado = () => {
 
         }
 
-        if (recuperado.serie.length < 1) {
+        /*if (recuperado.serie.length < 1) {
             desc = desc + ', SERIE '
 
             document.getElementById('grupo_serie').classList.add('formulario_grupo-incorrecto')
@@ -385,7 +516,7 @@ export const Recuperado = () => {
         } else {
             document.getElementById('grupo_serie').classList.remove('formulario_grupo-incorrecto')
 
-        }
+        }*/
 
         if (recuperado.id_entidad_recupera.length < 1) {
             desc = desc + ', ENTIDAD '
@@ -409,7 +540,7 @@ export const Recuperado = () => {
 
         }
 
-        if (recuperado.placa.length < 1) {
+        /*if (recuperado.placa.length < 1) {
             document.getElementById('grupo_placa').classList.add('formulario_grupo-incorrecto')
             desc = desc + ', PLACA '
 
@@ -418,7 +549,7 @@ export const Recuperado = () => {
         } else {
             document.getElementById('grupo_placa').classList.remove('formulario_grupo-incorrecto')
 
-        }
+        }*/
 
         if (recuperado.calle_rec.length < 1) {
             desc = desc + ', CALLE '
@@ -463,7 +594,7 @@ export const Recuperado = () => {
 
         }
 
-        if (recuperado.id_color.length < 1) {
+        /*if (recuperado.id_color.length < 1) {
             desc = desc + ', COLOR DEL AUTOMÓVIL '
             document.getElementById('grupo_color').classList.add('formulario_grupo-incorrecto')
 
@@ -472,7 +603,7 @@ export const Recuperado = () => {
         } else {
             document.getElementById('grupo_color').classList.remove('formulario_grupo-incorrecto')
 
-        }
+        }*/
 
         if (recuperado.fecha_rec.length < 1) {
             desc = desc + ', FECHA '
@@ -634,6 +765,17 @@ export const Recuperado = () => {
 
     })
 
+    resultsDatos.map(datos => {
+        serie = datos.SERIE
+        placa = datos.PLACA
+    })
+
+    /*resultsColors.map(datosColor => {
+        colores = datos.DESCRIPCION
+    })*/
+
+
+
     return (
         <>
             {isLoggedIn ? (
@@ -655,7 +797,7 @@ export const Recuperado = () => {
                                         </>
                                     )
                                 })}
-                                <center><h1> REGISTRO DE VEHICULOS RECUPERADOS</h1></center>
+                                <center><h3> Datos del Vehículo Recuperado</h3></center>
                                 <br />
                                 {results5.map(ultimoId => {
                                     return (
@@ -699,7 +841,7 @@ export const Recuperado = () => {
                                 <div class="formulario_grupo col-md-3" id='grupo_calle'>
                                     <label className="form-label" class="formulario_label" for='calle_rec'> CALLE:</label>
                                     <div class="formulario_grupo-input">
-                                        <input type="text" className="form-control" id="calle_rec" name="calle_rec" onKeyDown={Solo_Texto} onChange={handleChange} required />
+                                        <input type="text" className="form-control" id="calle_rec" name="calle_rec"  onChange={handleChange} required />
                                     </div>
                                     <div class="invalid-feedback">Porfavor rellene el campo.</div>
                                 </div>
@@ -714,7 +856,7 @@ export const Recuperado = () => {
                                 <div class="formulario_grupo col-md-3" id='grupo_colonia'>
                                     <label className="form-label" class="formulario_label" for='colonia_rec' > COLONIA:</label>
                                     <div class="formulario_grupo-input">
-                                        <input type="text" className="form-control" id="colonia_rec" name="colonia_rec" onKeyDown={Solo_Texto} onChange={handleChange} required />
+                                        <input type="text" className="form-control" id="colonia_rec" name="colonia_rec"  onChange={handleChange} required />
                                     </div>
                                     <div class="invalid-feedback">Porfavor rellene el campo.</div>
                                 </div>
@@ -730,29 +872,38 @@ export const Recuperado = () => {
                                 <div class="formulario_grupo col-3" id='grupo_serie'>
                                     <label className="form-label" class="formulario_label" for='serie' >SERIE:</label>
                                     <div class="formulario_grupo-input">
-                                        <input type="text" className="form-control" id="serie" name="serie" onChange={handleChange} required />
+                                        <input type="text" className="form-control" id="serie" name="serie" onChange={handleChange} onClick={handleChange} value={serie} required />
                                     </div>
                                     <div class="invalid-feedback">Porfavor rellene el campo.</div>
                                 </div>
                                 <div class="formulario_grupo col-md-3" id='grupo_placa'>
                                     <label className="form-label" class="formulario_label" for='placa' > PLACA:</label>
                                     <div class="formulario_grupo-input">
-                                        <input type="text" className="form-control" id="placa" name="placa" ng-trim="false" onChange={handleChange} required />
+                                        <input type="text" className="form-control" id="placa" name="placa" ng-trim="false" onChange={handleChange} onClick={handleChange} value={placa} required />
                                     </div>
                                     <div class="invalid-feedback">Porfavor rellene el campo.</div>
                                 </div>
+                               
                                 <div class="formulario_grupo col-md-6" id='grupo_color'>
                                     <label className="form-label" class="formulario_label" >COLOR DEL AUTOMÓVIL: </label>
                                     <br />
                                     <div class="formulario_grupo-input">
-                                        <select className="form-control" id="id_color" name="id_color" onChange={handleChange} required>
-                                            <option selected disabled value="">SELECCIONE UN COLOR</option>
+                                        <input className="form-control" id='id_color' name='id_color' type='hidden' onClick={handleChange} onChange={handleChange} value={idDatosColor} />
+                                        {/*<select className="form-control" id="id_color" name="id_color" onChange={handleChange} onClick={handleChange} required>
+                                            <option selected disabled >
+                                                {datosColor}
+                                            </option>
                                             {results.map(llenado => {
                                                 return (
-                                                    <option name={llenado.ID_COLOR} key={llenado.ID_COLOR} value={llenado.ID_COLOR}>{llenado.DESCRIPCION}</option>
+
+                                                    <option onClick={handleChange} name={llenado.ID_COLOR} key={llenado.ID_COLOR} value={llenado.ID_COLOR}>{llenado.DESCRIPCION}</option>
                                                 )
                                             })}
-                                        </select>
+                                        </select>*/}
+
+
+                                        <input className="form-control" value={datosColor} />
+
                                     </div>
                                     <div class="invalid-feedback">Porfavor seleccione un color.</div>
                                 </div>
@@ -795,7 +946,7 @@ export const Recuperado = () => {
                                 </div>
                                 <div class="col-md-12">
                                     <Button variant="primary" type="submit" onClick={handleClick}>Enviar</Button>
-                                    <Link to="/ListaArchivos" className="btn btn-info"> Inicio</Link>
+
                                     {/*<Button variant="primary" onClick={() => {
                                         setEditar(id)
                                     }}>Editar</Button>*/}
@@ -868,7 +1019,7 @@ export const Recuperado = () => {
                                     )}
                                 </div>
                             </form>
-                            
+
                             <Toaster
                                 position='top-center'
                                 dir='auto'

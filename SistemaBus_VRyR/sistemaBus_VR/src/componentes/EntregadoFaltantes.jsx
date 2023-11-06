@@ -300,6 +300,12 @@ export const EntregadoFaltantes = () => {
         datos.INSPECCION = "NO REALIZADA"
     }
 
+    if (datos.RECIBE == 1){
+        datos.RECIBE = "PROPIETARIO"
+    } else if(datos.RECIBE) {
+        datos.RECIBE = "REPRESENTANTE"
+    }
+
     const handleClick = async (e) => {
         e.preventDefault();
         try {
@@ -497,7 +503,12 @@ export const EntregadoFaltantes = () => {
                                 </div>
                                 <div className="col-sm-2">
                                     <strong><label htmlFor="staticEmail" className="col-sm-2 col-form-label">RECIBE:</label></strong>
-                                    <input type="text" className="form-control-plaintext" id="recibe" name='persona_recibe' onClick={handleChange} onChange={handleChange} defaultValue={datos.RECIBE} />
+                                    <input type="hidden" className="form-control-plaintext" id="recibe" name='persona_recibe' onClick={handleChange} onChange={handleChange} defaultValue={datos.RECIBE} />
+                                    <select className='form-control-plaintext' id='recibe' name='recibe' onChange={handleChange} onClick={handleChange} required>
+                                        <option selected disabled value="1">{datos.RECIBE}</option>
+                                        <option value='1'>PROPIETARIO</option>
+                                        <option value='2'>REPRESENTANTE</option>
+                                    </select>
                                 </div>
 
                             </form>
